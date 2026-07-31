@@ -5,7 +5,74 @@
     "or": "or",
     "language": "Language",
     "english": "EN",
-    "arabic": "AR"
+    "arabic": "AR",
+    "cancel": "Cancel"
+  },
+  "dashboard": {
+    "home": "Home",
+    "addItem": "Add item",
+    "viewSite": "View site"
+  },
+  "courses": {
+    "title": "Course designer",
+    "add": "Add course",
+    "filter": "Filter",
+    "publishedAt": "Publish date",
+    "tabs": {
+      "published": "Published courses",
+      "inactive": "Inactive courses"
+    },
+    "actions": {
+      "edit": "Edit",
+      "view": "View course",
+      "delete": "Delete"
+    },
+    "delete": {
+      "title": "Delete course",
+      "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+      "confirm": "Delete"
+    },
+    "filters": {
+      "title": "Course filters",
+      "keywordsPlaceholder": "Search keywords",
+      "price": "Course price",
+      "from": "From",
+      "to": "To",
+      "clear": "Clear all filters",
+      "apply": "Apply"
+    },
+    "create": {
+      "breadcrumb": "New course",
+      "saveContinue": "Save and continue",
+      "saveDraft": "Save as draft",
+      "cover": "Course cover",
+      "coverHint": "Upload the cover image here by drag and drop or browse",
+      "coverHintSecondary": "Maximum file size 20MB",
+      "coverTooLarge": "Cover image must be 20MB or less",
+      "marketplaceTitle": "Allow uploading the course to Marketplace",
+      "marketplaceDescription": "Enabling this option allows uploading this course to the company platform and sharing subscription profits with the company",
+      "courseTitle": "Course title",
+      "titlePlaceholder": "Course title",
+      "keywords": "Keywords",
+      "keywordsPlaceholder": "Add a keyword and press Enter",
+      "level": "Course level",
+      "description": "Course description",
+      "descriptionPlaceholder": "Write more details about the course, skills and knowledge",
+      "pricingPlan": "Pricing plan",
+      "subscription": "Subscription",
+      "subscriptionHint": "Choosing this option includes the course in monthly or annual student subscriptions",
+      "fixedPrice": "Fixed price",
+      "cardPreview": "Course card",
+      "infoTab": "Course info",
+      "curriculumTab": "Course curriculum",
+      "curriculumEmpty": "Curriculum content will appear here",
+      "backToList": "Back to courses"
+    },
+    "toast": {
+      "deleted": "Course \"{{title}}\" deleted (demo)",
+      "saved": "Course saved (demo)",
+      "draftSaved": "Draft saved (demo)"
+    }
   },
   "validation": {
     "string.base": "{{label}} must be a text string.",

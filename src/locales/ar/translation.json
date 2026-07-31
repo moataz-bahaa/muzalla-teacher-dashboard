@@ -5,7 +5,74 @@
     "or": "أو",
     "language": "اللغة",
     "english": "EN",
-    "arabic": "AR"
+    "arabic": "AR",
+    "cancel": "إلغاء"
+  },
+  "dashboard": {
+    "home": "الصفحة الرئيسية",
+    "addItem": "إضافة عنصر",
+    "viewSite": "عرض الموقع"
+  },
+  "courses": {
+    "title": "مصمم الدورات",
+    "add": "إضافة دورة",
+    "filter": "فلتر",
+    "publishedAt": "تاريخ النشر",
+    "tabs": {
+      "published": "الدورات المنشورة",
+      "inactive": "الدورات غير النشطة"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "view": "عرض الدورة",
+      "delete": "حذف"
+    },
+    "delete": {
+      "title": "حذف الدورة",
+      "description": "هل أنت متأكد من حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف"
+    },
+    "filters": {
+      "title": "فلاتر الدورات",
+      "keywordsPlaceholder": "بحث الكلمات المفتاحية",
+      "price": "سعر الدورة",
+      "from": "من",
+      "to": "إلى",
+      "clear": "إلغاء جميع الفلاتر",
+      "apply": "تطبيق"
+    },
+    "create": {
+      "breadcrumb": "دورة جديدة",
+      "saveContinue": "حفظ ومتابعة",
+      "saveDraft": "حفظ كمسودة",
+      "cover": "غلاف الدورة",
+      "coverHint": "قم برفع صورة الغلاف هنا عن طريق السحب والأفلات أو التصفح",
+      "coverHintSecondary": "الحد الأقصى لحجم الملف 20 ميغابايت",
+      "coverTooLarge": "يجب ألا يتجاوز حجم صورة الغلاف 20 ميغابايت",
+      "marketplaceTitle": "السماح برفع الدورة على Marketplace",
+      "marketplaceDescription": "عند تفعيل هذا الخيار ستسمح برفع هذا الكورس على منصة الشركة ومشاركة ارباح الاشتراكات مع الشركة",
+      "courseTitle": "عنوان الدورة",
+      "titlePlaceholder": "عنوان الدورة",
+      "keywords": "كلمات مفتاحية",
+      "keywordsPlaceholder": "أضف كلمة مفتاحية ثم اضغط Enter",
+      "level": "مستوى الكورس",
+      "description": "وصف الكورس",
+      "descriptionPlaceholder": "قم بكتابة المزيد من التفاصيل حول الكورس والمهارات والمعارف",
+      "pricingPlan": "خطة السعر",
+      "subscription": "اشتراك",
+      "subscriptionHint": "عند تحديد هذا الخيار سوف تتضمن الدورة ضمن اشتراكات الطلاب للشهرية او السنوية",
+      "fixedPrice": "سعر ثابت",
+      "cardPreview": "كارت الدورة",
+      "infoTab": "معلومات الدورة",
+      "curriculumTab": "منهج الدورة",
+      "curriculumEmpty": "سيظهر محتوى المنهج هنا",
+      "backToList": "العودة للدورات"
+    },
+    "toast": {
+      "deleted": "تم حذف الدورة \"{{title}}\" (تجريبي)",
+      "saved": "تم حفظ الدورة (تجريبي)",
+      "draftSaved": "تم حفظ المسودة (تجريبي)"
+    }
   },
   "validation": {
     "string.base": "يجب أن يكون {{label}} نصاً.",
