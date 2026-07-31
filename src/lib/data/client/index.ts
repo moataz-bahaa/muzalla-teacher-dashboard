@@ -1,5 +1,4 @@
-import { apiClient } from './axios'
-import { API_ENDPOINTS } from '@/lib/data/client/endpoints'
+import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import type {
   IForgetPasswordInput,
   IForgetPasswordResponse,
@@ -16,46 +15,45 @@ import type {
   IVerifyOtpInput,
   IVerifyOtpResponse,
   TAuthDevicesResponse,
-} from '@/types/auth'
+} from '@/types/auth';
+import { apiClient } from './axios';
 
 class Client {
   auth = {
     login: (input: ILoginInput) =>
-      apiClient.post<ILoginResponse, ILoginResponse>(API_ENDPOINTS.login, input),
+      apiClient.post<ILoginResponse>(API_ENDPOINTS.login, input),
 
     register: (input: IRegisterInput) =>
-      apiClient.post<IRegisterResponse, IRegisterResponse>(API_ENDPOINTS.register, input),
+      apiClient.post<IRegisterResponse>(API_ENDPOINTS.register, input),
 
     logout: (input?: ILogoutInput) =>
-      apiClient.post<ILogoutResponse, ILogoutResponse>(API_ENDPOINTS.logout, input),
+      apiClient.post<ILogoutResponse>(API_ENDPOINTS.logout, input),
 
     refreshToken: (input: IRefreshTokenInput) =>
-      apiClient.post<IRefreshTokenResponse, IRefreshTokenResponse>(
-        API_ENDPOINTS.refreshToken,
-        input,
-      ),
+      apiClient.post<IRefreshTokenResponse>(API_ENDPOINTS.refreshToken, input),
 
     forgetPassword: (input: IForgetPasswordInput) =>
-      apiClient.post<IForgetPasswordResponse, IForgetPasswordResponse>(
+      apiClient.post<IForgetPasswordResponse>(
         API_ENDPOINTS.forgetPassword,
         input,
       ),
 
     verifyOtp: (input: IVerifyOtpInput) =>
-      apiClient.post<IVerifyOtpResponse, IVerifyOtpResponse>(
-        API_ENDPOINTS.verifyOtp,
-        input,
-      ),
+      apiClient.post<IVerifyOtpResponse>(API_ENDPOINTS.verifyOtp, input),
 
     resetPassword: (input: IResetPasswordInput) =>
-      apiClient.post<IResetPasswordResponse, IResetPasswordResponse>(
+      apiClient.post<IResetPasswordResponse>(
         API_ENDPOINTS.resetPassword,
         input,
       ),
 
-    devices: () =>
-      apiClient.get<TAuthDevicesResponse, TAuthDevicesResponse>(API_ENDPOINTS.devices),
-  }
+    devices: () => apiClient.get<TAuthDevicesResponse>(API_ENDPOINTS.devices),
+  };
+
+  courses = {
+    delete: (id: number) =>
+      apiClient.delete<unknown>(API_ENDPOINTS.courseById(id)),
+  };
 }
 
-export const client = new Client()
+export const client = new Client();

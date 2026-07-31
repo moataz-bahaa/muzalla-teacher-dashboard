@@ -6,7 +6,13 @@
     "language": "Language",
     "english": "EN",
     "arabic": "AR",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "delete": {
+      "title": "Delete \"{{object}}\"?",
+      "description": "Are you sure you want to delete \"{{object}}\"? This action cannot be undone.",
+      "confirm": "Confirm Delete",
+      "success": "{{object}} deleted successfully"
+    }
   },
   "dashboard": {
     "home": "Home",
@@ -29,8 +35,7 @@
     },
     "delete": {
       "title": "Delete course",
-      "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
-      "confirm": "Delete"
+      "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone."
     },
     "filters": {
       "title": "Course filters",

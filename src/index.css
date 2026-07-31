@@ -91,25 +91,6 @@
   --color-danger-900: #771a17;
   --color-danger-950: #480c0a;
 
-  /* Spacing — Figma 4-pt grid extras (Tailwind defaults still apply) */
-  --spacing-0_5: 2px;
-  --spacing-1_5: 6px;
-  --spacing-2_5: 10px;
-  --spacing-3_5: 14px;
-  --spacing-4_5: 18px;
-  --spacing-9: 36px;
-
-  /* Radius — Figma Border Radius */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-full: 999px;
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-
   /* Typography — Figma type scale */
   --text-caption: 0.625rem;
   --text-caption--line-height: 0.9375rem;

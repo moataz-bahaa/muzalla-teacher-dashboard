@@ -6,7 +6,13 @@
     "language": "اللغة",
     "english": "EN",
     "arabic": "AR",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "delete": {
+      "title": "حذف: {{object}}",
+      "description": "هل أنت متأكد من حذف \"{{object}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "تأكيد الحذف",
+      "success": "تم حذف {{object}} بنجاح"
+    }
   },
   "dashboard": {
     "home": "الصفحة الرئيسية",
@@ -29,8 +35,7 @@
     },
     "delete": {
       "title": "حذف الدورة",
-      "description": "هل أنت متأكد من حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
-      "confirm": "حذف"
+      "description": "هل أنت متأكد من حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء."
     },
     "filters": {
       "title": "فلاتر الدورات",

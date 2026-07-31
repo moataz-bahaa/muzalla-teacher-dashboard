@@ -33,7 +33,3 @@ export interface ICreateCourseFormValues {
   allowMarketplace: boolean
   coverUrl: string | null
 }
-
-export interface IDeleteCourseModalData {
-  course: ICourse
-}
