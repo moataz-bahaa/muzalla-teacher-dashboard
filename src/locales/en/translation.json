@@ -1,0 +1,88 @@
+{
+  "common": {
+    "brand": "Muzalla",
+    "teacherDashboard": "Teacher Dashboard",
+    "or": "or",
+    "language": "Language",
+    "english": "EN",
+    "arabic": "AR"
+  },
+  "validation": {
+    "string.base": "{{label}} must be a text string.",
+    "string.email": "{{label}} must be a valid email address.",
+    "any.required": "{{label}} is a required field and cannot be left empty.",
+    "string.empty": "{{label}} cannot be empty. Please provide a value.",
+    "string.min": "{{label}} must be at least {{limit}} characters long.",
+    "string.max": "{{label}} must be no more than {{limit}} characters long.",
+    "string.pattern.base": "{{label}} format is invalid. Please follow the required pattern.",
+    "string.uri": "{{label}} isn't a valid website url.",
+    "number.base": "{{label}} must be a valid number.",
+    "number.min": "{{label}} must be greater than or equal to {{limit}}.",
+    "number.max": "{{label}} must be less than or equal to {{limit}}.",
+    "number.positive": "{{label}} must be a positive number.",
+    "array.base": "{{label}} must be a list of items.",
+    "array.min": "{{label}} must contain at least {{limit}} item(s).",
+    "array.max": "{{label}} must contain no more than {{limit}} item(s).",
+    "boolean.base": "{{label}} must be either true or false.",
+    "date.base": "{{label}} must be a valid date.",
+    "object.base": "{{label}} must be an object.",
+    "object.unknown": "{{label}} is not allowed.",
+    "any.only": "Passwords do not match.",
+    "any.invalid": "{{label}} contains an invalid value."
+  },
+  "auth": {
+    "email": "Email",
+    "emailPlaceholder": "Example@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 Characters",
+    "confirmPassword": "Confirm password",
+    "googleSignIn": "Continue with Google",
+    "toast": {
+      "loginSuccess": "Signed in successfully (demo)",
+      "registerSuccess": "Account created successfully (demo)",
+      "resetEmailSent": "Reset code sent (demo)",
+      "otpVerified": "Code verified (demo)",
+      "passwordChanged": "Password updated (demo)",
+      "googleStub": "Google sign-in is not connected yet",
+      "resendCode": "Verification code resent (demo)"
+    },
+    "login": {
+      "title": "Welcome back 👋",
+      "subtitle": "A new day, a new start. Enter your details to manage your educational content.",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create a new account"
+    },
+    "register": {
+      "title": "Get your educational platform in 60 seconds",
+      "subtitle": "Enter the required details to create a new account",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "forgetPassword": {
+      "title": "Reset password",
+      "subtitle": "Enter the email associated with your account to set a new password",
+      "emailLabel": "Account email",
+      "submit": "Send confirmation code",
+      "backToLogin": "Back to sign in"
+    },
+    "verifyOtp": {
+      "title": "Email verification",
+      "subtitle": "We sent a verification code to your email. Enter it to verify account ownership.",
+      "codeLabel": "Verification code",
+      "codePlaceholder": "23445",
+      "submit": "Verify code",
+      "didNotReceive": "Didn't receive the code?",
+      "resend": "Resend code"
+    },
+    "resetPassword": {
+      "title": "Set a new password",
+      "subtitle": "Choose a new password different from your previous ones",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Change password"
+    }
+  }
+}

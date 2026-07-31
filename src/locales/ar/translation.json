@@ -1,0 +1,88 @@
+{
+  "common": {
+    "brand": "Muzalla",
+    "teacherDashboard": "لوحة تحكم المعلم",
+    "or": "أو",
+    "language": "اللغة",
+    "english": "EN",
+    "arabic": "AR"
+  },
+  "validation": {
+    "string.base": "يجب أن يكون {{label}} نصاً.",
+    "string.email": "يجب أن يكون {{label}} بريداً إلكترونياً صالحاً.",
+    "any.required": "{{label}} حقل مطلوب ولا يمكن تركه فارغاً.",
+    "string.empty": "لا يمكن أن يكون {{label}} فارغاً. يرجى إدخال قيمة.",
+    "string.min": "يجب أن يكون {{label}} {{limit}} أحرف على الأقل.",
+    "string.max": "يجب ألا يتجاوز {{label}} {{limit}} حرفاً.",
+    "string.pattern.base": "صيغة {{label}} غير صالحة. يرجى اتباع النمط المطلوب.",
+    "string.uri": "{{label}} ليس رابط موقع صالحاً.",
+    "number.base": "يجب أن يكون {{label}} رقماً صالحاً.",
+    "number.min": "يجب أن يكون {{label}} أكبر من أو يساوي {{limit}}.",
+    "number.max": "يجب أن يكون {{label}} أقل من أو يساوي {{limit}}.",
+    "number.positive": "يجب أن يكون {{label}} رقماً موجباً.",
+    "array.base": "يجب أن يكون {{label}} قائمة عناصر.",
+    "array.min": "يجب أن يحتوي {{label}} على {{limit}} عنصر على الأقل.",
+    "array.max": "يجب ألا يحتوي {{label}} على أكثر من {{limit}} عنصر.",
+    "boolean.base": "يجب أن يكون {{label}} إما صحيحاً أو خاطئاً.",
+    "date.base": "يجب أن يكون {{label}} تاريخاً صالحاً.",
+    "object.base": "يجب أن يكون {{label}} كائناً.",
+    "object.unknown": "{{label}} غير مسموح به.",
+    "any.only": "كلمتا المرور غير متطابقتين.",
+    "any.invalid": "{{label}} يحتوي على قيمة غير صالحة."
+  },
+  "auth": {
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "Example@email.com",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "At least 8 Characters",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "googleSignIn": "التسجيل بحساب جوجل",
+    "toast": {
+      "loginSuccess": "تم تسجيل الدخول بنجاح (تجريبي)",
+      "registerSuccess": "تم إنشاء الحساب بنجاح (تجريبي)",
+      "resetEmailSent": "تم إرسال كود إعادة التعيين (تجريبي)",
+      "otpVerified": "تم التحقق من الكود (تجريبي)",
+      "passwordChanged": "تم تحديث كلمة المرور (تجريبي)",
+      "googleStub": "تسجيل جوجل غير متصل بعد",
+      "resendCode": "تمت إعادة إرسال كود التحقق (تجريبي)"
+    },
+    "login": {
+      "title": "أهلاً بعودتك 👋",
+      "subtitle": "يوم جديد، بداية جديدة. أدخل بياناتك حتى تستطيع إدارة محتواك التعليمي",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "submit": "تسجيل دخول",
+      "noAccount": "ليس لديك حساب؟",
+      "createAccount": "إنشاء حساب جديد"
+    },
+    "register": {
+      "title": "احصل على منصتك التعليمية خلال ٦٠ ثانية",
+      "subtitle": "أدخل البيانات المطلوبة لإنشاء حساب جديد",
+      "submit": "إنشاء حساب",
+      "hasAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل دخول"
+    },
+    "forgetPassword": {
+      "title": "إعادة تعيين كلمة المرور",
+      "subtitle": "قم بإدخال البريد الإلكتروني الخاص بحسابك لتعيين كلمة مرور جديدة",
+      "emailLabel": "البريد الإلكتروني للحساب",
+      "submit": "إرسال كود التأكيد",
+      "backToLogin": "العودة لتسجيل الدخول"
+    },
+    "verifyOtp": {
+      "title": "التحقق من البريد الإلكتروني",
+      "subtitle": "لقد قمنا بإرسال كود التحقق إلى البريد الخاص بكم، يرجى إدخال الكود للتحقق من ملكية الحساب",
+      "codeLabel": "كود التحقق",
+      "codePlaceholder": "23445",
+      "submit": "التحقق من الكود",
+      "didNotReceive": "لم يصلني الكود،",
+      "resend": "إعادة إرسال الكود"
+    },
+    "resetPassword": {
+      "title": "تعيين كلمة مرور جديدة",
+      "subtitle": "قم بتعيين كلمة مرور جديدة مختلفة عن كلمات المرور السابقة",
+      "newPassword": "كلمة المرور الجديدة",
+      "confirmPassword": "تأكيد كلمة المرور الجديدة",
+      "submit": "تغيير كلمة المرور"
+    }
+  }
+}
