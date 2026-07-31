@@ -39,10 +39,15 @@
     "googleSignIn": "Continue with Google",
     "toast": {
       "loginSuccess": "Signed in successfully (demo)",
+      "loginError": "Sign in failed. Please check your credentials.",
       "registerSuccess": "Account created successfully (demo)",
+      "registerError": "Could not create account. Please try again.",
       "resetEmailSent": "Reset code sent (demo)",
+      "forgetPasswordError": "Could not send reset code. Please try again.",
       "otpVerified": "Code verified (demo)",
+      "verifyOtpError": "Invalid verification code. Please try again.",
       "passwordChanged": "Password updated (demo)",
+      "resetPasswordError": "Could not update password. Please try again.",
       "googleStub": "Google sign-in is not connected yet",
       "resendCode": "Verification code resent (demo)"
     },
