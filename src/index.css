@@ -1,111 +1,250 @@
+@import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* Fonts — Figma: Plus Jakarta Sans / Noto Sans Arabic / GE SS Two */
+  --font-sans: 'Noto Sans Arabic', 'Plus Jakarta Sans', 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'GE SS Two', 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Semantic (shadcn) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand palettes — Figma Colors */
+  --color-purple-heart-50: #f7f6ff;
+  --color-purple-heart-100: #edecff;
+  --color-purple-heart-200: #dddaff;
+  --color-purple-heart-300: #c5bfff;
+  --color-purple-heart-400: #b0a2ff;
+  --color-purple-heart-500: #8b70ff;
+  --color-purple-heart-600: #783fff;
+  --color-purple-heart-700: #6900ee;
+  --color-purple-heart-800: #5700c7;
+  --color-purple-heart-900: #4900a7;
+  --color-purple-heart-950: #2b0067;
+
+  --color-neutral-50: #ffffff;
+  --color-neutral-100: #f8f8f8;
+  --color-neutral-200: #e9e9e9;
+  --color-neutral-300: #d6d6d6;
+  --color-neutral-400: #a2a2a2;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #545454;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #272727;
+  --color-neutral-900: #181818;
+  --color-neutral-950: #090909;
+
+  --color-success-50: #e9ffec;
+  --color-success-100: #cafed3;
+  --color-success-200: #88fea4;
+  --color-success-300: #2cf276;
+  --color-success-400: #27da6a;
+  --color-success-500: #22c55e;
+  --color-success-600: #1ba94d;
+  --color-success-700: #138236;
+  --color-success-800: #0c6627;
+  --color-success-900: #08551e;
+  --color-success-950: #03310f;
+
+  --color-warning-50: #fffce3;
+  --color-warning-100: #fef6b7;
+  --color-warning-200: #feeb61;
+  --color-warning-300: #f2dc2d;
+  --color-warning-400: #e0ca29;
+  --color-warning-500: #d1ba25;
+  --color-warning-600: #ad920f;
+  --color-warning-700: #8e6e13;
+  --color-warning-800: #70520c;
+  --color-warning-900: #5b4108;
+  --color-warning-950: #332503;
+
+  --color-danger-50: #fef5f5;
+  --color-danger-100: #fceae7;
+  --color-danger-200: #fad4d0;
+  --color-danger-300: #f7b4ae;
+  --color-danger-400: #e4746e;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #ce3333;
+  --color-danger-700: #ab2927;
+  --color-danger-800: #8d201e;
+  --color-danger-900: #771a17;
+  --color-danger-950: #480c0a;
+
+  /* Spacing — Figma 4-pt grid extras (Tailwind defaults still apply) */
+  --spacing-0_5: 2px;
+  --spacing-1_5: 6px;
+  --spacing-2_5: 10px;
+  --spacing-3_5: 14px;
+  --spacing-4_5: 18px;
+  --spacing-9: 36px;
+
+  /* Radius — Figma Border Radius */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 999px;
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Typography — Figma type scale */
+  --text-caption: 0.625rem;
+  --text-caption--line-height: 0.9375rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6875rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.625rem;
+  --text-2xl: 1.375rem;
+  --text-2xl--line-height: 1.8125rem;
+  --text-3xl: 1.5rem;
+  --text-3xl--line-height: 2rem;
+  --text-4xl: 1.75rem;
+  --text-4xl--line-height: 2.25rem;
+  --text-5xl: 2rem;
+  --text-5xl--line-height: 2.625rem;
+  --text-6xl: 2.25rem;
+  --text-6xl--line-height: 2.875rem;
+  --text-7xl: 2.5rem;
+  --text-7xl--line-height: 3.25rem;
+  --text-8xl: 3rem;
+  --text-8xl--line-height: 3.875rem;
+
+  /* Breakpoints — Figma Grid */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1440px;
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+}
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Muzalla brand — Purple Heart primary from Figma */
+  --background: #ffffff;
+  --foreground: #181818;
+  --card: #ffffff;
+  --card-foreground: #181818;
+  --popover: #ffffff;
+  --popover-foreground: #181818;
+  --primary: #783fff;
+  --primary-foreground: #ffffff;
+  --secondary: #f8f8f8;
+  --secondary-foreground: #181818;
+  --muted: #f8f8f8;
+  --muted-foreground: #737373;
+  --accent: #edecff;
+  --accent-foreground: #4900a7;
+  --destructive: #ef4444;
+  --border: #e9e9e9;
+  --input: #e9e9e9;
+  --ring: #783fff;
+  --radius: 0.5rem;
+  --chart-1: #783fff;
+  --chart-2: #8b70ff;
+  --chart-3: #22c55e;
+  --chart-4: #d1ba25;
+  --chart-5: #ef4444;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #181818;
+  --sidebar-primary: #783fff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f7f6ff;
+  --sidebar-accent-foreground: #4900a7;
+  --sidebar-border: #e9e9e9;
+  --sidebar-ring: #783fff;
+}
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    margin: 0;
   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  #root {
+    min-height: 100svh;
   }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  html {
+    @apply font-sans;
   }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
 }

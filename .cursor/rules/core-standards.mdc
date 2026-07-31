@@ -1,0 +1,35 @@
+---
+description: Core coding standards — naming, types, imports, formatting
+alwaysApply: true
+---
+
+# Core Standards
+
+## Naming
+
+- Files and folders: **kebab-case** (`cancel-task-modal.tsx`, `checklist-builder/`)
+- One main component per file; file name matches component (`CancelTaskModal` → `cancel-task-modal.tsx`)
+- Props/API shapes: `I` prefix (`ITask`, `ICancelTaskModalData`)
+- Generic/union types: `T` prefix when helpful (`TChipColor`, `TComponentSize`)
+
+## TypeScript
+
+- Function components with **`React.FC`** for main exports
+- Strict mode; prefer explicit interfaces over `any`
+- Use `type` imports for types only: `import type { ITask } from '...'`
+
+## Imports
+
+- **Relative paths from `src`** — no `@/` alias
+- Order: React → external libs → internal (data, components, utils, types)
+
+## Formatting (Prettier)
+
+- 2 spaces, single quotes, `jsxSingleQuote: true`, print width 90
+- Tailwind classes sorted via `prettier-plugin-tailwindcss`
+
+## Scope
+
+- Minimal diffs; match surrounding code before adding abstractions
+- Reuse existing UI from `src/components/ui/` instead of raw HTML
+- Comments only for non-obvious business logic

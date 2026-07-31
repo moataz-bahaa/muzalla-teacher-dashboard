@@ -1,0 +1,42 @@
+---
+description: Data layer — API client, endpoints, React Query hooks, mutations
+globs: "src/data/**/*"
+alwaysApply: false
+---
+
+# Data & API
+
+## Layer structure
+
+1. Paths → `src/data/client/endpoints.ts` (`API_ENDPOINTS.TASKS`, etc.)
+2. HTTP methods → `src/data/client/index.ts`
+3. Hooks → one domain file under `src/data/` (`task.ts`, `auth.ts`)
+
+## Queries
+
+```tsx
+export const useTasks = (params = {}, options?) => {
+  const { data, isPending, isError, error, refetch } = useFilteredQuery({
+    queryKeyPrefix: [API_ENDPOINTS.TASKS],
+    queryFn: (params) => client.tasks.all(params),
+    params,
+    ...options,
+  });
+  return { tasks: data ?? [], isPending, isError, error, refetch };
+};
+```
+
+- Filtered lists: `useFilteredQuery` / `useFilteredInfiniteQuery` from `src/lib/hooks/`
+- Keys always include `API_ENDPOINTS` constants
+
+## Mutations
+
+- Use project **`useMutation`** from `src/lib/hooks/use-mutation.ts` (not raw React Query)
+- Set `invalidateQueryFilter` for cache invalidation
+- `onError`: `toast.error({ message: renderError(error) })`
+- `onSuccess`: translated toast via `t('object-created', { ... })`
+
+## Don't
+
+- Hardcode API paths
+- Call `axios` directly outside the client layer

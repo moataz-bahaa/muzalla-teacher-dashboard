@@ -1,0 +1,36 @@
+---
+description: Checklist for adding pages, modals, drawers, and API features
+alwaysApply: false
+---
+
+# Adding Features
+
+## New page
+
+1. Route in `src/config/routes.ts`
+2. Entry in `src/config/pages.tsx` (lazy via `lazyRetry`)
+3. `QueryStateWrapper` if page depends on one main query
+
+## New modal or drawer
+
+1. Component in feature folder
+2. Add view to `MODAL_VIEWS` / `DRAWER_VIEWS` type in `context.tsx`
+3. Register in `container.tsx` switch
+4. Open via `openModal` / `openDrawer` with typed payload interface
+
+## New API feature
+
+1. `API_ENDPOINTS` constant in `endpoints.ts`
+2. Client method in `client/index.ts`
+3. `useX` hook in `src/data/<domain>.ts`
+
+## Copy
+
+- Keys in `public/locales/en/translation.json` **and** `public/locales/ar/translation.json`
+- Use `t('key')` in UI
+
+## Reference implementations
+
+- Modal: `src/components/task/cancel-task-modal.tsx`
+- Data hook: `src/data/task.ts`
+- Docs: `docs/code-style.md`, `docs/best-practices.md`, `docs/drawer.md`

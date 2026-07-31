@@ -1,0 +1,50 @@
+---
+description: React component patterns — UI, modals, drawers, i18n, styling
+globs: "**/*.tsx"
+alwaysApply: false
+---
+
+# React Components
+
+## Component shape
+
+```tsx
+export interface IMyModalData {
+  item: IItem;
+}
+
+const MyModal: React.FC = () => {
+  const { data } = useModalState<IMyModalData>();
+  const { closeModal } = useModalAction();
+  const { t } = useTranslation();
+  // ...
+};
+```
+
+## Styling
+
+- **Tailwind** utilities; conditional classes via `cn()` from `src/utils/helpers`
+- Design tokens (`text-primary`, `bg-error-500`) over arbitrary values
+- Icons from `src/components/icons/`; spread `React.SVGAttributes` props
+
+## i18n
+
+- All user-facing text via `useTranslation()` / `t('namespace.key')`
+- Add keys in **both** `public/locales/en/translation.json` and `public/locales/ar/translation.json`
+
+## Modals & drawers
+
+- Open via context: `openModal('VIEW_NAME', payload)` / `openDrawer('VIEW_NAME', payload)`
+- Read payload: `useModalState<T>()` / drawer equivalent
+- Register new views in context type **and** container switch — never mount inline on pages
+
+## Errors & loading
+
+- `renderError(error)` for toast messages
+- `toast.success()` / `toast.error()` from `src/components/toast`
+- `handleBackendValidationErrors()` + React Hook Form `setError` for form errors
+- `QueryStateWrapper` for single-query page loading/error/retry
+
+## Routes
+
+- Use `routes` from `src/config/routes.ts` — never hardcode paths

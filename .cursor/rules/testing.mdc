@@ -1,0 +1,35 @@
+---
+description: Vitest and Testing Library conventions
+globs: "__tests__/**/*"
+alwaysApply: false
+---
+
+# Testing
+
+## Setup
+
+- Tests live in `__tests__/` at project root (`*.test.ts` / `*.test.tsx`)
+- Wrap renders with `renderTestWithProviders` from `__tests__/utils/helpers.tsx`
+- Dropdowns: `selectDropdownOption(selectLabel, optionLabel)` helper
+
+## Patterns
+
+```tsx
+describe('CancelTaskModal', () => {
+  it('shows cancel button', () => {
+    renderTestWithProviders(<CancelTaskModal />);
+    expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
+  });
+});
+```
+
+- Query by role/label/text — avoid test IDs unless necessary
+- Mock with `vi.mock`; reset between tests
+- Async: `waitFor` / `userEvent`
+- Mock data matches interfaces from `src/types/api.ts`
+
+## Run
+
+```bash
+pnpm test
+```
