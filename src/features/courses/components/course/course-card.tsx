@@ -71,8 +71,8 @@ export const CourseCard: React.FC<ICourseCardProps> = ({
         </div>
 
         <div className='flex items-end justify-between gap-3'>
-          <p className='text-xs text-neutral-600 sm:text-sm'>
-            {t('courses.publishedAt')}: {course.publishedAt}
+          <p className='text-xs text-neutral-700 flex items-center gap-2'>
+            <span className='font-medium'>{t('courses.publishedAt')}:</span>{course.publishedAt}
           </p>
           <p
             className={cn(

@@ -1,4 +1,4 @@
-import { PageBreadcrumb } from '@/components/page-breadcrumb';
+import DraftIcon from '@/components/icons/draft-icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
@@ -7,7 +7,7 @@ import { CourseCard } from '@/features/courses/components/course/course-card';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
 import type { ICourse, TPricingType } from '@/types/course';
-import { ArrowUpLeft, CloudUpload, ImagePlus, Save } from 'lucide-react';
+import { ChevronRight, CloudUpload, ImagePlus } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -83,42 +83,233 @@ export const CourseCreatePage: React.FC = () => {
 
   return (
     <div className='flex flex-col gap-6'>
-      <div className='flex flex-col gap-3 text-end'>
-        <PageBreadcrumb
-          className='justify-end'
-          items={[
-            { label: t('dashboard.home'), to: routes.home },
-            { label: t('courses.title'), to: routes.courses },
-            { label: t('courses.create.breadcrumb') },
-          ]}
-        />
+      <div className='flex items-center gap-3'>
         <h1 className='font-heading text-3xl font-bold text-purple-heart-950 sm:text-4xl'>
           {t('courses.title')}
         </h1>
-      </div>
-
-      <div className='flex flex-wrap items-center gap-3'>
+        <div className='grow'></div>
         <Button
-          className='h-12 gap-2 rounded-lg bg-purple-heart-900 px-5 hover:bg-purple-heart-800'
+          className='h-12 gap-2 rounded-lg bg-purple-heart-900 px-8 hover:bg-purple-heart-800'
           onClick={() => onSave(false)}
         >
-          <ArrowUpLeft className='size-4' />
+          <ChevronRight className='size-6' />
           {t('courses.create.saveContinue')}
         </Button>
         <Button
           variant='outline'
-          className='h-12 gap-2 rounded-lg border-neutral-200 bg-white px-5 text-neutral-700'
+          className='h-12 gap-2 rounded-lg border-neutral-200 bg-white px-8 text-neutral-700'
           onClick={() => onSave(true)}
         >
-          <Save className='size-4' />
           {t('courses.create.saveDraft')}
+          <DraftIcon className='size-4' />
         </Button>
       </div>
 
       <div className='grid grid-cols-1 gap-6 xl:grid-cols-[464px_minmax(0,1fr)_340px]'>
+        <aside className='rounded-2xl border border-neutral-200 bg-white p-4'>
+          <div className='mb-6 flex items-center gap-2 p-1.5 bg-purple-heart-100'>
+            <button
+              type='button'
+              onClick={() => setPreviewTab('info')}
+              className={cn(
+                'text-sm grow',
+                previewTab === 'info'
+                  ? 'bg-white rounded font-medium text-purple-heart-800'
+                  : 'text-neutral-500',
+              )}
+            >
+              {t('courses.create.infoTab')}
+            </button>
+            <button
+              type='button'
+              onClick={() => setPreviewTab('curriculum')}
+              className={cn(
+                'text-sm grow',
+                previewTab === 'curriculum'
+                  ? 'bg-white rounded font-medium text-purple-heart-800'
+                  : 'text-neutral-500',
+              )}
+            >
+              {t('courses.create.curriculumTab')}
+            </button>
+          </div>
+          <h3 className='mb-3  font-medium text-neutral-800'>
+            {t('courses.create.cardPreview')}
+          </h3>
+          {previewTab === 'info' ? (
+            <CourseCard course={previewCourse} compact />
+          ) : (
+            <div className='rounded-xl border border-dashed border-neutral-200 p-6 text-center text-sm text-neutral-500'>
+              {t('courses.create.curriculumEmpty')}
+            </div>
+          )}
+          <Button asChild variant='outline' className='mt-4 w-full'>
+            <Link to={routes.courses}>{t('courses.create.backToList')}</Link>
+          </Button>
+        </aside>
+
+        {/* TODO continue from here */}
+        <div className='flex flex-col gap-5'>
+          <section className='rounded-2xl border border-neutral-200 bg-white p-5'>
+            <div className='flex flex-col gap-5'>
+              <div className='space-y-2 '>
+                <label className='text-sm font-medium'>
+                  {t('courses.create.courseTitle')}
+                </label>
+                <Input
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                  className='h-12 rounded-lg '
+                />
+              </div>
+
+              <div className='space-y-2 '>
+                <label className='text-sm font-medium'>
+                  {t('courses.create.keywords')}
+                </label>
+                <div className='flex min-h-12 flex-wrap items-center justify-end gap-2 rounded-lg border border-neutral-200 px-3 py-2'>
+                  {tags.map((tag) => (
+                    <button
+                      key={tag}
+                      type='button'
+                      onClick={() =>
+                        setTags((prev) => prev.filter((item) => item !== tag))
+                      }
+                      className='rounded-full bg-success-100 px-2 py-0.5 text-xs font-medium text-success-800'
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                  <Input
+                    value={tagInput}
+                    onChange={(event) => setTagInput(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        event.preventDefault();
+                        addTag();
+                      }
+                    }}
+                    placeholder={t('courses.create.keywordsPlaceholder')}
+                    className='h-8 min-w-[120px] flex-1 border-0 shadow-none focus-visible:ring-0'
+                  />
+                </div>
+              </div>
+
+              <div className='space-y-2 '>
+                <label className='text-sm font-medium'>
+                  {t('courses.create.level')}
+                </label>
+                <select
+                  value={level}
+                  onChange={(event) => setLevel(event.target.value)}
+                  className='h-12 w-full rounded-lg border border-neutral-200 bg-white px-3  text-sm'
+                >
+                  {LEVELS.map((item) => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className='space-y-2 '>
+                <label className='text-sm font-medium'>
+                  {t('courses.create.description')}
+                </label>
+                <Textarea
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
+                  placeholder={t('courses.create.descriptionPlaceholder')}
+                  className='min-h-[140px] rounded-lg '
+                />
+              </div>
+            </div>
+          </section>
+
+          <section className='rounded-2xl border border-neutral-200 bg-white p-5'>
+            <h2 className='mb-4 flex items-center justify-end gap-2  text-lg font-bold'>
+              {t('courses.create.pricingPlan')}
+            </h2>
+            <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
+              <button
+                type='button'
+                onClick={() => setPricingType('subscription')}
+                className={cn(
+                  'rounded-xl border p-4  transition-colors',
+                  pricingType === 'subscription'
+                    ? 'border-purple-heart-700 bg-purple-heart-50'
+                    : 'border-neutral-200 bg-white',
+                )}
+              >
+                <div className='mb-3 flex items-center justify-between'>
+                  <span
+                    className={cn(
+                      'flex size-5 items-center justify-center rounded-full border',
+                      pricingType === 'subscription'
+                        ? 'border-purple-heart-700 bg-purple-heart-700 text-white'
+                        : 'border-neutral-300',
+                    )}
+                  >
+                    {pricingType === 'subscription' ? '✓' : ''}
+                  </span>
+                  <span className='font-medium'>
+                    {t('courses.create.subscription')}
+                  </span>
+                </div>
+                <p className='text-xs leading-relaxed text-neutral-600'>
+                  {t('courses.create.subscriptionHint')}
+                </p>
+              </button>
+
+              <button
+                type='button'
+                onClick={() => setPricingType('fixed')}
+                className={cn(
+                  'rounded-xl border p-4  transition-colors',
+                  pricingType === 'fixed'
+                    ? 'border-purple-heart-700 bg-purple-heart-50'
+                    : 'border-neutral-200 bg-white',
+                )}
+              >
+                <div className='mb-3 flex items-center justify-between'>
+                  <span
+                    className={cn(
+                      'flex size-5 items-center justify-center rounded-full border',
+                      pricingType === 'fixed'
+                        ? 'border-purple-heart-700 bg-purple-heart-700 text-white'
+                        : 'border-neutral-300',
+                    )}
+                  >
+                    {pricingType === 'fixed' ? '✓' : ''}
+                  </span>
+                  <span className='font-medium'>
+                    {t('courses.create.fixedPrice')}
+                  </span>
+                </div>
+                <div className='flex items-center justify-end gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2'>
+                  <span className='text-sm text-neutral-500'>جنية</span>
+                  <Input
+                    type='number'
+                    value={price}
+                    onChange={(event) =>
+                      setPrice(
+                        event.target.value === ''
+                          ? ''
+                          : Number(event.target.value),
+                      )
+                    }
+                    onClick={(event) => event.stopPropagation()}
+                    className='h-8 border-0  shadow-none focus-visible:ring-0'
+                    placeholder='0'
+                  />
+                </div>
+              </button>
+            </div>
+          </section>
+        </div>
         <div className='flex flex-col gap-5'>
           <section className='rounded-2xl border border-neutral-200 bg-white p-4'>
-            <h2 className='mb-3 text-end text-sm font-medium text-neutral-800'>
+            <h2 className='mb-3  text-sm font-medium text-neutral-800'>
               {t('courses.create.cover')}
             </h2>
             <label className='flex min-h-[240px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-purple-heart-400 bg-purple-heart-50/40 px-4 text-center'>
@@ -155,215 +346,14 @@ export const CourseCreatePage: React.FC = () => {
               />
               <CloudUpload className='size-8 opacity-90' />
             </div>
-            <h3 className='mb-2 text-end text-lg font-bold'>
+            <h3 className='mb-2 text-lg font-bold'>
               {t('courses.create.marketplaceTitle')}
             </h3>
-            <p className='text-end text-sm leading-relaxed text-purple-heart-100'>
+            <p className='text-sm leading-relaxed text-purple-heart-100'>
               {t('courses.create.marketplaceDescription')}
             </p>
           </section>
         </div>
-
-        <div className='flex flex-col gap-5'>
-          <section className='rounded-2xl border border-neutral-200 bg-white p-5'>
-            <div className='flex flex-col gap-5'>
-              <div className='space-y-2 text-end'>
-                <label className='text-sm font-medium'>
-                  {t('courses.create.courseTitle')}
-                </label>
-                <Input
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                  className='h-12 rounded-lg text-end'
-                />
-              </div>
-
-              <div className='space-y-2 text-end'>
-                <label className='text-sm font-medium'>
-                  {t('courses.create.keywords')}
-                </label>
-                <div className='flex min-h-12 flex-wrap items-center justify-end gap-2 rounded-lg border border-neutral-200 px-3 py-2'>
-                  {tags.map((tag) => (
-                    <button
-                      key={tag}
-                      type='button'
-                      onClick={() =>
-                        setTags((prev) => prev.filter((item) => item !== tag))
-                      }
-                      className='rounded-full bg-success-100 px-2 py-0.5 text-xs font-medium text-success-800'
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                  <Input
-                    value={tagInput}
-                    onChange={(event) => setTagInput(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        event.preventDefault();
-                        addTag();
-                      }
-                    }}
-                    placeholder={t('courses.create.keywordsPlaceholder')}
-                    className='h-8 min-w-[120px] flex-1 border-0 shadow-none focus-visible:ring-0'
-                  />
-                </div>
-              </div>
-
-              <div className='space-y-2 text-end'>
-                <label className='text-sm font-medium'>
-                  {t('courses.create.level')}
-                </label>
-                <select
-                  value={level}
-                  onChange={(event) => setLevel(event.target.value)}
-                  className='h-12 w-full rounded-lg border border-neutral-200 bg-white px-3 text-end text-sm'
-                >
-                  {LEVELS.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className='space-y-2 text-end'>
-                <label className='text-sm font-medium'>
-                  {t('courses.create.description')}
-                </label>
-                <Textarea
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                  placeholder={t('courses.create.descriptionPlaceholder')}
-                  className='min-h-[140px] rounded-lg text-end'
-                />
-              </div>
-            </div>
-          </section>
-
-          <section className='rounded-2xl border border-neutral-200 bg-white p-5'>
-            <h2 className='mb-4 flex items-center justify-end gap-2 text-end text-lg font-bold'>
-              {t('courses.create.pricingPlan')}
-            </h2>
-            <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-              <button
-                type='button'
-                onClick={() => setPricingType('subscription')}
-                className={cn(
-                  'rounded-xl border p-4 text-end transition-colors',
-                  pricingType === 'subscription'
-                    ? 'border-purple-heart-700 bg-purple-heart-50'
-                    : 'border-neutral-200 bg-white',
-                )}
-              >
-                <div className='mb-3 flex items-center justify-between'>
-                  <span
-                    className={cn(
-                      'flex size-5 items-center justify-center rounded-full border',
-                      pricingType === 'subscription'
-                        ? 'border-purple-heart-700 bg-purple-heart-700 text-white'
-                        : 'border-neutral-300',
-                    )}
-                  >
-                    {pricingType === 'subscription' ? '✓' : ''}
-                  </span>
-                  <span className='font-medium'>
-                    {t('courses.create.subscription')}
-                  </span>
-                </div>
-                <p className='text-xs leading-relaxed text-neutral-600'>
-                  {t('courses.create.subscriptionHint')}
-                </p>
-              </button>
-
-              <button
-                type='button'
-                onClick={() => setPricingType('fixed')}
-                className={cn(
-                  'rounded-xl border p-4 text-end transition-colors',
-                  pricingType === 'fixed'
-                    ? 'border-purple-heart-700 bg-purple-heart-50'
-                    : 'border-neutral-200 bg-white',
-                )}
-              >
-                <div className='mb-3 flex items-center justify-between'>
-                  <span
-                    className={cn(
-                      'flex size-5 items-center justify-center rounded-full border',
-                      pricingType === 'fixed'
-                        ? 'border-purple-heart-700 bg-purple-heart-700 text-white'
-                        : 'border-neutral-300',
-                    )}
-                  >
-                    {pricingType === 'fixed' ? '✓' : ''}
-                  </span>
-                  <span className='font-medium'>
-                    {t('courses.create.fixedPrice')}
-                  </span>
-                </div>
-                <div className='flex items-center justify-end gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2'>
-                  <span className='text-sm text-neutral-500'>جنية</span>
-                  <Input
-                    type='number'
-                    value={price}
-                    onChange={(event) =>
-                      setPrice(
-                        event.target.value === ''
-                          ? ''
-                          : Number(event.target.value),
-                      )
-                    }
-                    onClick={(event) => event.stopPropagation()}
-                    className='h-8 border-0 text-end shadow-none focus-visible:ring-0'
-                    placeholder='0'
-                  />
-                </div>
-              </button>
-            </div>
-          </section>
-        </div>
-
-        <aside className='rounded-2xl border border-neutral-200 bg-white p-4'>
-          <div className='mb-4 flex items-center justify-end gap-4 border-b border-neutral-200'>
-            <button
-              type='button'
-              onClick={() => setPreviewTab('curriculum')}
-              className={cn(
-                'pb-2 text-sm',
-                previewTab === 'curriculum'
-                  ? 'border-b-2 border-purple-heart-700 font-medium text-purple-heart-800'
-                  : 'text-neutral-500',
-              )}
-            >
-              {t('courses.create.curriculumTab')}
-            </button>
-            <button
-              type='button'
-              onClick={() => setPreviewTab('info')}
-              className={cn(
-                'pb-2 text-sm',
-                previewTab === 'info'
-                  ? 'border-b-2 border-purple-heart-700 font-medium text-purple-heart-800'
-                  : 'text-neutral-500',
-              )}
-            >
-              {t('courses.create.infoTab')}
-            </button>
-          </div>
-          <h3 className='mb-3 text-end font-medium text-neutral-800'>
-            {t('courses.create.cardPreview')}
-          </h3>
-          {previewTab === 'info' ? (
-            <CourseCard course={previewCourse} compact />
-          ) : (
-            <div className='rounded-xl border border-dashed border-neutral-200 p-6 text-center text-sm text-neutral-500'>
-              {t('courses.create.curriculumEmpty')}
-            </div>
-          )}
-          <Button asChild variant='outline' className='mt-4 w-full'>
-            <Link to={routes.courses}>{t('courses.create.backToList')}</Link>
-          </Button>
-        </aside>
       </div>
     </div>
   );
