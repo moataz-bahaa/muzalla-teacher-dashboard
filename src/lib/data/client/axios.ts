@@ -1,15 +1,39 @@
-import axios from 'axios'
+import axios, { type AxiosRequestConfig } from 'axios'
 
-export const apiClient = axios.create({
+const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-apiClient.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => response.data,
-  (error) => {
-    return Promise.reject(error)
-  },
+  (error) => Promise.reject(error),
 )
+
+/**
+ * Response interceptor unwraps `response.data`, so callers receive `T`
+ * instead of `AxiosResponse<T>`.
+ */
+type ApiClient = {
+  get: <T = unknown>(url: string, config?: AxiosRequestConfig) => Promise<T>
+  delete: <T = unknown>(url: string, config?: AxiosRequestConfig) => Promise<T>
+  post: <T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ) => Promise<T>
+  put: <T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ) => Promise<T>
+  patch: <T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ) => Promise<T>
+}
+
+export const apiClient = instance as unknown as ApiClient
