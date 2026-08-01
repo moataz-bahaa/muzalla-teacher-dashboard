@@ -9,18 +9,63 @@ import { VerifyOtpPage } from '@/pages/auth/verify-otp-page'
 import { ResetPasswordPage } from '@/pages/auth/reset-password-page'
 import { CoursesPage } from '@/pages/course/courses-page'
 import { CourseCreatePage } from '@/pages/course/course-create-page'
+import { StudentsPage } from '@/pages/student/students-page'
+import { GuestRoute } from '@/features/auth/components/guest-route'
+import { PrivateRoute } from '@/features/auth/components/private-route'
 
 export const AppRouter: React.FC = () => {
   return (
     <Routes>
-      <Route path={routes.login} element={<LoginPage />} />
-      <Route path={routes.register} element={<RegisterPage />} />
-      <Route path={routes.forgetPassword} element={<ForgetPasswordPage />} />
-      <Route path={routes.verifyOtp} element={<VerifyOtpPage />} />
-      <Route path={routes.resetPassword} element={<ResetPasswordPage />} />
+      <Route
+        path={routes.login}
+        element={
+          <GuestRoute>
+            <LoginPage />
+          </GuestRoute>
+        }
+      />
+      <Route
+        path={routes.register}
+        element={
+          <GuestRoute>
+            <RegisterPage />
+          </GuestRoute>
+        }
+      />
+      <Route
+        path={routes.forgetPassword}
+        element={
+          <GuestRoute>
+            <ForgetPasswordPage />
+          </GuestRoute>
+        }
+      />
+      <Route
+        path={routes.verifyOtp}
+        element={
+          <GuestRoute>
+            <VerifyOtpPage />
+          </GuestRoute>
+        }
+      />
+      <Route
+        path={routes.resetPassword}
+        element={
+          <GuestRoute>
+            <ResetPasswordPage />
+          </GuestRoute>
+        }
+      />
 
-      <Route element={<DashboardLayout />}>
+      <Route
+        element={
+          <PrivateRoute>
+            <DashboardLayout />
+          </PrivateRoute>
+        }
+      >
         <Route path={routes.home} element={<HomePage />} />
+        <Route path={routes.students} element={<StudentsPage />} />
         <Route path={routes.courses} element={<CoursesPage />} />
         <Route path={routes.courseNew} element={<CourseCreatePage />} />
       </Route>

@@ -1,11 +1,7 @@
+import useAuth from '@/features/auth/hooks/use-auth'
 import { useMutation } from '@/hooks/use-mutation'
+import { getRefreshToken } from '@/lib/cookie'
 import { useQuery } from '@tanstack/react-query'
-import {
-  clearAuthTokens,
-  getRefreshToken,
-  setAccessToken,
-  setRefreshToken,
-} from '@/lib/cookie'
 import { client } from './client'
 import { API_ENDPOINTS } from './client/endpoints'
 import type {
@@ -25,27 +21,30 @@ import type {
 } from '@/types/auth'
 
 export const useLoginMutation = () => {
+  const { authorize } = useAuth()
+
   return useMutation<ILoginResponse, ILoginInput>({
     mutationKey: [API_ENDPOINTS.login],
     mutationFn: client.auth.login,
     onSuccess(data) {
-      setAccessToken(data.accessToken)
-      setRefreshToken(data.refreshToken)
+      authorize(data.accessToken, data.refreshToken)
     },
   })
 }
 
 export const useRegisterMutation = () => {
+  const { authorize } = useAuth()
+
   return useMutation<IRegisterResponse, IRegisterInput>({
     mutationKey: [API_ENDPOINTS.register],
     mutationFn: client.auth.register,
     onSuccess(data) {
-      setAccessToken(data.accessToken)
-      setRefreshToken(data.refreshToken)
+      authorize(data.accessToken, data.refreshToken)
     },
   })
 }
 
+/** Prefer `useAuth().unauthorize()` for UI logout so session state clears. */
 export const useLogoutMutation = () => {
   return useMutation<ILogoutResponse, void>({
     mutationKey: [API_ENDPOINTS.logout],
@@ -53,13 +52,12 @@ export const useLogoutMutation = () => {
       client.auth.logout({
         refreshToken: getRefreshToken(),
       }),
-    onSuccess() {
-      clearAuthTokens()
-    },
   })
 }
 
 export const useRefreshTokenMutation = () => {
+  const { authorize } = useAuth()
+
   return useMutation<IRefreshTokenResponse, void>({
     mutationKey: [API_ENDPOINTS.refreshToken],
     mutationFn: () => {
@@ -70,8 +68,7 @@ export const useRefreshTokenMutation = () => {
       return client.auth.refreshToken({ refreshToken })
     },
     onSuccess(data) {
-      setAccessToken(data.accessToken)
-      setRefreshToken(data.refreshToken)
+      authorize(data.accessToken, data.refreshToken)
     },
   })
 }

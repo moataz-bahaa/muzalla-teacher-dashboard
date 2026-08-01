@@ -1,10 +1,19 @@
 import axios, { type AxiosRequestConfig } from 'axios'
+import { getAccessToken } from '@/lib/cookie'
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
   headers: {
     'Content-Type': 'application/json',
   },
+})
+
+instance.interceptors.request.use((config) => {
+  const token = getAccessToken()
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 instance.interceptors.response.use(
