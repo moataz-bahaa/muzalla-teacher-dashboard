@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { LanguageSwitcher } from '@/features/auth/components/language-switcher';
+import useAuth from '@/features/auth/hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
 import {
@@ -18,7 +19,7 @@ import {
 } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { useTranslation } from 'react-i18next';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 
 const navItems: Array<{
   to: string;
@@ -26,7 +27,7 @@ const navItems: Array<{
   end?: boolean;
 }> = [
   { to: routes.home, icon: Home, end: true },
-  { to: '#students', icon: Users },
+  { to: routes.students, icon: Users },
   { to: routes.courses, icon: PlayCircle },
   { to: '#awards', icon: Award },
   { to: '#payments', icon: CreditCard },
@@ -36,6 +37,8 @@ const navItems: Array<{
 
 export const DashboardLayout: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { unauthorize, isLoggingOut } = useAuth();
 
   // TODO handle sidebar expand/collapse and compare to UI
 
@@ -74,7 +77,10 @@ export const DashboardLayout: React.FC = () => {
           </button>
           <button
             type='button'
-            className='flex size-11 items-center justify-center rounded-xl text-neutral-500 hover:bg-neutral-100'
+            disabled={isLoggingOut}
+            onClick={() => unauthorize(() => void navigate(routes.login))}
+            className='flex size-11 items-center justify-center rounded-xl text-neutral-500 hover:bg-neutral-100 disabled:opacity-50'
+            aria-label={t('auth.logout')}
           >
             <LogOut className='size-5' />
           </button>
@@ -106,7 +112,7 @@ export const DashboardLayout: React.FC = () => {
           <div id='dashboard-breadcrumb' className='text-sm text-neutral-500' />
           <LanguageSwitcher />
         </header>
-        <main className='px-6 py-6 lg:px-10'>
+        <main className='px-6 py-6 lg:px-10 bg-neutral-100 min-h-screen'>
           <Outlet />
         </main>
       </div>

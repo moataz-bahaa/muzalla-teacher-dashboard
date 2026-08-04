@@ -17,7 +17,7 @@ import type {
   IVerifyOtpResponse,
   TAuthDevicesResponse,
 } from '@/types/auth';
-import { HttpClient } from './axios';
+import { HttpClient } from './http-client';
 
 class Client {
   auth = {
