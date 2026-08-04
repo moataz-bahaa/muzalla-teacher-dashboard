@@ -1,48 +1,57 @@
-import axios, { type AxiosRequestConfig } from 'axios'
-import { getAccessToken } from '@/lib/cookie'
+import { getAccessToken } from '@/lib/cookie';
+import axios, { type AxiosRequestConfig } from 'axios';
 
-const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
+const Axios = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL!,
   headers: {
     'Content-Type': 'application/json',
   },
-})
+});
 
-instance.interceptors.request.use((config) => {
-  const token = getAccessToken()
+Axios.interceptors.request.use((config) => {
+  const token = getAccessToken();
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return config
-})
+  return config;
+});
 
-instance.interceptors.response.use(
-  (response) => response.data,
+Axios.interceptors.response.use(
+  (response) => response,
   (error) => Promise.reject(error),
-)
+);
 
-/**
- * Response interceptor unwraps `response.data`, so callers receive `T`
- * instead of `AxiosResponse<T>`.
- */
-type ApiClient = {
-  get: <T = unknown>(url: string, config?: AxiosRequestConfig) => Promise<T>
-  delete: <T = unknown>(url: string, config?: AxiosRequestConfig) => Promise<T>
-  post: <T = unknown>(
+export class HttpClient {
+  static async get<T>(url: string, config?: AxiosRequestConfig) {
+    const res = await Axios.get<T>(url, config);
+    return res.data;
+  }
+
+  static async post<T>(
     url: string,
-    data?: unknown,
+    data: unknown,
     config?: AxiosRequestConfig,
-  ) => Promise<T>
-  put: <T = unknown>(
+  ) {
+    const res = await Axios.post<T>(url, data, config);
+    return res.data;
+  }
+
+  static async put<T>(url: string, data: unknown, config?: AxiosRequestConfig) {
+    const res = await Axios.put<T>(url, data, config);
+    return res.data;
+  }
+
+  static async patch<T>(
     url: string,
-    data?: unknown,
+    data: unknown,
     config?: AxiosRequestConfig,
-  ) => Promise<T>
-  patch: <T = unknown>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig,
-  ) => Promise<T>
+  ) {
+    const res = await Axios.patch<T>(url, data, config);
+    return res.data;
+  }
+
+  static async delete<T>(url: string, config?: AxiosRequestConfig) {
+    const res = await Axios.delete<T>(url, config);
+    return res.data;
+  }
 }
-
-export const apiClient = instance as unknown as ApiClient

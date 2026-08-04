@@ -1,5 +1,5 @@
-import { API_ENDPOINTS } from '@/lib/data/client/endpoints'
-import { objectToFormData } from '@/lib/utils'
+import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
+import { objectToFormData } from '@/lib/utils';
 import type {
   IForgetPasswordInput,
   IForgetPasswordResponse,
@@ -16,53 +16,53 @@ import type {
   IVerifyOtpInput,
   IVerifyOtpResponse,
   TAuthDevicesResponse,
-} from '@/types/auth'
-import { apiClient } from './axios'
+} from '@/types/auth';
+import { HttpClient } from './axios';
 
 class Client {
   auth = {
     login: (input: ILoginInput) =>
-      apiClient.post<ILoginResponse>(API_ENDPOINTS.login, input),
+      HttpClient.post<ILoginResponse>(API_ENDPOINTS.login, input),
 
     register: (input: IRegisterInput) =>
-      apiClient.post<IRegisterResponse>(
+      HttpClient.post<IRegisterResponse>(
         API_ENDPOINTS.register,
         objectToFormData(input),
       ),
 
     logout: (input?: ILogoutInput) =>
-      apiClient.post<ILogoutResponse>(API_ENDPOINTS.logout, input),
+      HttpClient.post<ILogoutResponse>(API_ENDPOINTS.logout, input),
 
     refreshToken: (input: IRefreshTokenInput) =>
-      apiClient.post<IRefreshTokenResponse>(API_ENDPOINTS.refreshToken, input),
+      HttpClient.post<IRefreshTokenResponse>(API_ENDPOINTS.refreshToken, input),
 
     forgetPassword: (input: IForgetPasswordInput) =>
-      apiClient.post<IForgetPasswordResponse>(
+      HttpClient.post<IForgetPasswordResponse>(
         API_ENDPOINTS.forgetPassword,
         input,
       ),
 
     verifyOtp: (input: IVerifyOtpInput) =>
-      apiClient.post<IVerifyOtpResponse>(API_ENDPOINTS.verifyOtp, input),
+      HttpClient.post<IVerifyOtpResponse>(API_ENDPOINTS.verifyOtp, input),
 
     resetPassword: (input: IResetPasswordInput) =>
-      apiClient.post<IResetPasswordResponse>(
+      HttpClient.post<IResetPasswordResponse>(
         API_ENDPOINTS.resetPassword,
         input,
       ),
 
-    devices: () => apiClient.get<TAuthDevicesResponse>(API_ENDPOINTS.devices),
-  }
+    devices: () => HttpClient.get<TAuthDevicesResponse>(API_ENDPOINTS.devices),
+  };
 
   courses = {
     delete: (id: number) =>
-      apiClient.delete<unknown>(API_ENDPOINTS.courseById(id)),
-  }
+      HttpClient.delete<unknown>(API_ENDPOINTS.courseById(id)),
+  };
 
   students = {
     // TODO
     delete: async (_id: number) => Promise.resolve({}),
-  }
+  };
 }
 
-export const client = new Client()
+export const client = new Client();
