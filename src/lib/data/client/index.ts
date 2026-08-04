@@ -1,4 +1,5 @@
-import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
+import { API_ENDPOINTS } from '@/lib/data/client/endpoints'
+import { objectToFormData } from '@/lib/utils'
 import type {
   IForgetPasswordInput,
   IForgetPasswordResponse,
@@ -15,8 +16,8 @@ import type {
   IVerifyOtpInput,
   IVerifyOtpResponse,
   TAuthDevicesResponse,
-} from '@/types/auth';
-import { apiClient } from './axios';
+} from '@/types/auth'
+import { apiClient } from './axios'
 
 class Client {
   auth = {
@@ -24,7 +25,10 @@ class Client {
       apiClient.post<ILoginResponse>(API_ENDPOINTS.login, input),
 
     register: (input: IRegisterInput) =>
-      apiClient.post<IRegisterResponse>(API_ENDPOINTS.register, input),
+      apiClient.post<IRegisterResponse>(
+        API_ENDPOINTS.register,
+        objectToFormData(input),
+      ),
 
     logout: (input?: ILogoutInput) =>
       apiClient.post<ILogoutResponse>(API_ENDPOINTS.logout, input),
@@ -48,12 +52,17 @@ class Client {
       ),
 
     devices: () => apiClient.get<TAuthDevicesResponse>(API_ENDPOINTS.devices),
-  };
+  }
 
   courses = {
     delete: (id: number) =>
       apiClient.delete<unknown>(API_ENDPOINTS.courseById(id)),
-  };
+  }
+
+  students = {
+    // TODO
+    delete: async (_id: number) => Promise.resolve({}),
+  }
 }
 
-export const client = new Client();
+export const client = new Client()
