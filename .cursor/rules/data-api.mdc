@@ -36,7 +36,9 @@ export const useTasks = (params = {}, options?) => {
 - `onError`: `toast.error({ message: renderError(error) })`
 - `onSuccess`: translated toast via `t('object-created', { ... })`
 
-## Don't
+## Auth session
 
-- Hardcode API paths
-- Call `axios` directly outside the client layer
+- `useAuth()` (`src/features/auth/hooks/use-auth.ts`) owns `isAuthorized`, `authorize`, `unauthorize`
+- Login/register mutations call `authorize(accessToken, refreshToken)` — do not set cookies alone
+- Protect dashboard routes with `PrivateRoute`; keep auth pages behind `GuestRoute`
+- UI logout must use `unauthorize()` (clears tokens + query cache + optional API logout)

@@ -91,6 +91,9 @@
   --color-danger-900: #771a17;
   --color-danger-950: #480c0a;
 
+  --color-layer: #E5E7EB;
+  --color-muted: #F8FAFC;
+
   /* Typography — Figma type scale */
   --text-caption: 0.625rem;
   --text-caption--line-height: 0.9375rem;

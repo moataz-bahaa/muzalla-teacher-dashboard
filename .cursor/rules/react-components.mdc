@@ -23,14 +23,14 @@ const MyModal: React.FC = () => {
 
 ## Styling
 
-- **Tailwind** utilities; conditional classes via `cn()` from `src/utils/helpers`
-- Design tokens (`text-primary`, `bg-error-500`) over arbitrary values
-- Icons from `src/components/icons/`; spread `React.SVGAttributes` props
+- **Tailwind** utilities; conditional classes via `cn()` from `@/lib/utils`
+- Design tokens (`text-purple-heart-900`, `bg-danger-500`) over arbitrary values
+- Prefer `lucide-react` icons unless a custom SVG in `src/components/icons/` is required
 
 ## i18n
 
 - All user-facing text via `useTranslation()` / `t('namespace.key')`
-- Add keys in **both** `public/locales/en/translation.json` and `public/locales/ar/translation.json`
+- Add keys in **both** `src/locales/en/translation.json` and `src/locales/ar/translation.json`
 
 ## Modals & drawers
 
@@ -38,13 +38,24 @@ const MyModal: React.FC = () => {
 - Read payload: `useModalState<T>()` / drawer equivalent
 - Register new views in context type **and** container switch — never mount inline on pages
 
+## Auth routes
+
+- Dashboard tree: wrap with `PrivateRoute` (`isAuthorized` from `useAuth`)
+- Auth pages: wrap with `GuestRoute` (redirect home if already logged in)
+- Login/register success: mutations call `authorize()`; pages navigate after success
+- Logout: `unauthorize(() => navigate(routes.login))` — not cookie clears alone
+
+## Tables
+
+- Define `ColumnDef`s inside the feature table component; render with `@/components/ui/table`
+- Use `useColumnConfig` when columns can be shown/hidden/reordered
+- See `.cursor/rules/table-pages.mdc` for the full page/table split
+
 ## Errors & loading
 
-- `renderError(error)` for toast messages
-- `toast.success()` / `toast.error()` from `src/components/toast`
-- `handleBackendValidationErrors()` + React Hook Form `setError` for form errors
-- `QueryStateWrapper` for single-query page loading/error/retry
+- `toast.success()` / `toast.error()` from `sonner`
+- Pass `isPending` into `Table` for skeleton rows
 
 ## Routes
 
-- Use `routes` from `src/config/routes.ts` — never hardcode paths
+- Use `routes` from `@/routes/routes` — never hardcode paths

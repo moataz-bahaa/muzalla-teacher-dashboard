@@ -1,0 +1,62 @@
+---
+description: How to build list/table pages — ColumnDef + Table + useColumnConfig
+globs: "src/pages/**/*.tsx,src/features/**/*table*.tsx"
+alwaysApply: false
+---
+
+# Table / list pages
+
+Follow the Emtethal page pattern: the **page owns** `ColumnDef`s and renders shared `Table` in one component (see `students-page.tsx`).
+
+## Pattern
+
+```tsx
+export const StudentsPage: React.FC = () => {
+  const { t } = useTranslation()
+
+  const configurableColumns = useMemo<ColumnDef<IStudent>[]>(
+    () => [
+      { accessorKey: 'name', header: t('students.columns.name') },
+      // ...
+    ],
+    [t],
+  )
+
+  const { getVisibleColumns, openConfigModal } = useColumnConfig(
+    'students',
+    configurableColumns,
+  )
+
+  const columns = useMemo(
+    () => [selectColumn, ...getVisibleColumns(), actionsColumn],
+    [getVisibleColumns /* ... */],
+  )
+
+  return (
+    <div>
+      {/* title, primary actions, page filters */}
+      <div className='...card...'>
+        {/* search + Arrange columns → openConfigModal */}
+        <Table columns={columns} data={rows} syncOrderingToUrl={false} />
+        {/* pagination */}
+      </div>
+    </div>
+  )
+}
+```
+
+## Checklist
+
+1. Route in `src/routes/routes.ts` + `src/app/router.tsx`
+2. Single page component with inline `ColumnDef`s + `<Table />`
+3. Optional rearrange: `useColumnConfig('<unique-table-name>', configurableColumns)`
+4. Fixed columns (`select`, `actions`) wrap configurable ones: `[select, ...getVisibleColumns(), actions]`
+5. Types in `src/types/<domain>.ts`; i18n in **en** + **ar**
+6. Overlays via `openModal` / `openDrawer`
+
+## Anti-patterns
+
+- Raw `<table>` instead of `@/components/ui/table`
+- Splitting a thin page + separate `*-table.tsx` only to pass columns as props
+- Ad-hoc column-config modals — use `useColumnConfig` + `TABLE_CONFIG`
+- Hardcoded routes — use `routes` from `@/routes/routes`

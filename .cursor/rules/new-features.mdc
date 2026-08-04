@@ -7,30 +7,33 @@ alwaysApply: false
 
 ## New page
 
-1. Route in `src/config/routes.ts`
-2. Entry in `src/config/pages.tsx` (lazy via `lazyRetry`)
-3. `QueryStateWrapper` if page depends on one main query
+1. Route in `src/routes/routes.ts`
+2. Wire in `src/app/router.tsx` (under `DashboardLayout` when authenticated)
+3. Page in `src/pages/<domain>/`
+4. For list/table UIs: follow `.cursor/rules/table-pages.mdc` (feature table owns `ColumnDef`s + `Table`)
 
 ## New modal or drawer
 
-1. Component in feature folder
-2. Add view to `MODAL_VIEWS` / `DRAWER_VIEWS` type in `context.tsx`
+1. Component in feature folder or `src/components/modal-views/` for shared ones
+2. Add view to `MODAL_VIEWS` / `DRAWER_VIEWS` in `context.tsx`
 3. Register in `container.tsx` switch
-4. Open via `openModal` / `openDrawer` with typed payload interface
+4. Open via `openModal` / `openDrawer` with a typed payload interface
 
 ## New API feature
 
-1. `API_ENDPOINTS` constant in `endpoints.ts`
-2. Client method in `client/index.ts`
-3. `useX` hook in `src/data/<domain>.ts`
+1. `API_ENDPOINTS` constant in `src/lib/data/client/endpoints.ts`
+2. Client method in `src/lib/data/client/index.ts`
+3. `useX` hook in `src/lib/data/<domain>.ts`
+4. Types in `src/types/<domain>.ts`
 
 ## Copy
 
-- Keys in `public/locales/en/translation.json` **and** `public/locales/ar/translation.json`
+- Keys in `src/locales/en/translation.json` **and** `src/locales/ar/translation.json`
 - Use `t('key')` in UI
 
 ## Reference implementations
 
-- Modal: `src/components/task/cancel-task-modal.tsx`
-- Data hook: `src/data/task.ts`
-- Docs: `docs/code-style.md`, `docs/best-practices.md`, `docs/drawer.md`
+- Table page: `src/pages/student/students-page.tsx` (columns + `Table` in one page)
+- Column config: `src/hooks/use-column-config.ts` + `TABLE_CONFIG` modal
+- Filters drawer: `src/features/students/components/student-filters-drawer.tsx`
+- Shared table UI: `src/components/ui/table.tsx`
