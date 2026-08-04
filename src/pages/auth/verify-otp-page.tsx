@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { AuthLayout } from '@/features/auth/components/auth-layout';
-import { AuthTextField } from '@/features/auth/components/auth-text-field';
 import {
   verifyOtpSchema,
   type TVerifyOtpFormValues,
@@ -94,13 +94,13 @@ export const VerifyOtpPage: React.FC = () => {
           className='flex w-full flex-col gap-6'
           noValidate
         >
-          <AuthTextField
-            control={form.control}
-            name='code'
+          <Input
             label={t('auth.verifyOtp.codeLabel')}
             placeholder={t('auth.verifyOtp.codePlaceholder')}
             type='text'
             autoComplete='one-time-code'
+            {...form.register('code')}
+            error={form.formState.errors.code?.message}
           />
 
           <Button

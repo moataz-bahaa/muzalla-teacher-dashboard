@@ -1,7 +1,7 @@
+import { FileField } from '@/components/form/file-field';
 import { Button } from '@/components/ui/button';
-import { FileField } from '@/features/components/form/file-field';
+import { Input } from '@/components/ui/input';
 import { AuthLayout } from '@/features/auth/components/auth-layout';
-import { AuthTextField } from '@/features/auth/components/auth-text-field';
 import { GoogleButton } from '@/features/auth/components/google-button';
 import { OrDivider } from '@/features/auth/components/or-divider';
 import { registerSchema } from '@/features/auth/schemas/auth-schemas';
@@ -21,15 +21,15 @@ export const RegisterPage: React.FC = () => {
   const form = useAppForm({
     schema: registerSchema,
     defaultValues: {
-      TenantName: '',
-      Domain: '',
-      Logo: undefined,
-      FirstName: '',
-      LastName: '',
-      Username: '',
-      Password: '',
-      ImageProfile: undefined,
-      PhoneNumber: '',
+      tenantName: '',
+      domain: '',
+      logo: undefined,
+      firstName: '',
+      lastName: '',
+      username: '',
+      password: '',
+      imageProfile: undefined,
+      phoneNumber: '',
     },
   });
 
@@ -62,69 +62,68 @@ export const RegisterPage: React.FC = () => {
           className='flex w-full flex-col gap-4'
           noValidate
         >
-          <AuthTextField
-            control={form.control}
-            name='TenantName'
+          <Input
             label={t('auth.tenantName')}
             placeholder={t('auth.tenantNamePlaceholder')}
             autoComplete='organization'
+            {...form.register('tenantName')}
+            error={form.formState.errors.tenantName?.message}
           />
-          <AuthTextField
-            control={form.control}
-            name='Domain'
+          <Input
             label={t('auth.domain')}
             placeholder={t('auth.domainPlaceholder')}
+            {...form.register('domain')}
+            error={form.formState.errors.domain?.message}
           />
           <FileField
             control={form.control}
-            name='Logo'
+            name='logo'
             label={t('auth.logo')}
             hint={t('auth.logoPlaceholder')}
           />
 
           <div className='grid gap-4 sm:grid-cols-2'>
-            <AuthTextField
-              control={form.control}
-              name='FirstName'
+            <Input
               label={t('auth.firstName')}
               placeholder={t('auth.firstNamePlaceholder')}
               autoComplete='given-name'
+              {...form.register('firstName')}
+              error={form.formState.errors.firstName?.message}
             />
-            <AuthTextField
-              control={form.control}
-              name='LastName'
+            <Input
               label={t('auth.lastName')}
               placeholder={t('auth.lastNamePlaceholder')}
               autoComplete='family-name'
+              error={form.formState.errors.lastName?.message}
             />
           </div>
 
-          <AuthTextField
-            control={form.control}
-            name='Username'
+          <Input
             label={t('auth.username')}
             placeholder={t('auth.usernamePlaceholder')}
             autoComplete='username'
+            {...form.register('username')}
+            error={form.formState.errors.username?.message}
           />
-          <AuthTextField
-            control={form.control}
-            name='PhoneNumber'
+          <Input
             label={t('auth.phoneNumber')}
             placeholder={t('auth.phoneNumberPlaceholder')}
             type='tel'
             autoComplete='tel'
+            {...form.register('phoneNumber')}
+            error={form.formState.errors.phoneNumber?.message}
           />
-          <AuthTextField
-            control={form.control}
-            name='Password'
+          <Input
             label={t('auth.password')}
             placeholder={t('auth.passwordPlaceholder')}
             type='password'
             autoComplete='new-password'
+            {...form.register('password')}
+            error={form.formState.errors.password?.message}
           />
           <FileField
             control={form.control}
-            name='ImageProfile'
+            name='imageProfile'
             label={t('auth.imageProfile')}
             hint={t('auth.imageProfilePlaceholder')}
           />

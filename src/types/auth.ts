@@ -14,15 +14,15 @@ export interface ILoginResponse {
 }
 
 export interface IRegisterInput {
-  TenantName: string;
-  Domain: string;
-  Logo?: File;
-  FirstName: string;
-  LastName: string;
-  Username: string;
-  Password: string;
-  ImageProfile?: File;
-  PhoneNumber: string;
+  tenantName: string;
+  domain: string;
+  logo?: File;
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  imageProfile?: File;
+  phoneNumber: string;
 }
 
 export interface IRegisterResponse {
