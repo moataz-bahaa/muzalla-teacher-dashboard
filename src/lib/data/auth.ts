@@ -27,12 +27,19 @@ import { API_ENDPOINTS } from './client/endpoints';
 
 export const useLoginMutation = () => {
   const { authorize } = useAuth();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return useMutation<ILoginResponse, ILoginInput>({
     mutationKey: [API_ENDPOINTS.login],
     mutationFn: client.auth.login,
     onSuccess(data) {
       authorize(data.accessToken, data.refreshToken);
+      toast.success(t('auth.toast.loginSuccess'));
+      void navigate(routes.home);
+    },
+    onError: () => {
+      toast.error(t('auth.toast.loginError'));
     },
   });
 };
@@ -114,4 +121,20 @@ export const useAuthDevicesQuery = () => {
     queryKey: [API_ENDPOINTS.devices],
     queryFn: client.auth.devices,
   });
+};
+
+export const useMe = () => {
+  const { isAuthorized } = useAuth();
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: [API_ENDPOINTS.me],
+    queryFn: client.auth.getMe,
+    enabled: isAuthorized,
+  });
+
+  return {
+    isPending,
+    isError,
+    me: data?.data,
+    error,
+  };
 };

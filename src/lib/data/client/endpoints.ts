@@ -7,6 +7,7 @@ export const API_ENDPOINTS = {
   verifyOtp: '/auth/verify-otp',
   resetPassword: '/auth/reset-password',
   devices: '/auth/devices',
+  me: '/users/me',
 
   courses: '/courses',
   courseById: (id: number) => `/courses/${id}`,

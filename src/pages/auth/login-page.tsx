@@ -11,28 +11,18 @@ import { useAppForm } from '@/hooks/use-app-form';
 import { useLoginMutation } from '@/lib/data/auth';
 import { routes } from '@/routes/routes';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 export const LoginPage: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const loginMutation = useLoginMutation();
   const form = useAppForm({
     schema: loginSchema,
     defaultValues: { email: '', password: '' },
   });
 
-  const onSubmit = form.handleSubmit((values: TLoginFormValues) => {
-    loginMutation.mutate(values, {
-      onSuccess: () => {
-        toast.success(t('auth.toast.loginSuccess'));
-        void navigate(routes.home);
-      },
-      onError: () => {
-        toast.error(t('auth.toast.loginError'));
-      },
-    });
+  const onSubmit = form.handleSubmit((data: TLoginFormValues) => {
+    loginMutation.mutate(data);
   });
 
   return (
@@ -55,7 +45,6 @@ export const LoginPage: React.FC = () => {
           <Input
             label={t('auth.email')}
             placeholder={t('auth.emailPlaceholder')}
-            type='email'
             autoComplete='email'
             {...form.register('email')}
             error={form.formState.errors.email?.message}

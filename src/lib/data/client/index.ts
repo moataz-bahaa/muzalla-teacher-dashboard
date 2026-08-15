@@ -8,6 +8,7 @@ import type {
   ILoginResponse,
   ILogoutInput,
   ILogoutResponse,
+  IMeResponse,
   IRefreshTokenInput,
   IRefreshTokenResponse,
   IRegisterInput,
@@ -24,6 +25,8 @@ class Client {
   auth = {
     login: (input: ILoginInput) =>
       HttpClient.post<ILoginResponse>(API_ENDPOINTS.login, input),
+
+    getMe: () => HttpClient.get<IApiResponse<IMeResponse>>(API_ENDPOINTS.me),
 
     register: (input: IRegisterInput) =>
       HttpClient.post<IApiResponse<IRegisterResponse>>(

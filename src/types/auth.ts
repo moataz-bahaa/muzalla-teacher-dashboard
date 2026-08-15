@@ -26,8 +26,9 @@ export interface IRegisterInput {
 }
 
 export interface IRegisterResponse {
-  accessToken: string;
+  token: string;
   refreshToken: string;
+  expiration: string;
 }
 
 export interface IForgetPasswordInput {
@@ -87,3 +88,14 @@ export interface IAuthDevice {
 }
 
 export type TAuthDevicesResponse = IAuthDevice[];
+
+export interface IMeResponse {
+  id: number;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  username: string;
+  profileImage: string | null;
+  role: string;
+  tenantId: number;
+}
