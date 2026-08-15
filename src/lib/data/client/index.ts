@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import { objectToFormData } from '@/lib/utils';
+import type { IApiResponse } from '@/types/api';
 import type {
   IForgetPasswordInput,
   IForgetPasswordResponse,
@@ -25,11 +26,10 @@ class Client {
       HttpClient.post<ILoginResponse>(API_ENDPOINTS.login, input),
 
     register: (input: IRegisterInput) =>
-      HttpClient.post<IRegisterResponse>(
+      HttpClient.post<IApiResponse<IRegisterResponse>>(
         API_ENDPOINTS.register,
         objectToFormData(input),
       ),
-
     logout: (input?: ILogoutInput) =>
       HttpClient.post<ILogoutResponse>(API_ENDPOINTS.logout, input),
 

@@ -11,12 +11,10 @@ import { routes } from '@/routes/routes';
 import type { IRegisterInput } from '@/types/auth';
 import type { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 export const RegisterPage: React.FC = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const registerMutation = useRegisterMutation();
   const form = useAppForm({
     schema: registerSchema,
@@ -33,16 +31,8 @@ export const RegisterPage: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<IRegisterInput> = (data) => {
-    registerMutation.mutate(data, {
-      onSuccess: () => {
-        toast.success(t('auth.toast.registerSuccess'));
-        void navigate(routes.home);
-      },
-      onError: () => {
-        toast.error(t('auth.toast.registerError'));
-      },
-    });
+  const onSubmit: SubmitHandler<IRegisterInput> = async (data) => {
+    registerMutation.mutate(data);
   };
 
   return (
@@ -94,6 +84,7 @@ export const RegisterPage: React.FC = () => {
               label={t('auth.lastName')}
               placeholder={t('auth.lastNamePlaceholder')}
               autoComplete='family-name'
+              {...form.register('lastName')}
               error={form.formState.errors.lastName?.message}
             />
           </div>

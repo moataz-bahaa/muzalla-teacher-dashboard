@@ -18,11 +18,16 @@ Axios.interceptors.request.use((config) => {
 });
 
 Axios.interceptors.response.use((response) => {
-  return formatData(response.data, toCamelCase);
+  response.data = formatData(response.data, toCamelCase);
+  return response;
 });
 
 Axios.interceptors.request.use((config) => {
-  if (config.headers['Content-Type'] === 'application/json') {
+  const isFormData =
+    typeof FormData !== 'undefined' && config.data instanceof FormData;
+  if (isFormData) {
+    config.headers['Content-Type'] = 'multipart/form-data';
+  } else {
     config.data = formatData(config.data, toPascalCase);
   }
   return config;
