@@ -237,6 +237,6 @@
   }
 
   .btn-group {
-    @apply flex items-center gap-6 justify-start px-4;
+    @apply flex items-center gap-6 justify-start px-4 border-t pt-4 bg-neutral-50 border-neutral-200;
   }
 }

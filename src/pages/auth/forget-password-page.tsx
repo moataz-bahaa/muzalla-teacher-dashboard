@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/form/input';
 import { AuthLayout } from '@/features/auth/components/auth-layout';
 import {
   forgetPasswordSchema,

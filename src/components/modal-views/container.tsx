@@ -1,20 +1,35 @@
-import { DeleteModal } from '@/components/modal-views/delete-modal';
-import { Dialog, Transition, TransitionChild } from '@headlessui/react';
-import { Fragment } from 'react';
-import { type MODAL_VIEWS, useModalAction, useModalState } from './context';
+import { DeleteModal } from '@/components/modal-views/delete-modal'
+import { TableConfigModal } from '@/components/modal-views/table-config-modal'
+import { AddStudentModal } from '@/features/students/components/add-student-modal'
+import { EditStudentModal } from '@/features/students/components/edit-student-modal'
+import { ImportStudentsModal } from '@/features/students/components/import-students-modal'
+import { VerifyImportModal } from '@/features/students/components/verify-import-modal'
+import { Dialog, Transition, TransitionChild } from '@headlessui/react'
+import { Fragment } from 'react'
+import { type MODAL_VIEWS, useModalAction, useModalState } from './context'
 
 function renderModalContent(view: MODAL_VIEWS) {
   switch (view) {
     case 'DELETE_OBJECT':
-      return <DeleteModal />;
+      return <DeleteModal />
+    case 'TABLE_CONFIG':
+      return <TableConfigModal />
+    case 'ADD_STUDENT':
+      return <AddStudentModal />
+    case 'EDIT_STUDENT':
+      return <EditStudentModal />
+    case 'IMPORT_STUDENTS':
+      return <ImportStudentsModal />
+    case 'VERIFY_IMPORT_DATA':
+      return <VerifyImportModal />
     default:
-      return null;
+      return null
   }
 }
 
 export default function ModalsContainer() {
-  const { isOpen, view } = useModalState();
-  const { closeModal } = useModalAction();
+  const { isOpen, view } = useModalState()
+  const { closeModal } = useModalAction()
 
   return (
     <Transition show={isOpen} as={Fragment}>
@@ -36,12 +51,12 @@ export default function ModalsContainer() {
             leave='transition ease-in duration-150'
             leaveFrom='transform scale-100 opacity-100'
             leaveTo='transform scale-110 opacity-0'
-            className='relative z-50 mx-4 w-full max-w-2xl'
+            className='relative z-50 mx-4'
           >
             {renderModalContent(view)}
           </TransitionChild>
         )}
       </Dialog>
     </Transition>
-  );
+  )
 }

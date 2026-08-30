@@ -1,6 +1,6 @@
 import DraftIcon from '@/components/icons/draft-icon';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/form/input';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { CourseCard } from '@/features/courses/components/course/course-card';

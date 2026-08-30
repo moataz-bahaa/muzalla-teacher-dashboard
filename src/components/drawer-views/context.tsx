@@ -1,6 +1,9 @@
 import React, { useContext } from 'react'
 
-export type DRAWER_VIEWS = 'COURSE_FILTERS'
+export type DRAWER_VIEWS =
+  | 'COURSE_FILTERS'
+  | 'STUDENT_FILTERS'
+  | 'STUDENT_PROFILE'
 
 interface State<T = unknown> {
   view: DRAWER_VIEWS | undefined

@@ -5,7 +5,7 @@ import { CourseCard } from '@/features/courses/components/course/course-card';
 import { MOCK_COURSES } from '@/features/courses/data/mock-courses';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
-import type { ICourseFilters, TCourseStatus } from '@/types/course';
+import type { IGetCoursesParams, TCourseStatus } from '@/types/course';
 import { ListFilterPlus, Plus } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ export const CoursesPage: React.FC = () => {
   const { t } = useTranslation();
   const { openDrawer } = useDrawerAction();
   const [tab, setTab] = useState<TCourseStatus>('published');
-  const [filters, setFilters] = useState<ICourseFilters>({
+  const [filters, setFilters] = useState<IGetCoursesParams>({
     keywords: '',
     tags: [],
     priceFrom: 0,

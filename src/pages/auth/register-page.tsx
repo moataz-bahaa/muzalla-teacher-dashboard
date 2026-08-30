@@ -1,6 +1,6 @@
 import { FileField } from '@/components/form/file-field';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/form/input';
 import { AuthLayout } from '@/features/auth/components/auth-layout';
 import { GoogleButton } from '@/features/auth/components/google-button';
 import { OrDivider } from '@/features/auth/components/or-divider';

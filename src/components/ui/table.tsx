@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
 const lastCellClassName =
-  'sticky z-5 shadow-[-4px_0_8px_rgba(0,0,0,0.04)] ltr:right-0 rtl:left-0 ltr:border-s rtl:border-e border-neutral-200';
+  'sticky bg-white z-5 shadow-[-4px_0_8px_rgba(0,0,0,0.04)] ltr:right-0 rtl:left-0 ltr:border-s rtl:border-e border-neutral-200';
 
 interface ITableProps<T extends object> {
   columns: ColumnDef<T, unknown>[];

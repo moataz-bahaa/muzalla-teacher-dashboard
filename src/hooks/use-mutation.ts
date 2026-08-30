@@ -32,6 +32,7 @@ export const useMutation = <TData, TVars>({
       props.onSuccess?.(data, variables, onMutateResult, context);
     },
     onError(error, variables, onMutateResult, context) {
+      console.error({error});
       props.onError?.(error, variables, onMutateResult, context);
     },
   });
