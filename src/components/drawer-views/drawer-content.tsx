@@ -1,20 +1,22 @@
 import { cn } from '@/lib/utils';
 import type { HTMLAttributes } from 'react';
 import { Children } from 'react';
-import { useDrawerAction } from './context';
 import { CloseButton } from '../ui/button';
+import { useDrawerAction } from './context';
 
 interface IDrawerContentProps extends Omit<
   HTMLAttributes<HTMLDivElement>,
   'title'
 > {
-  title: string | React.ReactNode;
+  title?: string | React.ReactNode;
+  applyGrow?: boolean;
 }
 
 const DrawerContent: React.FC<IDrawerContentProps> = ({
   title,
   className,
   children,
+  applyGrow = true,
   ...props
 }) => {
   const { closeDrawer } = useDrawerAction();
@@ -24,24 +26,28 @@ const DrawerContent: React.FC<IDrawerContentProps> = ({
 
   return (
     <div
-      className={cn(
-        'flex h-screen max-w-full flex-col bg-white',
-        className,
-      )}
+      className={cn('flex h-screen max-w-full flex-col bg-white', className)}
       {...props}
     >
       <div className='flex items-center justify-between border-b border-neutral-200 px-4 py-4'>
-        {typeof title === 'string' ? (
-          <h3 className='font-heading text-2xl font-bold text-purple-heart-950 sm:text-3xl'>
+        {title && typeof title === 'string' ? (
+          <h3 className='font-heading font-bold text-purple-heart-950 text-6xl'>
             {title}
           </h3>
-        ) : (
+        ) : title ? (
           title
-        )}
+        ) : null}
         <CloseButton onClick={closeDrawer} />
       </div>
       {firstChild && (
-        <div className='flex-grow overflow-y-auto px-4 py-4'>{firstChild}</div>
+        <div
+          className={cn(
+            'overflow-y-auto px-4 py-4',
+            applyGrow ? 'flex-grow' : '',
+          )}
+        >
+          {firstChild}
+        </div>
       )}
       {restChilds.length > 0 && (
         <div className='border-t border-neutral-200 px-4 py-4'>
