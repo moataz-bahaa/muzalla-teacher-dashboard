@@ -1,4 +1,5 @@
 import DraftIcon from '@/components/icons/draft-icon';
+import { PageBreadcrumb } from '@/components/page-breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/form/input';
 import { Switch } from '@/components/ui/switch';
@@ -54,6 +55,9 @@ export const CourseCreatePage: React.FC = () => {
       level,
       pricingType,
       allowMarketplace,
+      instructor: 'ا/ احمد محمد على',
+      subject: 'كيمياء',
+      academicYear: level,
     }),
     [
       allowMarketplace,
@@ -83,26 +87,35 @@ export const CourseCreatePage: React.FC = () => {
 
   return (
     <div className='flex flex-col gap-6'>
-      <div className='flex items-center gap-3'>
-        <h1 className='font-heading text-3xl font-bold text-purple-heart-950 sm:text-4xl'>
-          {t('courses.title')}
-        </h1>
-        <div className='grow'></div>
-        <Button
-          className='h-12 gap-2 rounded-lg bg-purple-heart-900 px-8 hover:bg-purple-heart-800'
-          onClick={() => onSave(false)}
-        >
-          <ChevronRight className='size-6' />
-          {t('courses.create.saveContinue')}
-        </Button>
-        <Button
-          variant='outline'
-          className='h-12 gap-2 rounded-lg border-neutral-200 bg-white px-8 text-neutral-700'
-          onClick={() => onSave(true)}
-        >
-          {t('courses.create.saveDraft')}
-          <DraftIcon className='size-4' />
-        </Button>
+      <div className='flex flex-col gap-3'>
+        <div className='flex items-center gap-3'>
+          <h1 className='font-heading text-3xl font-bold text-purple-heart-950 sm:text-4xl'>
+            {t('courses.title')}
+          </h1>
+          <div className='grow'></div>
+          <Button
+            className='h-12 gap-2 rounded-lg bg-purple-heart-900 px-8 hover:bg-purple-heart-800'
+            onClick={() => onSave(false)}
+          >
+            <ChevronRight className='size-6' />
+            {t('courses.create.saveContinue')}
+          </Button>
+          <Button
+            variant='outline'
+            className='h-12 gap-2 rounded-lg border-neutral-200 bg-white px-8 text-neutral-700'
+            onClick={() => onSave(true)}
+          >
+            {t('courses.create.saveDraft')}
+            <DraftIcon className='size-4' />
+          </Button>
+        </div>
+        <PageBreadcrumb
+          items={[
+            { label: t('dashboard.home'), to: routes.home },
+            { label: t('courses.listTitle'), to: routes.courses },
+            { label: t('courses.create.breadcrumb') },
+          ]}
+        />
       </div>
 
       <div className='grid grid-cols-1 gap-6 xl:grid-cols-[464px_minmax(0,1fr)_340px]'>

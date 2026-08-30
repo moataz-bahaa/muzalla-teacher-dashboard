@@ -143,9 +143,31 @@
   },
   "courses": {
     "title": "Course designer",
+    "listTitle": "Courses",
     "add": "Add course",
+    "export": "Export",
     "filter": "Filter",
+    "selectPeriod": "Select period",
+    "sortBy": "Sort by",
+    "searchPlaceholder": "Search courses...",
+    "arrangeColumns": "Arrange columns",
     "publishedAt": "Publish date",
+    "columns": {
+      "cover": "Course cover",
+      "title": "Course title",
+      "subject": "Course subject",
+      "instructor": "Instructor",
+      "description": "Course description",
+      "price": "Course price",
+      "academicYear": "Academic year",
+      "actions": "Actions"
+    },
+    "view": {
+      "detailsTab": "Course details",
+      "curriculumTab": "Course content",
+      "description": "Course description",
+      "outcomes": "Learning outcomes"
+    },
     "tabs": {
       "published": "Published courses",
       "inactive": "Inactive courses"
@@ -156,8 +178,8 @@
       "delete": "Delete"
     },
     "delete": {
-      "title": "Delete course",
-      "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone."
+      "title": "Delete course from database",
+      "description": "Do you really want to permanently delete \"{{title}}\" from the database?"
     },
     "filters": {
       "title": "Course filters",
@@ -198,7 +220,8 @@
     "toast": {
       "deleted": "Course \"{{title}}\" deleted (demo)",
       "saved": "Course saved (demo)",
-      "draftSaved": "Draft saved (demo)"
+      "draftSaved": "Draft saved (demo)",
+      "exported": "Courses exported (demo)"
     }
   },
   "validation": {

@@ -73,12 +73,7 @@ export const StudentFiltersDrawer: React.FC = () => {
       </div>
 
       <div className='btn-group'>
-        <Button
-          variant='purple'
-          size='lg'
-          className='px-10'
-          onClick={apply}
-        >
+        <Button variant='purple' size='lg' className='px-10' onClick={apply}>
           {t('students.filters.apply')}
         </Button>
         <Button

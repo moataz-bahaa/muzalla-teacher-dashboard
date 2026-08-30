@@ -1,5 +1,13 @@
 export type TCourseStatus = 'published' | 'inactive';
 export type TPricingType = 'subscription' | 'fixed';
+export type TCourseLessonType = 'video' | 'quiz' | 'article';
+
+export interface ICourseLesson {
+  id: number;
+  title: string;
+  type: TCourseLessonType;
+  duration?: string;
+}
 
 export interface ICourse {
   id: number;
@@ -14,6 +22,11 @@ export interface ICourse {
   level?: string;
   pricingType: TPricingType;
   allowMarketplace?: boolean;
+  instructor: string;
+  subject: string;
+  academicYear: string;
+  outcomes?: string[];
+  lessons?: ICourseLesson[];
 }
 
 export interface IGetCoursesParams {
@@ -21,6 +34,8 @@ export interface IGetCoursesParams {
   tags: string[];
   priceFrom: number;
   priceTo: number;
+  search?: string;
+  page?: number;
 }
 
 export interface ICreateCourseFormValues {

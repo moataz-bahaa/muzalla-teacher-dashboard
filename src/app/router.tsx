@@ -12,6 +12,7 @@ import { CourseCreatePage } from '@/pages/course/course-create-page'
 import { StudentsPage } from '@/pages/student/students-page'
 import { GuestRoute } from '@/features/auth/components/guest-route'
 import { PrivateRoute } from '@/features/auth/components/private-route'
+import CoursesBuilderPage from '@/pages/course/builder/courses-builder-page';
 
 export const AppRouter: React.FC = () => {
   return (
@@ -68,6 +69,7 @@ export const AppRouter: React.FC = () => {
         <Route path={routes.students} element={<StudentsPage />} />
         <Route path={routes.courses} element={<CoursesPage />} />
         <Route path={routes.courseNew} element={<CourseCreatePage />} />
+        <Route path={routes.coursesBuilder} element={<CoursesBuilderPage />} />
       </Route>
     </Routes>
   )

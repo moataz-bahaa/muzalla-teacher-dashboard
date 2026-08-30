@@ -143,9 +143,31 @@
   },
   "courses": {
     "title": "مصمم الدورات",
+    "listTitle": "الدورات",
     "add": "إضافة دورة",
+    "export": "تصدير",
     "filter": "فلتر",
+    "selectPeriod": "اختيار الفترة",
+    "sortBy": "ترتيب حسب",
+    "searchPlaceholder": "بحث في الدورات...",
+    "arrangeColumns": "ترتيب الأعمدة",
     "publishedAt": "تاريخ النشر",
+    "columns": {
+      "cover": "غلاف الدورة",
+      "title": "عنوان الدورة",
+      "subject": "موضوع الدورة",
+      "instructor": "مقدم الدورة",
+      "description": "وصف الدورة",
+      "price": "سعر الدورة",
+      "academicYear": "السنة الدراسية",
+      "actions": "الإجرائات"
+    },
+    "view": {
+      "detailsTab": "تفاصيل الدورة",
+      "curriculumTab": "محتوى الدورة",
+      "description": "وصف الدورة",
+      "outcomes": "مخرجات التعلم"
+    },
     "tabs": {
       "published": "الدورات المنشورة",
       "inactive": "الدورات غير النشطة"
@@ -156,8 +178,8 @@
       "delete": "حذف"
     },
     "delete": {
-      "title": "حذف الدورة",
-      "description": "هل أنت متأكد من حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء."
+      "title": "حذف الدورة من قاعدة البيانات",
+      "description": "هل تريد حقا حذف بيانات \"{{title}}\" من قاعدة البيانات بشكل نهائى؟"
     },
     "filters": {
       "title": "فلاتر الدورات",
@@ -198,7 +220,8 @@
     "toast": {
       "deleted": "تم حذف الدورة \"{{title}}\" (تجريبي)",
       "saved": "تم حفظ الدورة (تجريبي)",
-      "draftSaved": "تم حفظ المسودة (تجريبي)"
+      "draftSaved": "تم حفظ المسودة (تجريبي)",
+      "exported": "تم تصدير الدورات (تجريبي)"
     }
   },
   "validation": {

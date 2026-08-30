@@ -6,7 +6,8 @@ export type MODAL_VIEWS =
   | 'ADD_STUDENT'
   | 'EDIT_STUDENT'
   | 'IMPORT_STUDENTS'
-  | 'VERIFY_IMPORT_DATA';
+  | 'VERIFY_IMPORT_DATA'
+  | 'COURSE_VIEW';
 
 interface State<T = unknown> {
   view: MODAL_VIEWS | undefined;

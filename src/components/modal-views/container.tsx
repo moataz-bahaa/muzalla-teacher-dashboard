@@ -1,5 +1,6 @@
 import { DeleteModal } from '@/components/modal-views/delete-modal'
 import { TableConfigModal } from '@/components/modal-views/table-config-modal'
+import { CourseViewModal } from '@/features/courses/components/course/course-view-modal'
 import { AddStudentModal } from '@/features/students/components/add-student-modal'
 import { EditStudentModal } from '@/features/students/components/edit-student-modal'
 import { ImportStudentsModal } from '@/features/students/components/import-students-modal'
@@ -22,6 +23,8 @@ function renderModalContent(view: MODAL_VIEWS) {
       return <ImportStudentsModal />
     case 'VERIFY_IMPORT_DATA':
       return <VerifyImportModal />
+    case 'COURSE_VIEW':
+      return <CourseViewModal />
     default:
       return null
   }
