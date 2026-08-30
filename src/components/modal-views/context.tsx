@@ -1,6 +1,12 @@
 import React, { useContext } from 'react';
 
-export type MODAL_VIEWS = 'DELETE_OBJECT';
+export type MODAL_VIEWS =
+  | 'DELETE_OBJECT'
+  | 'TABLE_CONFIG'
+  | 'ADD_STUDENT'
+  | 'EDIT_STUDENT'
+  | 'IMPORT_STUDENTS'
+  | 'VERIFY_IMPORT_DATA';
 
 interface State<T = unknown> {
   view: MODAL_VIEWS | undefined;

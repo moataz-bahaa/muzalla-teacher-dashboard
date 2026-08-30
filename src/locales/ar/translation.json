@@ -7,6 +7,15 @@
     "english": "EN",
     "arabic": "AR",
     "cancel": "إلغاء",
+    "browse": "تصفح",
+    "change": "تغيير",
+    "noData": "لا توجد بيانات",
+    "pagination": {
+      "prev": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "current": "الصفحة الحالية",
+      "of": "من"
+    },
     "delete": {
       "title": "حذف: {{object}}",
       "description": "هل أنت متأكد من حذف \"{{object}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
@@ -18,6 +27,117 @@
     "home": "الصفحة الرئيسية",
     "addItem": "إضافة عنصر",
     "viewSite": "عرض الموقع"
+  },
+  "tableConfig": {
+    "title": "فلاتر البيانات",
+    "description": "يمكنك ترتيب ظهور البيانات في الجدول عن طريق ترتيب الأعمدة وتفعيل أو إخفاء العمود",
+    "apply": "تطبيق",
+    "cancel": "إلغاء"
+  },
+  "students": {
+    "title": "الطلاب",
+    "add": "إضافة طالب",
+    "export": "تصدير البيانات",
+    "filter": "فلتر",
+    "sortBy": "ترتيب حسب",
+    "selectPeriod": "اختيار الفترة",
+    "arrangeColumns": "رتب الأعمدة",
+    "searchPlaceholder": "بحث داخل البيانات",
+    "paginationOf": "{{current}} of {{total}}",
+    "academicYears": {
+      "year1": "السنة الدراسية الأولى",
+      "year2": "السنة الدراسية الثانية",
+      "year3": "السنة الدراسية الثالثة",
+      "year4": "السنة الدراسية الرابعة"
+    },
+    "columns": {
+      "avatar": "صورة الطالب",
+      "name": "اسم الطالب",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "password": "كلمة المرور",
+      "status": "الحالة",
+      "academicYear": "السنة الدراسية",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "all": "الكل"
+    },
+    "actions": {
+      "viewProfile": "عرض الملف الشخصي",
+      "edit": "تعديل بيانات الطالب",
+      "delete": "حذف بيانات الطالب",
+      "addManual": "يدوياً",
+      "import": "استيراد عملاء"
+    },
+    "filters": {
+      "title": "فلاتر البيانات",
+      "status": "الحالة",
+      "academicYear": "السنة الدراسية",
+      "clear": "إلغاء جميع الفلاتر",
+      "apply": "تطبيق"
+    },
+    "addModal": {
+      "title": "إضافة طالب يدويًا",
+      "tab": "بيانات الطالب",
+      "photo": "صورة الطالب",
+      "photoHint": "قم برفع صورة الطالب من خلال الجهاز الخاص بك -",
+      "browse": "تصفح",
+      "firstName": "الاسم الأول",
+      "firstNamePlaceholder": "أحمد",
+      "lastName": "اسم العائلة",
+      "lastNamePlaceholder": "محمود",
+      "username": "اسم المستخدم",
+      "usernamePlaceholder": "ahmed.mahmoud",
+      "phoneNumber": "رقم الهاتف",
+      "phoneNumberPlaceholder": "1065423825",
+      "password": "كلمة المرور",
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    },
+    "editModal": {
+      "title": "تعديل بيانات الطالب",
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    },
+    "importModal": {
+      "title": "استيراد طلاب",
+      "tab": "رفع البيانات",
+      "intro": "حتى تتمكن من رفع قائمة بالطلاب وبياناتهم دفعة واحدة يجب أن تكون :",
+      "rule1": "أولا: صيغة الملف المرفوع Excel أو CSV",
+      "rule2": "ثانيا : يجب أن يكون ترتيب البيانات في الملف حسب ترتيب الأعمدة (صورة الطالب ، اسم الطالب ، البريد الإلكتروني ، رقم الهاتف ، كلمة المرور ، السنة الدراسية )",
+      "dropHint": "قم برفع الملف هنا عن طريق السحب والإفلات أو",
+      "browse": "تصفح",
+      "maxSize": "أقصى حجم للملف ٥٠ ميجابايت",
+      "upload": "رفع",
+      "cancel": "إلغاء",
+      "invalidType": "يرجى رفع ملف Excel أو CSV"
+    },
+    "verifyModal": {
+      "title": "التأكد من صحة البيانات",
+      "subtitle": "قم بالتأكد من صحة البيانات المرفوعة وتناسقها من الحقيقي",
+      "save": "حفظ وإضافة",
+      "cancel": "إلغاء"
+    },
+    "profile": {
+      "enrolledCourses": "الدورات المسجلة",
+      "username": "اسم المستخدم"
+    },
+    "toast": {
+      "exported": "بدأ التصدير (تجريبي)",
+      "saved": "تم حفظ الطالب (تجريبي)",
+      "saveError": "فشل حفظ الطالب",
+      "imported": "تم استيراد الطلاب (تجريبي)",
+      "statusUpdated": "تم تحديث حالة الطالب (تجريبي)",
+      "deleted": "تم حذف الطالب \"{{name}}\" (تجريبي)",
+      "profileUpdated": "تم تحديث الملف الشخصي (تجريبي)"
+    },
+    "delete": {
+      "title": "حذف الطالب",
+      "description": "هل أنت متأكد من حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء."
+    }
   },
   "courses": {
     "title": "مصمم الدورات",
@@ -103,12 +223,29 @@
     "any.invalid": "{{label}} يحتوي على قيمة غير صالحة."
   },
   "auth": {
+    "tenantName": "اسم الشركة",
+    "tenantNamePlaceholder": "أدخل اسم الشركة",
+    "domain": "النطاق",
+    "domainPlaceholder": "أدخل النطاق",
+    "logo": "الشعار",
+    "logoPlaceholder": "رفع الشعار",
+    "imageProfile": "الصورة الشخصية",
+    "imageProfilePlaceholder": "رفع الصورة الشخصية",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "أدخل الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "lastNamePlaceholder": "أدخل الاسم الأخير",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "phoneNumber": "رقم الهاتف",
+    "phoneNumberPlaceholder": "أدخل رقم الهاتف",
     "email": "البريد الإلكتروني",
     "emailPlaceholder": "Example@email.com",
     "password": "كلمة المرور",
     "passwordPlaceholder": "At least 8 Characters",
     "confirmPassword": "تأكيد كلمة المرور",
     "googleSignIn": "التسجيل بحساب جوجل",
+    "logout": "تسجيل الخروج",
     "toast": {
       "loginSuccess": "تم تسجيل الدخول بنجاح (تجريبي)",
       "loginError": "فشل تسجيل الدخول. يرجى التحقق من بياناتك.",

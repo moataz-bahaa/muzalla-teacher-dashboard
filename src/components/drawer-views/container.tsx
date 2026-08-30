@@ -1,4 +1,7 @@
 import { CourseFiltersDrawer } from '@/features/courses/components/course/course-filters-drawer';
+import { StudentFiltersDrawer } from '@/features/students/components/student-filters-drawer';
+import { StudentProfileDrawer } from '@/features/students/components/student-profile-drawer';
+import { cn } from '@/lib/utils';
 import {
   Dialog,
   DialogPanel,
@@ -14,6 +17,10 @@ function renderDrawerContent(view: DRAWER_VIEWS) {
   switch (view) {
     case 'COURSE_FILTERS':
       return <CourseFiltersDrawer />;
+    case 'STUDENT_FILTERS':
+      return <StudentFiltersDrawer />;
+    case 'STUDENT_PROFILE':
+      return <StudentProfileDrawer />;
     default:
       return null;
   }
@@ -50,7 +57,12 @@ export default function DrawerContainer() {
             leaveFrom='translate-x-0'
             leaveTo='ltr:-translate-x-full rtl:translate-x-full'
           >
-            <DialogPanel className='w-screen rounded-e-2xl max-w-[450px] bg-white shadow-lg'>
+            <DialogPanel
+              className={cn(
+                'w-screen rounded-e-2xl bg-white shadow-lg',
+                view === 'STUDENT_PROFILE' ? 'max-w-[420px]' : 'max-w-[450px]',
+              )}
+            >
               {view && renderDrawerContent(view)}
             </DialogPanel>
           </TransitionChild>

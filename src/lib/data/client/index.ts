@@ -19,6 +19,7 @@ import type {
   IVerifyOtpResponse,
   TAuthDevicesResponse,
 } from '@/types/auth';
+import type { ICreateStudentInput, IStudent, IUpdateStudentInput } from '@/types/student';
 import { HttpClient } from './http-client';
 
 class Client {
@@ -63,7 +64,10 @@ class Client {
   };
 
   students = {
-    // TODO
+    create: async (input: ICreateStudentInput) => ({
+      /* TODO*/
+    } as IStudent),
+    update: async ({ id, ...input }: IUpdateStudentInput) => ({} as IStudent),
     delete: async (_id: number) => Promise.resolve({}),
   };
 }

@@ -7,6 +7,15 @@
     "english": "EN",
     "arabic": "AR",
     "cancel": "Cancel",
+    "browse": "Browse",
+    "change": "Change",
+    "noData": "No data",
+    "pagination": {
+      "prev": "Previous page",
+      "next": "Next page",
+      "current": "Current page",
+      "of": "of"
+    },
     "delete": {
       "title": "Delete \"{{object}}\"?",
       "description": "Are you sure you want to delete \"{{object}}\"? This action cannot be undone.",
@@ -18,6 +27,117 @@
     "home": "Home",
     "addItem": "Add item",
     "viewSite": "View site"
+  },
+  "tableConfig": {
+    "title": "Data filters",
+    "description": "You can arrange how data appears in the table by ordering columns and showing or hiding a column",
+    "apply": "Apply",
+    "cancel": "Cancel"
+  },
+  "students": {
+    "title": "Students",
+    "add": "Add student",
+    "export": "Export data",
+    "filter": "Filter",
+    "sortBy": "Sort by",
+    "selectPeriod": "Select period",
+    "arrangeColumns": "Arrange columns",
+    "searchPlaceholder": "Search within data",
+    "paginationOf": "{{current}} of {{total}}",
+    "academicYears": {
+      "year1": "First academic year",
+      "year2": "Second academic year",
+      "year3": "Third academic year",
+      "year4": "Fourth academic year"
+    },
+    "columns": {
+      "avatar": "Student photo",
+      "name": "Student name",
+      "email": "Email",
+      "phone": "Phone number",
+      "password": "Password",
+      "status": "Status",
+      "academicYear": "Academic year",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "all": "All"
+    },
+    "actions": {
+      "viewProfile": "View profile",
+      "edit": "Edit student data",
+      "delete": "Delete student data",
+      "addManual": "Manually",
+      "import": "Import customers"
+    },
+    "filters": {
+      "title": "Data filters",
+      "status": "Status",
+      "academicYear": "Academic year",
+      "clear": "Clear all filters",
+      "apply": "Apply"
+    },
+    "addModal": {
+      "title": "Add student manually",
+      "tab": "Student data",
+      "photo": "Student photo",
+      "photoHint": "Upload the student photo from your device —",
+      "browse": "Browse",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Ahmed",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Mahmoud",
+      "username": "Username",
+      "usernamePlaceholder": "ahmed.mahmoud",
+      "phoneNumber": "Phone number",
+      "phoneNumberPlaceholder": "1065423825",
+      "password": "Password",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "editModal": {
+      "title": "Edit student data",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "importModal": {
+      "title": "Import students",
+      "tab": "Upload data",
+      "intro": "To upload a list of students and their data at once, the following must apply:",
+      "rule1": "First: the uploaded file format must be Excel or CSV",
+      "rule2": "Second: data columns in the file must follow this order (student photo, student name, email, phone number, password, academic year)",
+      "dropHint": "Upload the file here by drag and drop or",
+      "browse": "browse",
+      "maxSize": "Maximum file size 50 MB",
+      "upload": "Upload",
+      "cancel": "Cancel",
+      "invalidType": "Please upload an Excel or CSV file"
+    },
+    "verifyModal": {
+      "title": "Verify data integrity",
+      "subtitle": "Verify the accuracy and consistency of the uploaded data",
+      "save": "Save and add",
+      "cancel": "Cancel"
+    },
+    "profile": {
+      "enrolledCourses": "Enrolled courses",
+      "username": "Username"
+    },
+    "toast": {
+      "exported": "Export started (demo)",
+      "saved": "Student saved (demo)",
+      "saveError": "Failed to save student",
+      "imported": "Students imported (demo)",
+      "statusUpdated": "Student status updated (demo)",
+      "deleted": "Student \"{{name}}\" deleted (demo)",
+      "profileUpdated": "Profile updated (demo)"
+    },
+    "delete": {
+      "title": "Delete student",
+      "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone."
+    }
   },
   "courses": {
     "title": "Course designer",
@@ -103,12 +223,29 @@
     "any.invalid": "{{label}} contains an invalid value."
   },
   "auth": {
+    "tenantName": "Tenant name",
+    "tenantNamePlaceholder": "Enter your tenant name",
+    "domain": "Domain",
+    "domainPlaceholder": "Enter your domain",
+    "logo": "Logo",
+    "logoPlaceholder": "Upload your logo",
+    "imageProfile": "Profile image",
+    "imageProfilePlaceholder": "Upload your profile image",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Enter your last name",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "phoneNumber": "Phone number",
+    "phoneNumberPlaceholder": "Enter your phone number",
     "email": "Email",
     "emailPlaceholder": "Example@email.com",
     "password": "Password",
     "passwordPlaceholder": "At least 8 Characters",
     "confirmPassword": "Confirm password",
     "googleSignIn": "Continue with Google",
+    "logout": "Log out",
     "toast": {
       "loginSuccess": "Signed in successfully (demo)",
       "loginError": "Sign in failed. Please check your credentials.",

@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
   sectionById: (id: number) => `api/sections/${id}`,
 
   students: '/students',
+  studentById: (id: number) => `/students/${id}`,
 
   tags: '/tags',
   tagById: (id: number) => `/tags/${id}`,

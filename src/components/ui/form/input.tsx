@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import * as React from 'react';
-import { Label } from './label';
+import { Label } from '../label';
 
 export interface InputProps extends React.ComponentProps<'input'> {
   label?: string;

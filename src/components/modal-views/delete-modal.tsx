@@ -8,12 +8,14 @@ import { client } from '@/lib/data/client';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-type DeleteObject = 'course' | 'user' | 'section';
+type DeleteObject = 'course' | 'student' | 'user' | 'section';
 
 const getDeleteFuction = (object: DeleteObject) => {
   switch (object) {
     case 'course':
       return client.courses.delete;
+    case 'student':
+      return client.students.delete;
     default:
       return async () => {
         throw new Error('Invalid delete object');
@@ -26,6 +28,7 @@ export interface IDeleteModalData {
   id: number;
   title?: string;
   description?: string;
+  onSuccess?: () => void;
 }
 export const DeleteModal: React.FC = () => {
   const { t } = useTranslation();
@@ -41,17 +44,17 @@ export const DeleteModal: React.FC = () => {
     mutationFn: getDeleteFuction(data?.object as DeleteObject),
     onSuccess: () => {
       toast.success(t('common.delete.success', { object: data?.object ?? '' }));
+      data?.onSuccess?.();
       closeModal();
     },
   });
 
   const onConfirm = () => {
     deleteMutation.mutate(data?.id);
-    closeModal();
   };
 
   return (
-    <div className='flex flex-col gap-4 text-start border-red-500 border-2 relative p-10 rounded-xl z-10 bg-white max-w-2xl'>
+    <div className='relative z-10 flex w-full max-w-2xl flex-col gap-4 rounded-xl border-2 border-red-500 bg-white p-10 text-start'>
       <CloseButton
         className='absolute top-4 ltr:right-4 rtl:left-4'
         onClick={closeModal}

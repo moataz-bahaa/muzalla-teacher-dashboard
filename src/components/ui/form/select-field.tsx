@@ -1,0 +1,113 @@
+import { ACADEMIC_YEARS } from '@/features/students/data/mock-students';
+import { cn } from '@/lib/utils';
+import {
+  Controller,
+  type Control,
+  type FieldPath,
+  type FieldValues,
+} from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { Label } from '../label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../select';
+
+interface ISelectFieldProps {
+  options: {
+    label: string;
+    value: string;
+  }[];
+  label?: string;
+  error?: string;
+  className?: string;
+  value: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+}
+
+export const SelectField: React.FC<ISelectFieldProps> = ({
+  options,
+  label,
+  error,
+  className,
+  value,
+  onChange,
+  disabled,
+}) => {
+  return (
+    <div className={cn('flex w-full flex-col gap-1.5', className)}>
+      {label && <Label>{label}</Label>}
+      <Select value={value} onValueChange={onChange} disabled={disabled}>
+        <SelectTrigger className='h-11 w-full rounded-lg'>
+          <SelectValue placeholder={label} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {error && <p className='text-xs text-danger-600'>{error}</p>}
+    </div>
+  );
+};
+
+export interface IControlledSelectFieldProps<T extends FieldValues>
+  extends Omit<ISelectFieldProps, 'value' | 'onChange'> {
+  control: Control<T>;
+  name: FieldPath<T>;
+}
+
+export function ControlledSelectField<T extends FieldValues>({
+  control,
+  name,
+  ...props
+}: IControlledSelectFieldProps<T>) {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field, fieldState }) => (
+        <SelectField
+          {...props}
+          value={field.value ?? ''}
+          onChange={field.onChange}
+          error={props.error ?? fieldState.error?.message}
+        />
+      )}
+    />
+  );
+}
+
+export type TControlledYearSelectProps<T extends FieldValues> = Omit<
+  IControlledSelectFieldProps<T>,
+  'options'
+>;
+
+export function ControlledYearSelect<T extends FieldValues>({
+  control,
+  name,
+  label,
+  ...props
+}: TControlledYearSelectProps<T>) {
+  const { t } = useTranslation();
+
+  return (
+    <ControlledSelectField
+      control={control}
+      name={name}
+      label={label ?? t('students.addModal.academicYear')}
+      options={ACADEMIC_YEARS.map((year) => ({
+        label: t(`students.academicYears.${year}`),
+        value: year,
+      }))}
+      {...props}
+    />
+  );
+}
