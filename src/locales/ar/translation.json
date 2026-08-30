@@ -9,6 +9,8 @@
     "cancel": "إلغاء",
     "browse": "تصفح",
     "change": "تغيير",
+    "maxFileSize": "أقصى حجم للملف {{size}}",
+    "fileTooLarge": "حجم الملف يتجاوز الحد الأقصى {{size}}",
     "noData": "لا توجد بيانات",
     "pagination": {
       "prev": "الصفحة السابقة",

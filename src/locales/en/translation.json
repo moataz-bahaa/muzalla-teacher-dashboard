@@ -9,6 +9,8 @@
     "cancel": "Cancel",
     "browse": "Browse",
     "change": "Change",
+    "maxFileSize": "Maximum file size {{size}}",
+    "fileTooLarge": "File exceeds maximum size of {{size}}",
     "noData": "No data",
     "pagination": {
       "prev": "Previous page",

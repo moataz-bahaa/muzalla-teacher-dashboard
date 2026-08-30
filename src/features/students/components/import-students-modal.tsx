@@ -1,3 +1,4 @@
+import { FilesDropzone } from '@/components/files-dropzone';
 import ExcelIcon from '@/components/icons/excel-icon';
 import {
   useModalAction,
@@ -7,12 +8,19 @@ import { Button, CloseButton } from '@/components/ui/button';
 import { MOCK_IMPORT_PREVIEW } from '@/features/students/data/mock-students';
 import type { IStudent } from '@/types/student';
 import { FileSpreadsheet } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 const ACCEPTED =
   '.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+const MAX_FILE_SIZE = 50 * 1024 * 1024;
+
+const isSpreadsheetFile = (file: File) =>
+  file.name.endsWith('.csv') ||
+  file.name.endsWith('.xlsx') ||
+  file.name.endsWith('.xls');
 
 export interface IImportStudentsModalData {
   onImported?: (students: IStudent[]) => void;
@@ -22,24 +30,11 @@ export const ImportStudentsModal: React.FC = () => {
   const { t } = useTranslation();
   const { closeModal, openModal } = useModalAction();
   const { data } = useModalState<IImportStudentsModalData>();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [dragging, setDragging] = useState(false);
-
-  const acceptFile = (file?: File) => {
-    if (!file) return;
-    const valid =
-      file.name.endsWith('.csv') ||
-      file.name.endsWith('.xlsx') ||
-      file.name.endsWith('.xls');
-    if (!valid) {
-      toast.error(t('students.importModal.invalidType'));
-      return;
-    }
-    setFileName(file.name);
-  };
+  const [file, setFile] = useState<File | null>(null);
 
   const upload = () => {
+    if (!file) return;
+
     closeModal();
     openModal('VERIFY_IMPORT_DATA', {
       students: MOCK_IMPORT_PREVIEW,
@@ -70,53 +65,29 @@ export const ImportStudentsModal: React.FC = () => {
         <p>{t('students.importModal.rule2')}</p>
       </div>
 
-      <button
-        type='button'
-        onClick={() => inputRef.current?.click()}
-        onDragOver={(event) => {
-          event.preventDefault();
-          setDragging(true);
-        }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={(event) => {
-          event.preventDefault();
-          setDragging(false);
-          acceptFile(event.dataTransfer.files?.[0]);
-        }}
-        className={`mt-6 flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-10 text-center transition-colors ${
-          dragging
-            ? 'border-purple-heart-500 bg-purple-heart-50'
-            : 'border-purple-heart-300 bg-purple-heart-100'
-        }`}
-      >
-        <ExcelIcon className='size-12' />
-        <p className='text-sm text-neutral-700'>
-          {t('students.importModal.dropHint')}{' '}
-          <span className='font-semibold text-purple-heart-700'>
-            {t('students.importModal.browse')}
-          </span>
-        </p>
-        <p className='text-xs text-neutral-500'>
-          {t('students.importModal.maxSize')}
-        </p>
-        {fileName && (
-          <p className='mt-1 text-xs font-medium text-purple-heart-800'>
-            {fileName}
-          </p>
-        )}
-      </button>
-      <input
-        ref={inputRef}
-        type='file'
+      <FilesDropzone
+        className='mt-6'
         accept={ACCEPTED}
-        className='hidden'
-        onChange={(event) => acceptFile(event.target.files?.[0])}
+        hint={t('students.importModal.dropHint')}
+        browseLabel={t('students.importModal.browse')}
+        maxFileSize={MAX_FILE_SIZE}
+        maxSizeHint={t('students.importModal.maxSize')}
+        value={file}
+        onChange={setFile}
+        emptyIcon={<ExcelIcon className='size-12' />}
+        validateFile={(selectedFile) =>
+          isSpreadsheetFile(selectedFile)
+            ? null
+            : t('students.importModal.invalidType')
+        }
+        onValidationError={(message) => toast.error(message)}
       />
 
       <div className='btn-group mt-8'>
         <Button
           className='h-10 rounded-lg bg-purple-heart-900 px-10 hover:bg-purple-heart-800'
           onClick={upload}
+          disabled={!file}
         >
           {t('students.importModal.upload')}
         </Button>
