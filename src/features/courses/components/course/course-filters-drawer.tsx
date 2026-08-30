@@ -4,14 +4,14 @@ import {
 } from '@/components/drawer-views/context';
 import DrawerContent from '@/components/drawer-views/drawer-content';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/components/ui/form/input';
 import { cn } from '@/lib/utils';
-import type { ICourseFilters } from '@/types/course';
+import type { IGetCoursesParams } from '@/types/course';
 import { Search, X } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const DEFAULT_FILTERS: ICourseFilters = {
+const DEFAULT_FILTERS: IGetCoursesParams = {
   keywords: '',
   tags: ['كيمياء', 'الحديد', 'أكسيد الحديد'],
   priceFrom: 250,
@@ -22,11 +22,11 @@ export const CourseFiltersDrawer: React.FC = () => {
   const { t } = useTranslation();
   const { closeDrawer } = useDrawerAction();
   const { data } = useDrawerState<{
-    filters?: ICourseFilters;
-    onApply?: (filters: ICourseFilters) => void;
+    filters?: IGetCoursesParams;
+    onApply?: (filters: IGetCoursesParams) => void;
   }>();
 
-  const [filters, setFilters] = useState<ICourseFilters>(
+  const [filters, setFilters] = useState<IGetCoursesParams>(
     data?.filters ?? DEFAULT_FILTERS,
   );
 
@@ -52,7 +52,7 @@ export const CourseFiltersDrawer: React.FC = () => {
   };
 
   return (
-    <DrawerContent title={t('courses.filters.title')}>
+    <DrawerContent className='w-112.5' title={t('courses.filters.title')}>
       <div className='flex flex-col gap-8'>
         <div className='flex flex-col gap-3'>
           <div className='relative'>

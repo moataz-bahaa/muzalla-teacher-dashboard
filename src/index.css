@@ -235,4 +235,8 @@
   button {
     cursor: pointer;
   }
+
+  .btn-group {
+    @apply flex items-center gap-6 justify-start px-4;
+  }
 }

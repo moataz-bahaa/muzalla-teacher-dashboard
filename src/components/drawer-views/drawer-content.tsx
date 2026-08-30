@@ -25,7 +25,7 @@ const DrawerContent: React.FC<IDrawerContentProps> = ({
   return (
     <div
       className={cn(
-        'flex h-screen w-full max-w-full flex-col bg-white',
+        'flex h-screen max-w-full flex-col bg-white',
         className,
       )}
       {...props}

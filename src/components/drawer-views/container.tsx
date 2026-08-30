@@ -1,7 +1,6 @@
 import { CourseFiltersDrawer } from '@/features/courses/components/course/course-filters-drawer';
 import { StudentFiltersDrawer } from '@/features/students/components/student-filters-drawer';
 import { StudentProfileDrawer } from '@/features/students/components/student-profile-drawer';
-import { cn } from '@/lib/utils';
 import {
   Dialog,
   DialogPanel,
@@ -47,22 +46,17 @@ export default function DrawerContainer() {
       >
         <div className='fixed inset-0 bg-black/70 transition-opacity' />
 
-        <div className='fixed inset-y-0 start-0 flex max-w-full'>
+        <div className='fixed inset-y-0 left-0 flex max-w-full'>
           <TransitionChild
             as={Fragment}
             enter='transform transition ease-in-out duration-200'
-            enterFrom='ltr:-translate-x-full rtl:translate-x-full'
+            enterFrom='-translate-x-full'
             enterTo='translate-x-0'
             leave='transform transition ease-in-out duration-100'
             leaveFrom='translate-x-0'
-            leaveTo='ltr:-translate-x-full rtl:translate-x-full'
+            leaveTo='-translate-x-full'
           >
-            <DialogPanel
-              className={cn(
-                'w-screen rounded-e-2xl bg-white shadow-lg',
-                view === 'STUDENT_PROFILE' ? 'max-w-[420px]' : 'max-w-[450px]',
-              )}
-            >
+            <DialogPanel className={'rounded-e-2xl bg-white shadow-lg'}>
               {view && renderDrawerContent(view)}
             </DialogPanel>
           </TransitionChild>
