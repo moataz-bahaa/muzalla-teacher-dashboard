@@ -5,7 +5,10 @@ import { BuilderCanvas } from '@/features/course-builder/components/builder-canv
 import { BuilderEmptyState } from '@/features/course-builder/components/builder-empty-state';
 import { BuilderOnboarding } from '@/features/course-builder/components/builder-onboarding';
 import { CurriculumSidebar } from '@/features/course-builder/components/curriculum-sidebar';
-import { BuilderProvider, useBuilder } from '@/features/course-builder/context/builder-context';
+import {
+  BuilderProvider,
+  useBuilder,
+} from '@/features/course-builder/context/builder-context';
 import {
   useCourseQuery,
   useUpdateCourseMutation,
@@ -106,11 +109,11 @@ const BuilderContent: React.FC = () => {
         <BuilderProgress />
       </div>
 
-      <div className='grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_360px]'>
+      <div className='grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_360px] relative'>
         <div
           className={cn(
             'rounded-2xl border border-neutral-200 bg-white',
-            !hasSections && 'min-h-[640px]',
+            !hasSections && 'min-h-160',
           )}
         >
           {!hasSections && <BuilderEmptyState />}
@@ -125,7 +128,7 @@ const BuilderContent: React.FC = () => {
             </div>
           )}
           {hasSections && hasPages && !showCanvas && !showOnboarding && (
-            <div className='flex min-h-[480px] items-center justify-center p-8 text-center text-neutral-500'>
+            <div className='flex min-h-120 items-center justify-center p-8 text-center text-neutral-500'>
               {t('courses.builder.selectPage')}
             </div>
           )}

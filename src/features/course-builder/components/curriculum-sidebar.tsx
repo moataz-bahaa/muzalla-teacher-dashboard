@@ -62,7 +62,7 @@ export const CurriculumSidebar: React.FC = () => {
   };
 
   return (
-    <aside className='flex h-full min-h-[815px] flex-col rounded-2xl border border-neutral-200 bg-white'>
+    <aside className='flex h-full min-h-[815px] sticky top-10 flex-col rounded-2xl border border-neutral-200 bg-white'>
       <div className='p-4'>
         <div className='flex rounded-xl bg-purple-heart-100 p-1'>
           {tabs.map((tab) => (
