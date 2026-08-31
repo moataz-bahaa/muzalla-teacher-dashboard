@@ -1,8 +1,11 @@
+import { FilesDropzone } from '@/components/files-dropzone';
 import DraftIcon from '@/components/icons/draft-icon';
+import MarketplaceIcon from '@/components/icons/marketplace-icon';
 import { PageBreadcrumb } from '@/components/page-breadcrumb';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/form/input';
 import { Switch } from '@/components/ui/switch';
+import { TagInput } from '@/components/ui/tag-input';
 import { Textarea } from '@/components/ui/textarea';
 import { CourseCard } from '@/features/courses/components/course/course-card';
 import { cn } from '@/lib/utils';
@@ -29,7 +32,6 @@ export const CourseCreatePage: React.FC = () => {
     'الحديد',
     'الكيمياء الكهربية',
   ]);
-  const [tagInput, setTagInput] = useState('');
   const [level, setLevel] = useState(LEVELS[2]!);
   const [description, setDescription] = useState('');
   const [pricingType, setPricingType] = useState<TPricingType>('subscription');
@@ -73,13 +75,6 @@ export const CourseCreatePage: React.FC = () => {
     ],
   );
 
-  const addTag = () => {
-    const next = tagInput.trim();
-    if (!next || tags.includes(next)) return;
-    setTags((prev) => [...prev, next]);
-    setTagInput('');
-  };
-
   const onSave = (asDraft: boolean) => {
     toast.success(
       asDraft ? t('courses.toast.draftSaved') : t('courses.toast.saved'),
@@ -101,8 +96,8 @@ export const CourseCreatePage: React.FC = () => {
             className='h-12 gap-2 rounded-lg bg-purple-heart-900 px-8 hover:bg-purple-heart-800'
             onClick={() => onSave(false)}
           >
-            <ChevronRight className='size-6' />
             {t('courses.create.saveContinue')}
+            <ChevronRight className='size-6' />
           </Button>
           <Button
             variant='outline'
@@ -110,7 +105,7 @@ export const CourseCreatePage: React.FC = () => {
             onClick={() => onSave(true)}
           >
             {t('courses.create.saveDraft')}
-            <DraftIcon className='size-4' />
+            <DraftIcon className='size-6' />
           </Button>
         </div>
         <PageBreadcrumb
@@ -122,16 +117,16 @@ export const CourseCreatePage: React.FC = () => {
         />
       </div>
 
-      <div className='grid grid-cols-1 gap-6 xl:grid-cols-[464px_minmax(0,1fr)_340px]'>
+      <div className='grid grid-cols-1 xl:-ms-10 gap-6 xl:grid-cols-[464px_minmax(0,1fr)_340px]'>
         <aside className='rounded-2xl border border-neutral-200 bg-white p-4'>
-          <div className='mb-6 flex items-center gap-2 p-1.5 bg-purple-heart-100'>
+          <div className='mb-6 flex items-center gap-2 p-1.5 bg-purple-heart-100 rounded-lg'>
             <button
               type='button'
               onClick={() => setPreviewTab('info')}
               className={cn(
                 'text-sm grow',
                 previewTab === 'info'
-                  ? 'bg-white rounded font-medium text-purple-heart-800'
+                  ? 'bg-white rounded-lg py-1 font-medium text-purple-heart-800'
                   : 'text-neutral-500',
               )}
             >
@@ -143,7 +138,7 @@ export const CourseCreatePage: React.FC = () => {
               className={cn(
                 'text-sm grow',
                 previewTab === 'curriculum'
-                  ? 'bg-white rounded font-medium text-purple-heart-800'
+                  ? 'bg-white rounded-lg py-1 font-medium text-purple-heart-800'
                   : 'text-neutral-500',
               )}
             >
@@ -165,7 +160,6 @@ export const CourseCreatePage: React.FC = () => {
           </Button>
         </aside>
 
-        {/* TODO continue from here */}
         <div className='flex flex-col gap-5'>
           <section className='rounded-2xl border border-neutral-200 bg-white p-5'>
             <div className='flex flex-col gap-5'>
@@ -184,32 +178,11 @@ export const CourseCreatePage: React.FC = () => {
                 <label className='text-sm font-medium'>
                   {t('courses.create.keywords')}
                 </label>
-                <div className='flex min-h-12 flex-wrap items-center justify-end gap-2 rounded-lg border border-neutral-200 px-3 py-2'>
-                  {tags.map((tag) => (
-                    <button
-                      key={tag}
-                      type='button'
-                      onClick={() =>
-                        setTags((prev) => prev.filter((item) => item !== tag))
-                      }
-                      className='rounded-full bg-success-100 px-2 py-0.5 text-xs font-medium text-success-800'
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                  <Input
-                    value={tagInput}
-                    onChange={(event) => setTagInput(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Enter') {
-                        event.preventDefault();
-                        addTag();
-                      }
-                    }}
-                    placeholder={t('courses.create.keywordsPlaceholder')}
-                    className='h-8 min-w-[120px] flex-1 border-0 shadow-none focus-visible:ring-0'
-                  />
-                </div>
+                <TagInput
+                  value={tags}
+                  onChange={setTags}
+                  placeholder={t('courses.create.keywordsPlaceholder')}
+                />
               </div>
 
               <div className='space-y-2 '>
@@ -325,48 +298,54 @@ export const CourseCreatePage: React.FC = () => {
           </section>
         </div>
         <div className='flex flex-col gap-5'>
-          <section className='rounded-2xl border border-neutral-200 bg-white p-4'>
-            <h2 className='mb-3  text-sm font-medium text-neutral-800'>
+          <div
+            className='bg-white px-4 py-7 rounded-2xl'
+            style={{ boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.10)' }}
+          >
+            <h3 className='text-base font-medium'>
               {t('courses.create.cover')}
-            </h2>
-            <label className='flex min-h-[240px] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-purple-heart-400 bg-purple-heart-50/40 px-4 text-center'>
-              <ImagePlus className='size-12 text-purple-heart-700' />
-              <p className='text-sm text-neutral-700'>
-                {t('courses.create.coverHint')}
-              </p>
-              <p className='text-xs text-neutral-500'>
-                {t('courses.create.coverHintSecondary')}
-              </p>
-              <input
-                type='file'
-                accept='image/*'
-                className='hidden'
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  if (!file) return;
-                  if (file.size > 20 * 1024 * 1024) {
-                    toast.error(t('courses.create.coverTooLarge'));
-                    return;
-                  }
-                  setCoverUrl(URL.createObjectURL(file));
-                }}
-              />
-            </label>
-          </section>
+            </h3>
+            <FilesDropzone
+              className='mt-6'
+              accept={'image/*'}
+              hint={t('courses.create.coverHint')}
+              maxFileSize={20 * 1024 * 1024}
+              value={null}
+              onChange={(file) => {
+                if (!file) return;
+                if (file.size > 20 * 1024 * 1024) {
+                  toast.error(t('courses.create.coverTooLarge'));
+                  return;
+                }
+                setCoverUrl(URL.createObjectURL(file));
+              }}
+              emptyIcon={
+                <ImagePlus className='size-12 text-purple-heart-700' />
+              }
+              validateFile={(selectedFile) =>
+                selectedFile.type.startsWith('image/')
+                  ? null
+                  : t('courses.create.coverInvalidType')
+              }
+              onValidationError={(message) => toast.error(message)}
+            />
+          </div>
 
-          <section className='rounded-2xl bg-purple-heart-900 p-6 text-white shadow-md'>
+          <section className='rounded-2xl bg-purple-heart-800 p-6 text-white shadow-md'>
             <div className='mb-4 flex items-center justify-between'>
               <Switch
                 checked={allowMarketplace}
                 onCheckedChange={setAllowMarketplace}
                 className='data-[state=checked]:bg-white data-[state=checked]:[&_span]:bg-purple-heart-900'
               />
-              <CloudUpload className='size-8 opacity-90' />
+              <div className='flex items-center gap-2'>
+                <MarketplaceIcon className='size-8' />
+              </div>
             </div>
-            <h3 className='mb-2 text-lg font-bold'>
+            <h3 className='mb-2 text-sm font-bold text-neutral-100'>
               {t('courses.create.marketplaceTitle')}
             </h3>
-            <p className='text-sm leading-relaxed text-purple-heart-100'>
+            <p className='text-xs leading-relaxed text-[#DBEAFE]'>
               {t('courses.create.marketplaceDescription')}
             </p>
           </section>
