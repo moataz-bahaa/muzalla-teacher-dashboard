@@ -103,7 +103,7 @@ export const CourseCard: React.FC<ICourseCardProps> = ({
               asChild
               className='h-9 flex-[1.6] rounded-lg bg-purple-heart-900 hover:bg-purple-heart-800'
             >
-              <Link to={routes.courseNew}>{t('courses.actions.view')}</Link>
+              <Link to={routes.courseBuilder(course.id)}>{t('courses.actions.view')}</Link>
             </Button>
           </div>
         )}

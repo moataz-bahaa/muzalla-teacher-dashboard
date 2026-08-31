@@ -21,7 +21,7 @@ export const HomePage: React.FC = () => {
           asChild
           className='bg-purple-heart-900 hover:bg-purple-heart-800'
         >
-          <Link to={routes.coursesBuilder}>{t('courses.title')}</Link>
+          <Link to={routes.courses}>{t('courses.title')}</Link>
         </Button>
         <Button asChild variant='outline'>
           <Link to={routes.login}>{t('auth.login.submit')}</Link>

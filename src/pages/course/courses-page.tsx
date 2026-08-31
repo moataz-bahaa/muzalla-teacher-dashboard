@@ -232,7 +232,7 @@ export const CoursesPage: React.FC = () => {
                   {t('courses.actions.view')}
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to={routes.courseNew}>
+                  <Link to={routes.courseBuilder(course.id)}>
                     <Pencil className='size-4' />
                     {t('courses.actions.edit')}
                   </Link>

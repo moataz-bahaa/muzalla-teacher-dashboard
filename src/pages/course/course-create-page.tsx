@@ -11,7 +11,7 @@ import type { ICourse, TPricingType } from '@/types/course';
 import { ChevronRight, CloudUpload, ImagePlus } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const LEVELS = [
@@ -22,6 +22,7 @@ const LEVELS = [
 
 export const CourseCreatePage: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [title, setTitle] = useState('أكسيد الحديد');
   const [tags, setTags] = useState([
     'أكسيد الحديد',
@@ -83,6 +84,9 @@ export const CourseCreatePage: React.FC = () => {
     toast.success(
       asDraft ? t('courses.toast.draftSaved') : t('courses.toast.saved'),
     );
+    if (!asDraft) {
+      void navigate(routes.courseBuilder(1));
+    }
   };
 
   return (

@@ -9,6 +9,7 @@ export const routes = {
   courses: '/courses',
   courseNew: '/courses/new',
   coursesBuilder: '/courses/builder',
+  courseBuilder: (id: number) => `/courses/${id}/builder`,
 } as const
 
 export type TRoute = (typeof routes)[keyof typeof routes]

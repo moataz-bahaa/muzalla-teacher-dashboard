@@ -63,7 +63,7 @@ export const StudentsPage: React.FC = () => {
     } as IEditStudentModalData);
   };
 
-  const onStatusChange = (id: number, active: boolean) => {
+  const onStatusChange = (_id: number, _active: boolean) => {
     // TODO handle status change
     toast.success(t('students.toast.statusUpdated'));
   };

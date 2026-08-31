@@ -222,6 +222,95 @@
       "saved": "Course saved (demo)",
       "draftSaved": "Draft saved (demo)",
       "exported": "Courses exported (demo)"
+    },
+    "builder": {
+      "empty": {
+        "message": "You must add the first section before you can add content",
+        "addSection": "Add section"
+      },
+      "onboarding": {
+        "title": "Quick tips for using the content designer",
+        "subtitle": "Watch short tutorials to get started quickly",
+        "skip": "Skip lessons",
+        "start": "Start first lesson",
+        "play": "Play",
+        "cards": {
+          "text": "Adding and working with text",
+          "media": "Adding images and videos",
+          "quiz": "Adding questions and exercises"
+        }
+      },
+      "sidebar": {
+        "curriculum": "Course curriculum",
+        "info": "Course info",
+        "add": "Add",
+        "newSection": "New section",
+        "newLesson": "New lesson",
+        "published": "Published"
+      },
+      "insert": {
+        "text": "Text",
+        "image": "Image",
+        "video": "Video",
+        "question": "Question",
+        "more": "More",
+        "uploadImage": "Upload image",
+        "uploadVideo": "Upload video",
+        "textOptions": {
+          "1": "Title 1",
+          "2": "Title 2",
+          "3": "Title 3",
+          "13": "Body text",
+          "14": "Small text"
+        },
+        "questionOptions": {
+          "8": "Single choice",
+          "9": "Multiple choice",
+          "10": "Written answer"
+        },
+        "moreOptions": {
+          "15": "Image",
+          "16": "Video",
+          "17": "Audio",
+          "18": "PDF viewer",
+          "13": "Text",
+          "12": "Link",
+          "22": "Horizontal divider",
+          "23": "Vertical divider",
+          "19": "Table",
+          "20": "Quote",
+          "21": "Notes"
+        }
+      },
+      "canvas": {
+        "teacherView": "Teacher view",
+        "studentView": "Student view",
+        "viewHint": "You can preview the page from the student perspective"
+      },
+      "blocks": {
+        "testKnowledge": "Test your knowledge",
+        "questionPlaceholder": "Enter your question",
+        "writtenPlaceholder": "Student answer area preview",
+        "answerPlaceholder": "Write your answer here",
+        "submitAnswer": "Submit answer",
+        "resources": "Resources and attachments",
+        "files": "files",
+        "addResource": "Add resource",
+        "uploadFromDevice": "Upload from your device or drag and drop",
+        "uploadAction": "Upload files",
+        "addLink": "Add",
+        "changeMedia": "Change",
+        "openPdf": "Open PDF"
+      },
+      "selectPage": "Select a lesson from the curriculum to start editing",
+      "toast": {
+        "saved": "Changes saved",
+        "saveError": "Could not save changes",
+        "sectionCreated": "Section created",
+        "sectionDeleted": "Section deleted",
+        "pageCreated": "Lesson created",
+        "pageDeleted": "Lesson deleted"
+      }
     }
   },
   "validation": {

@@ -12,11 +12,17 @@ export const API_ENDPOINTS = {
   courses: '/courses',
   courseById: (id: number) => `/courses/${id}`,
 
-  pages: '/pages',
-  pageById: (id: number) => `api/pages/${id}`,
-
   sections: '/sections',
-  sectionById: (id: number) => `api/sections/${id}`,
+  sectionById: (id: number) => `/sections/${id}`,
+  sectionReorder: '/sections/reorder',
+
+  pages: '/pages',
+  pageById: (id: number) => `/pages/${id}`,
+  pageReorder: '/pages/reorder',
+
+  pageBlocks: '/pageBlocks',
+  pageBlockById: (id: number) => `/pageBlocks/${id}`,
+  pageBlockReorder: '/pageBlocks/reorder',
 
   students: '/students',
   studentById: (id: number) => `/students/${id}`,
