@@ -1,7 +1,7 @@
 import { useDrawerAction } from '@/components/drawer-views/context';
 import SearchInput from '@/components/form/search-input';
-import { PageBreadcrumb } from '@/components/page-breadcrumb';
 import { useModalAction } from '@/components/modal-views/context';
+import { PageBreadcrumb } from '@/components/page-breadcrumb';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,12 +14,13 @@ import {
 import Pagination from '@/components/ui/pagination';
 import Table from '@/components/ui/table';
 import type { ICourseViewModalData } from '@/features/courses/components/course/course-view-modal';
-import { ALL_MOCK_COURSES } from '@/features/courses/data/mock-courses';
 import { useColumnConfig } from '@/hooks/use-column-config';
 import { useFilter } from '@/hooks/use-filter';
+import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
+import { useCoursesQuery } from '@/lib/data/courses';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
-import type { ICourse, IGetCoursesParams } from '@/types/course';
+import type { ICourseResponse, IGetCoursesParams } from '@/types/course';
 import { type ColumnDef } from '@tanstack/react-table';
 import {
   ArrowRightLeft,
@@ -40,12 +41,22 @@ import { toast } from 'sonner';
 
 const PAGE_SIZE = 10;
 
+const statusLabelKey = (status: string | number) => {
+  const value = String(status).toLowerCase();
+  if (value === '1' || value === 'published') return 'courses.status.published';
+  if (value === '2' || value === 'draft') return 'courses.status.draft';
+  if (value === '3' || value === 'pending') return 'courses.status.pending';
+  if (value === '4' || value === 'upcoming') return 'courses.status.upcoming';
+  return 'courses.status.draft';
+};
+
 export const CoursesPage: React.FC = () => {
   const { t } = useTranslation();
   const { openDrawer } = useDrawerAction();
   const { openModal } = useModalAction();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
+  const { courses, isPending } = useCoursesQuery();
   const filter = useFilter<IGetCoursesParams>({
     keywords: '',
     tags: [],
@@ -55,69 +66,31 @@ export const CoursesPage: React.FC = () => {
     page: 1,
   });
 
-  const filteredCourses = useMemo(() => {
-    return ALL_MOCK_COURSES.filter((course) => {
-      const { keywords, tags, priceFrom, priceTo, search } = filter.filters;
-
-      if (keywords) {
-        const q = keywords.toLowerCase();
-        const haystack =
-          `${course.title} ${course.description} ${course.tags.join(' ')}`.toLowerCase();
-        if (!haystack.includes(q)) return false;
-      }
-
-      if (search) {
-        const q = search.toLowerCase();
-        const haystack =
-          `${course.title} ${course.subject} ${course.instructor} ${course.description}`.toLowerCase();
-        if (!haystack.includes(q)) return false;
-      }
-
-      if (tags.length > 0 && !tags.some((tag) => course.tags.includes(tag))) {
-        return false;
-      }
-
-      if (course.price < priceFrom || course.price > priceTo) {
-        return false;
-      }
-
-      return true;
-    });
-  }, [filter.filters]);
-
-  const page = filter.filters.page ?? 1;
-  const paginatedCourses = useMemo(() => {
-    const start = (page - 1) * PAGE_SIZE;
-    return filteredCourses.slice(start, start + PAGE_SIZE);
-  }, [filteredCourses, page]);
-
-  const openViewModal = (course: ICourse, initialTab?: 'details' | 'curriculum') => {
+  const openViewModal = (course: ICourseResponse) => {
     openModal('COURSE_VIEW', {
       course,
-      initialTab,
     } satisfies ICourseViewModalData);
   };
 
-  const onDelete = (course: ICourse) => {
+  const onDelete = (course: ICourseResponse) => {
     openModal('DELETE_OBJECT', {
       object: 'course',
       id: course.id,
       title: t('courses.delete.title'),
-      description: t('courses.delete.description', { title: course.title }),
+      description: t('courses.delete.description', { title: course.name }),
+      invalidateQueryFilter: { queryKey: [API_ENDPOINTS.courses] },
       onSuccess() {
-        toast.success(t('courses.toast.deleted', { title: course.title }));
+        toast.success(t('courses.toast.deleted', { title: course.name }));
       },
     });
   };
 
   const allSelected =
-    paginatedCourses.length > 0 &&
-    paginatedCourses.every((course) => selectedIds.includes(course.id));
+    courses.length > 0 &&
+    courses.every((course) => selectedIds.includes(course.id));
 
   const toggleAll = (checked: boolean) => {
-    setSelectedIds(
-      checked ? paginatedCourses.map((course) => course.id) : [],
-    );
+    setSelectedIds(checked ? courses.map((course) => course.id) : []);
   };
 
   const toggleOne = (id: number, checked: boolean) => {
@@ -126,7 +99,7 @@ export const CoursesPage: React.FC = () => {
     );
   };
 
-  const columns = useMemo<ColumnDef<ICourse>[]>(
+  const columns = useMemo<ColumnDef<ICourseResponse>[]>(
     () => [
       {
         id: 'select',
@@ -155,30 +128,20 @@ export const CoursesPage: React.FC = () => {
         header: t('courses.columns.cover'),
         cell: ({ row }) => (
           <Avatar size='sm' className='mx-auto rounded-md'>
-            <AvatarImage src={row.original.coverUrl} alt={row.original.title} />
+            <AvatarImage src={row.original.coverUrl} alt={row.original.name} />
             <AvatarFallback className='rounded-md'>
-              {row.original.title.slice(0, 1)}
+              {row.original.name.slice(0, 1)}
             </AvatarFallback>
           </Avatar>
         ),
       },
       {
-        accessorKey: 'title',
+        accessorKey: 'name',
         size: 180,
         header: t('courses.columns.title'),
         cell: ({ row }) => (
-          <span className='text-neutral-800'>{row.original.title}</span>
+          <span className='text-neutral-800'>{row.original.name}</span>
         ),
-      },
-      {
-        accessorKey: 'subject',
-        size: 120,
-        header: t('courses.columns.subject'),
-      },
-      {
-        accessorKey: 'instructor',
-        size: 160,
-        header: t('courses.columns.instructor'),
       },
       {
         accessorKey: 'description',
@@ -186,25 +149,40 @@ export const CoursesPage: React.FC = () => {
         header: t('courses.columns.description'),
         cell: ({ row }) => (
           <span className='line-clamp-2 text-neutral-600'>
-            {row.original.description}
+            {row.original.description || '—'}
           </span>
         ),
       },
       {
-        accessorKey: 'price',
-        size: 100,
-        header: t('courses.columns.price'),
+        id: 'tags',
+        size: 180,
+        enableSorting: false,
+        header: t('courses.columns.tags'),
+        cell: ({ row }) => (
+          <span className='line-clamp-2 text-neutral-700'>
+            {row.original.tags.map((tag) => tag.name).join(', ') || '—'}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'levelName',
+        size: 160,
+        header: t('courses.columns.level'),
+        cell: ({ row }) => (
+          <span className='text-neutral-700'>
+            {row.original.levelName || '—'}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'status',
+        size: 120,
+        header: t('courses.columns.status'),
         cell: ({ row }) => (
           <span className='text-neutral-800'>
-            {row.original.price}
-            {row.original.currency}
+            {t(statusLabelKey(row.original.status))}
           </span>
         ),
-      },
-      {
-        accessorKey: 'academicYear',
-        size: 180,
-        header: t('courses.columns.academicYear'),
       },
       {
         id: 'actions',
@@ -253,7 +231,10 @@ export const CoursesPage: React.FC = () => {
     [t, selectedIds, allSelected],
   );
 
-  const { visibleColumns, openConfigModal } = useColumnConfig('courses', columns);
+  const { visibleColumns, openConfigModal } = useColumnConfig(
+    'courses',
+    columns,
+  );
 
   const applyDrawerFilters = (next: IGetCoursesParams) => {
     filter.onChange('keywords', next.keywords);
@@ -345,9 +326,10 @@ export const CoursesPage: React.FC = () => {
           </Button>
         </div>
 
-        <Table
+        <Table<ICourseResponse>
           columns={visibleColumns}
-          data={paginatedCourses}
+          data={courses}
+          isPending={isPending}
           syncOrderingToUrl={false}
           skeletonRowsLength={PAGE_SIZE}
           headerClassName='bg-neutral-100'
@@ -355,8 +337,9 @@ export const CoursesPage: React.FC = () => {
         />
 
         <Pagination
-          current={page}
-          total={Math.max(1, Math.ceil(filteredCourses.length / PAGE_SIZE))}
+          current={filter.filters.page ?? 1}
+          // TODO get from backend
+          total={Math.max(1, Math.ceil(courses.length / PAGE_SIZE))}
           onChange={(nextPage) => filter.onChange('page', nextPage)}
           className='border-t border-neutral-200 px-4 py-4'
         />

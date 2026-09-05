@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import {
+  buildCreateCourseFormData,
   buildCreatePageBlocksFormData,
   buildCreatePageFormData,
   buildCreateSectionFormData,
@@ -29,7 +30,13 @@ import type {
   IVerifyOtpResponse,
   TAuthDevicesResponse,
 } from '@/types/auth';
-import type { ICourseResponse, IUpdateCourseInput } from '@/types/course-api';
+import type {
+  ICourseResponse,
+  ICreateCourseInput,
+  IGetCoursesApiParams,
+  ITagResponse,
+  IUpdateCourseInput,
+} from '@/types/course';
 import type {
   ICreatePageInput,
   IPage,
@@ -94,9 +101,20 @@ class Client {
   };
 
   courses = {
+    getAll: (params?: IGetCoursesApiParams) =>
+      HttpClient.get<IApiResponse<ICourseResponse[]>>(API_ENDPOINTS.courses, {
+        params,
+      }),
+
     getById: (id: number) =>
       HttpClient.get<IApiResponse<ICourseResponse>>(
         API_ENDPOINTS.courseById(id),
+      ),
+
+    create: (input: ICreateCourseInput) =>
+      HttpClient.post<IApiResponse<number>>(
+        API_ENDPOINTS.courses,
+        buildCreateCourseFormData(input),
       ),
 
     update: ({ id, ...input }: IUpdateCourseInput) =>
@@ -107,6 +125,11 @@ class Client {
 
     delete: (id: number) =>
       HttpClient.delete<unknown>(`${API_ENDPOINTS.courses}?id=${id}`),
+  };
+
+  tags = {
+    getAll: () =>
+      HttpClient.get<IApiResponse<ITagResponse[]>>(API_ENDPOINTS.tags),
   };
 
   sections = {

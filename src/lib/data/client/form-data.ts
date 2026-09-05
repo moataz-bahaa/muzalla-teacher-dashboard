@@ -1,6 +1,13 @@
-import type { IUpdateCourseInput } from '@/types/course-api';
-import type { ICreatePageBlocksInput, IReorderPageBlockItem } from '@/types/page-block';
-import type { ICreatePageInput, IReorderPageItem, IUpdatePageInput } from '@/types/page';
+import type { ICreateCourseInput, IUpdateCourseInput } from '@/types/course';
+import type {
+  ICreatePageInput,
+  IReorderPageItem,
+  IUpdatePageInput,
+} from '@/types/page';
+import type {
+  ICreatePageBlocksInput,
+  IReorderPageBlockItem,
+} from '@/types/page-block';
 import type {
   ICreateSectionInput,
   IReorderSectionItem,
@@ -16,6 +23,13 @@ function appendFormValue(formData: FormData, key: string, value: unknown) {
     return;
   }
   formData.append(key, String(value));
+}
+
+function appendTagIds(formData: FormData, tags: number[] | undefined) {
+  if (!tags) return;
+  tags.forEach((tagId, index) => {
+    appendFormValue(formData, `Tags[${index}]`, tagId);
+  });
 }
 
 export function buildCreatePageBlocksFormData(
@@ -45,7 +59,9 @@ export function buildCreatePageBlocksFormData(
   return formData;
 }
 
-export function buildCreateSectionFormData(input: ICreateSectionInput): FormData {
+export function buildCreateSectionFormData(
+  input: ICreateSectionInput,
+): FormData {
   const formData = new FormData();
   Object.entries(input).forEach(([key, value]) => {
     appendFormValue(formData, toPascalCase(key), value);
@@ -85,9 +101,31 @@ export function buildUpdateCourseFormData(
   input: Omit<IUpdateCourseInput, 'id'>,
 ): FormData {
   const formData = new FormData();
-  Object.entries(input).forEach(([key, value]) => {
+  const { tags, cover, image, ...rest } = input;
+
+  Object.entries(rest).forEach(([key, value]) => {
     appendFormValue(formData, toPascalCase(key), value);
   });
+
+  appendTagIds(formData, tags);
+  if (cover) formData.append('Cover', cover);
+  if (image) formData.append('Image', image);
+
+  return formData;
+}
+
+export function buildCreateCourseFormData(input: ICreateCourseInput): FormData {
+  const formData = new FormData();
+  appendFormValue(formData, 'Name', input.name);
+  appendFormValue(formData, 'Description', input.description);
+  appendFormValue(formData, 'LevelId', input.levelId);
+  appendFormValue(formData, 'DurationInMinutes', input.durationInMinutes);
+  appendFormValue(formData, 'Prerequisites', input.prerequisites);
+  appendFormValue(formData, 'HasCertificate', input.hasCertificate);
+  appendFormValue(formData, 'Status', input.status);
+  appendTagIds(formData, input.tags);
+  formData.append('Cover', input.cover);
+  formData.append('Image', input.image);
   return formData;
 }
 
@@ -112,7 +150,9 @@ export function buildReorderPageBlocksBody(
   return { pageId, items };
 }
 
-export function buildCreateStudentFormData(input: ICreateStudentInput): FormData {
+export function buildCreateStudentFormData(
+  input: ICreateStudentInput,
+): FormData {
   const formData = new FormData();
   Object.entries(input).forEach(([key, value]) => {
     appendFormValue(formData, toPascalCase(key), value);

@@ -1,33 +1,6 @@
-export type TCourseStatus = 'published' | 'inactive';
-export type TPricingType = 'subscription' | 'fixed';
+import type { ECourseStatus } from './page-block';
+
 export type TCourseLessonType = 'video' | 'quiz' | 'article';
-
-export interface ICourseLesson {
-  id: number;
-  title: string;
-  type: TCourseLessonType;
-  duration?: string;
-}
-
-export interface ICourse {
-  id: number;
-  title: string;
-  description: string;
-  coverUrl: string;
-  tags: string[];
-  price: number;
-  currency: string;
-  publishedAt: string;
-  status: TCourseStatus;
-  level?: string;
-  pricingType: TPricingType;
-  allowMarketplace?: boolean;
-  instructor: string;
-  subject: string;
-  academicYear: string;
-  outcomes?: string[];
-  lessons?: ICourseLesson[];
-}
 
 export interface IGetCoursesParams {
   keywords: string;
@@ -38,13 +11,54 @@ export interface IGetCoursesParams {
   page?: number;
 }
 
-export interface ICreateCourseFormValues {
-  title: string;
-  tags: string[];
-  level: string;
-  description: string;
-  pricingType: TPricingType;
-  price: number | null;
-  allowMarketplace: boolean;
-  coverUrl: string | null;
+export interface ITagResponse {
+  id: number;
+  name: string;
+}
+
+export interface ICourseResponse {
+  id: number;
+  name: string;
+  description: string | null;
+  levelName: string | null;
+  durationInMinutes: number;
+  tags: ITagResponse[];
+  prerequisites: string | null;
+  imageUrl: string;
+  coverUrl: string;
+  hasCertificate: boolean;
+  status: ECourseStatus;
+}
+
+export interface IGetCoursesApiParams {
+  name?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
+export interface ICreateCourseInput {
+  name: string;
+  description?: string;
+  levelId?: number;
+  durationInMinutes: number;
+  tags: number[];
+  prerequisites?: string;
+  cover: File;
+  image: File;
+  hasCertificate: boolean;
+  status: ECourseStatus;
+}
+
+export interface IUpdateCourseInput {
+  id: number;
+  name?: string;
+  description?: string;
+  levelId?: number;
+  durationInMinutes?: number;
+  tags?: number[];
+  prerequisites?: string;
+  cover?: File;
+  image?: File;
+  hasCertificate?: boolean;
+  status?: ECourseStatus;
 }

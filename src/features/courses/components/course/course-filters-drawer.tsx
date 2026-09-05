@@ -13,9 +13,9 @@ import { useTranslation } from 'react-i18next';
 
 const DEFAULT_FILTERS: IGetCoursesParams = {
   keywords: '',
-  tags: ['كيمياء', 'الحديد', 'أكسيد الحديد'],
-  priceFrom: 250,
-  priceTo: 750,
+  tags: [],
+  priceFrom: 0,
+  priceTo: 10000,
 };
 
 export const CourseFiltersDrawer: React.FC = () => {

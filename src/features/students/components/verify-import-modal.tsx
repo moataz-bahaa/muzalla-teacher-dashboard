@@ -7,7 +7,6 @@ import { Button, CloseButton } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Switch } from '@/components/ui/switch';
 import Table from '@/components/ui/table';
-import { StudentPasswordCell } from '@/features/students/components/student-password-cell';
 import type { IStudent } from '@/types/student';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
@@ -18,6 +17,9 @@ export interface IVerifyImportModalData {
   students?: IStudent[];
   onConfirm?: (students: IStudent[]) => void;
 }
+
+const studentName = (student: IStudent) =>
+  `${student.firstName} ${student.lastName}`.trim();
 
 export const VerifyImportModal: React.FC = () => {
   const { t } = useTranslation();
@@ -41,9 +43,9 @@ export const VerifyImportModal: React.FC = () => {
     );
   };
 
-  const onStatusChange = (id: number, active: boolean) => {
+  const onStatusChange = (id: number, isActive: boolean) => {
     setRows((prev) =>
-      prev.map((row) => (row.id === id ? { ...row, active } : row)),
+      prev.map((row) => (row.id === id ? { ...row, isActive } : row)),
     );
   };
 
@@ -70,57 +72,53 @@ export const VerifyImportModal: React.FC = () => {
       },
       {
         id: 'avatar',
-        accessorKey: 'avatarUrl',
+        accessorKey: 'profileImage',
         size: 140,
         enableSorting: false,
         header: t('students.columns.avatar'),
         cell: ({ row }) => (
           <Avatar size='sm' className='mx-auto'>
-            <AvatarImage src={row.original.avatarUrl} alt={row.original.name} />
-            <AvatarFallback>{row.original.name.slice(0, 1)}</AvatarFallback>
+            <AvatarImage
+              src={row.original.profileImage ?? undefined}
+              alt={studentName(row.original)}
+            />
+            <AvatarFallback>
+              {studentName(row.original).slice(0, 1)}
+            </AvatarFallback>
           </Avatar>
         ),
       },
       {
-        accessorKey: 'name',
+        id: 'name',
         size: 180,
         header: t('students.columns.name'),
         cell: ({ row }) => (
-          <span className='text-neutral-800'>{row.original.name}</span>
+          <span className='text-neutral-800'>{studentName(row.original)}</span>
         ),
       },
       {
-        accessorKey: 'email',
+        accessorKey: 'username',
         size: 200,
-        header: t('students.columns.email'),
+        header: t('students.columns.username'),
       },
       {
-        accessorKey: 'phone',
+        accessorKey: 'phoneNumber',
         size: 140,
         enableSorting: false,
         header: t('students.columns.phone'),
         cell: ({ row }) => (
-          <span dir='ltr'>{row.original.phone}</span>
-        ),
-      },
-      {
-        accessorKey: 'password',
-        size: 160,
-        enableSorting: false,
-        header: t('students.columns.password'),
-        cell: ({ row }) => (
-          <StudentPasswordCell password={row.original.password} />
+          <span dir='ltr'>{row.original.phoneNumber}</span>
         ),
       },
       {
         id: 'status',
-        accessorKey: 'active',
+        accessorKey: 'isActive',
         size: 100,
         enableSorting: false,
         header: t('students.columns.status'),
         cell: ({ row }) => (
           <Switch
-            checked={row.original.active}
+            checked={row.original.isActive}
             onCheckedChange={(checked) =>
               onStatusChange(row.original.id, checked)
             }
@@ -129,12 +127,12 @@ export const VerifyImportModal: React.FC = () => {
         ),
       },
       {
-        accessorKey: 'academicYear',
+        accessorKey: 'levelName',
         size: 180,
         header: t('students.columns.academicYear'),
         cell: ({ row }) => (
           <span className='text-neutral-700'>
-            {t(`students.academicYears.${row.original.academicYear}`)}
+            {row.original.levelName || '—'}
           </span>
         ),
       },

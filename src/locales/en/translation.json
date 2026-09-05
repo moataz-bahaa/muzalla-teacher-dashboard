@@ -12,6 +12,8 @@
     "maxFileSize": "Maximum file size {{size}}",
     "fileTooLarge": "File exceeds maximum size of {{size}}",
     "noData": "No data",
+    "yes": "Yes",
+    "no": "No",
     "pagination": {
       "prev": "Previous page",
       "next": "Next page",
@@ -155,12 +157,17 @@
     "columns": {
       "cover": "Course cover",
       "title": "Course title",
-      "subject": "Course subject",
-      "instructor": "Instructor",
       "description": "Course description",
-      "price": "Course price",
-      "academicYear": "Academic year",
+      "tags": "Tags",
+      "level": "Level",
+      "status": "Status",
       "actions": "Actions"
+    },
+    "status": {
+      "published": "Published",
+      "draft": "Draft",
+      "pending": "Pending",
+      "upcoming": "Upcoming"
     },
     "view": {
       "detailsTab": "Course details",
@@ -175,7 +182,8 @@
     "actions": {
       "edit": "Edit",
       "view": "View course",
-      "delete": "Delete"
+      "delete": "Delete",
+      "openBuilder": "Open course builder"
     },
     "delete": {
       "title": "Delete course from database",
@@ -198,19 +206,20 @@
       "coverHint": "Upload the cover image here by drag and drop or browse",
       "coverHintSecondary": "Maximum file size 20MB",
       "coverTooLarge": "Cover image must be 20MB or less",
-      "marketplaceTitle": "Allow uploading the course to Marketplace",
-      "marketplaceDescription": "Enabling this option allows uploading this course to the company platform and sharing subscription profits with the company",
+      "coverInvalidType": "Please upload an image file",
+      "coverRequired": "Please upload a course cover",
+      "nameRequired": "Course title is required",
+      "durationRequired": "Duration must be at least 1 minute",
       "courseTitle": "Course title",
       "titlePlaceholder": "Course title",
-      "keywords": "Keywords",
-      "keywordsPlaceholder": "Add a keyword and press Enter",
-      "level": "Course level",
+      "keywords": "Tags",
+      "keywordsPlaceholder": "Select tags",
+      "noTags": "No tags available yet",
+      "duration": "Duration (minutes)",
+      "minutes": "minutes",
+      "hasCertificate": "Includes certificate",
       "description": "Course description",
       "descriptionPlaceholder": "Write more details about the course, skills and knowledge",
-      "pricingPlan": "Pricing plan",
-      "subscription": "Subscription",
-      "subscriptionHint": "Choosing this option includes the course in monthly or annual student subscriptions",
-      "fixedPrice": "Fixed price",
       "cardPreview": "Course card",
       "infoTab": "Course info",
       "curriculumTab": "Course curriculum",
@@ -218,9 +227,10 @@
       "backToList": "Back to courses"
     },
     "toast": {
-      "deleted": "Course \"{{title}}\" deleted (demo)",
-      "saved": "Course saved (demo)",
-      "draftSaved": "Draft saved (demo)",
+      "deleted": "Course \"{{title}}\" deleted",
+      "saved": "Course saved",
+      "draftSaved": "Draft saved",
+      "saveError": "Failed to save course",
       "exported": "Courses exported (demo)"
     },
     "builder": {

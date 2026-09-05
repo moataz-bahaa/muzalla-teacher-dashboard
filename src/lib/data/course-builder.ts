@@ -1,19 +1,19 @@
 import { useMutation, type UseMutationProps } from '@/hooks/use-mutation';
 import { client } from '@/lib/data/client';
 import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
-import type { ICourseResponse, IUpdateCourseInput } from '@/types/course-api';
-import type {
-  ICreatePageBlocksInput,
-  IPageBlock,
-  IReorderPageBlockItem,
-  IUpdatePageBlocksInput,
-} from '@/types/page-block';
+import type { ICourseResponse, IUpdateCourseInput } from '@/types/course';
 import type {
   ICreatePageInput,
   IPage,
   IReorderPageItem,
   IUpdatePageInput,
 } from '@/types/page';
+import type {
+  ICreatePageBlocksInput,
+  IPageBlock,
+  IReorderPageBlockItem,
+  IUpdatePageBlocksInput,
+} from '@/types/page-block';
 import type {
   ICreateSectionInput,
   IReorderSectionItem,
@@ -204,7 +204,8 @@ export const useCreatePageBlocksMutation = (pageId: number) => {
 export const useUpdatePageBlocksMutation = (pageId: number) =>
   useMutation({
     mutationKey: [API_ENDPOINTS.pageBlocks, 'update', pageId],
-    mutationFn: (input: IUpdatePageBlocksInput) => client.pageBlocks.update(input),
+    mutationFn: (input: IUpdatePageBlocksInput) =>
+      client.pageBlocks.update(input),
     invalidateQueryFilter: { queryKey: [API_ENDPOINTS.pageBlocks, pageId] },
   });
 

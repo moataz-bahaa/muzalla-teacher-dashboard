@@ -1,17 +1,33 @@
 import { useModalAction } from '@/components/modal-views/context';
 import { Button } from '@/components/ui/button';
+import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
-import type { ICourse } from '@/types/course';
+import type { ICourseResponse, ITagResponse } from '@/types/course';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import type { IDeleteModalData } from '../../../../components/modal-views/delete-modal';
 
+export interface ICourseCardPreview {
+  id: number;
+  name: string;
+  description: string | null;
+  coverUrl: string;
+  tags: Array<ITagResponse | string>;
+  levelName?: string | null;
+}
+
 interface ICourseCardProps {
-  course: ICourse;
+  course: ICourseResponse | ICourseCardPreview;
   className?: string;
   compact?: boolean;
 }
+
+const tagLabel = (tag: ITagResponse | string) =>
+  typeof tag === 'string' ? tag : tag.name;
+
+const tagKey = (tag: ITagResponse | string, index: number) =>
+  typeof tag === 'string' ? `${tag}-${index}` : tag.id;
 
 export const CourseCard: React.FC<ICourseCardProps> = ({
   course,
@@ -36,7 +52,7 @@ export const CourseCard: React.FC<ICourseCardProps> = ({
       >
         <img
           src={course.coverUrl}
-          alt={course.title}
+          alt={course.name}
           className='size-full object-cover'
         />
       </div>
@@ -48,7 +64,7 @@ export const CourseCard: React.FC<ICourseCardProps> = ({
               compact ? 'text-base' : 'text-xl',
             )}
           >
-            {course.title}
+            {course.name}
           </h3>
           <p
             className={cn(
@@ -56,35 +72,28 @@ export const CourseCard: React.FC<ICourseCardProps> = ({
               compact ? 'text-xs' : 'text-sm',
             )}
           >
-            {course.description}
+            {course.description || '—'}
           </p>
           <div className='flex flex-wrap gap-1 pt-1'>
-            {course.tags.map((tag) => (
+            {course.tags.map((tag, index) => (
               <span
-                key={tag}
+                key={tagKey(tag, index)}
                 className='rounded-full bg-success-100 px-2 py-0.5 text-xs font-medium text-success-800'
               >
-                {tag}
+                {tagLabel(tag)}
               </span>
             ))}
           </div>
         </div>
 
-        <div className='flex items-end justify-between gap-3'>
-          <p className='text-xs text-neutral-700 flex items-center gap-2'>
-            <span className='font-medium'>{t('courses.publishedAt')}:</span>{course.publishedAt}
+        {'levelName' in course && course.levelName ? (
+          <p className='text-xs text-neutral-700'>
+            <span className='font-medium'>{t('courses.columns.level')}: </span>
+            {course.levelName}
           </p>
-          <p
-            className={cn(
-              'font-bold text-purple-heart-700',
-              compact ? 'text-base' : 'text-xl',
-            )}
-          >
-            {course.price} {course.currency}
-          </p>
-        </div>
+        ) : null}
 
-        {!compact && (
+        {!compact && course.id > 0 && (
           <div className='flex gap-3'>
             <Button
               variant='outline'
@@ -93,7 +102,10 @@ export const CourseCard: React.FC<ICourseCardProps> = ({
                 openModal('DELETE_OBJECT', {
                   object: 'course',
                   id: course.id,
-                  title: course.title,
+                  title: course.name,
+                  invalidateQueryFilter: {
+                    queryKey: [API_ENDPOINTS.courses],
+                  },
                 } as IDeleteModalData)
               }
             >
@@ -103,7 +115,9 @@ export const CourseCard: React.FC<ICourseCardProps> = ({
               asChild
               className='h-9 flex-[1.6] rounded-lg bg-purple-heart-900 hover:bg-purple-heart-800'
             >
-              <Link to={routes.courseBuilder(course.id)}>{t('courses.actions.view')}</Link>
+              <Link to={routes.courseBuilder(course.id)}>
+                {t('courses.actions.view')}
+              </Link>
             </Button>
           </div>
         )}

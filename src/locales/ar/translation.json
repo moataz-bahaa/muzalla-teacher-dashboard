@@ -12,6 +12,8 @@
     "maxFileSize": "أقصى حجم للملف {{size}}",
     "fileTooLarge": "حجم الملف يتجاوز الحد الأقصى {{size}}",
     "noData": "لا توجد بيانات",
+    "yes": "نعم",
+    "no": "لا",
     "pagination": {
       "prev": "الصفحة السابقة",
       "next": "الصفحة التالية",
@@ -155,12 +157,17 @@
     "columns": {
       "cover": "غلاف الدورة",
       "title": "عنوان الدورة",
-      "subject": "موضوع الدورة",
-      "instructor": "مقدم الدورة",
       "description": "وصف الدورة",
-      "price": "سعر الدورة",
-      "academicYear": "السنة الدراسية",
+      "tags": "الوسوم",
+      "level": "المستوى",
+      "status": "الحالة",
       "actions": "الإجرائات"
+    },
+    "status": {
+      "published": "منشورة",
+      "draft": "مسودة",
+      "pending": "قيد المراجعة",
+      "upcoming": "قادمة"
     },
     "view": {
       "detailsTab": "تفاصيل الدورة",
@@ -175,7 +182,8 @@
     "actions": {
       "edit": "تعديل",
       "view": "عرض الدورة",
-      "delete": "حذف"
+      "delete": "حذف",
+      "openBuilder": "فتح مصمم المحتوى"
     },
     "delete": {
       "title": "حذف الدورة من قاعدة البيانات",
@@ -198,19 +206,20 @@
       "coverHint": "قم برفع صورة الغلاف هنا عن طريق السحب والأفلات أو التصفح",
       "coverHintSecondary": "الحد الأقصى لحجم الملف 20 ميغابايت",
       "coverTooLarge": "يجب ألا يتجاوز حجم صورة الغلاف 20 ميغابايت",
-      "marketplaceTitle": "السماح برفع الدورة على Marketplace",
-      "marketplaceDescription": "عند تفعيل هذا الخيار ستسمح برفع هذا الكورس على منصة الشركة ومشاركة ارباح الاشتراكات مع الشركة",
+      "coverInvalidType": "يرجى رفع ملف صورة",
+      "coverRequired": "يرجى رفع غلاف الدورة",
+      "nameRequired": "عنوان الدورة مطلوب",
+      "durationRequired": "يجب أن تكون المدة دقيقة واحدة على الأقل",
       "courseTitle": "عنوان الدورة",
       "titlePlaceholder": "عنوان الدورة",
-      "keywords": "كلمات مفتاحية",
-      "keywordsPlaceholder": "أضف كلمة مفتاحية ثم اضغط Enter",
-      "level": "مستوى الكورس",
+      "keywords": "الوسوم",
+      "keywordsPlaceholder": "اختر الوسوم",
+      "noTags": "لا توجد وسوم متاحة بعد",
+      "duration": "المدة (بالدقائق)",
+      "minutes": "دقيقة",
+      "hasCertificate": "يشمل شهادة",
       "description": "وصف الكورس",
       "descriptionPlaceholder": "قم بكتابة المزيد من التفاصيل حول الكورس والمهارات والمعارف",
-      "pricingPlan": "خطة السعر",
-      "subscription": "اشتراك",
-      "subscriptionHint": "عند تحديد هذا الخيار سوف تتضمن الدورة ضمن اشتراكات الطلاب للشهرية او السنوية",
-      "fixedPrice": "سعر ثابت",
       "cardPreview": "كارت الدورة",
       "infoTab": "معلومات الدورة",
       "curriculumTab": "منهج الدورة",
@@ -218,9 +227,10 @@
       "backToList": "العودة للدورات"
     },
     "toast": {
-      "deleted": "تم حذف الدورة \"{{title}}\" (تجريبي)",
-      "saved": "تم حفظ الدورة (تجريبي)",
-      "draftSaved": "تم حفظ المسودة (تجريبي)",
+      "deleted": "تم حذف الدورة \"{{title}}\"",
+      "saved": "تم حفظ الدورة",
+      "draftSaved": "تم حفظ المسودة",
+      "saveError": "فشل حفظ الدورة",
       "exported": "تم تصدير الدورات (تجريبي)"
     },
     "builder": {
