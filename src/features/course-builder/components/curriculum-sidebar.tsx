@@ -16,6 +16,7 @@ import { useBuilder, type TBuilderTab } from '../context/builder-context';
 import { EPageType } from '@/types/page-block';
 import { useCourseQuery } from '@/lib/data/course-builder';
 
+// TODO review and comprare to UI, make it sticky when scrolling
 export const CurriculumSidebar: React.FC = () => {
   const { t } = useTranslation();
   const {

@@ -35,7 +35,13 @@ export const EditStudentModal: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<ICreateStudentInput> = (values) => {
-    editMutation.mutate({ ...values, id: student.id });
+    editMutation.mutate({
+      id: student.id,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      username: values.username,
+      phoneNumber: values.phoneNumber,
+    });
   };
 
   return (
@@ -46,15 +52,16 @@ export const EditStudentModal: React.FC = () => {
       />
       <StudentForm
         id={EDIT_STUDENT_FORM_ID}
+        mode='edit'
         title={t('students.editModal.title')}
         initialValues={{
-          firstName: student.name.split(' ')[0] ?? student.name,
-          lastName: student.name.split(' ').slice(1).join(' ') || '',
-          username: student.email,
-          phoneNumber: student.phone.replace(/^\+20/, ''),
+          firstName: student.firstName,
+          lastName: student.lastName,
+          username: student.username,
+          phoneNumber: student.phoneNumber?.replace(/^\+20/, ''),
           password: '',
           imageProfile: null,
-          avatarUrl: student.avatarUrl,
+          avatarUrl: student.profileImage ?? undefined,
         }}
         onSubmit={onSubmit}
       />

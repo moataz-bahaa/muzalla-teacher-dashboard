@@ -5,6 +5,7 @@ import {
 import { Button, CloseButton } from '@/components/ui/button';
 import { useMutation } from '@/hooks/use-mutation';
 import { client } from '@/lib/data/client';
+import type { InvalidateQueryFilters } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
@@ -29,6 +30,7 @@ export interface IDeleteModalData {
   title?: string;
   description?: string;
   onSuccess?: () => void;
+  invalidateQueryFilter?: InvalidateQueryFilters;
 }
 export const DeleteModal: React.FC = () => {
   const { t } = useTranslation();
@@ -42,6 +44,7 @@ export const DeleteModal: React.FC = () => {
   const deleteMutation = useMutation({
     mutationKey: ['delete', data?.object],
     mutationFn: getDeleteFuction(data?.object as DeleteObject),
+    invalidateQueryFilter: data?.invalidateQueryFilter,
     onSuccess: () => {
       toast.success(t('common.delete.success', { object: data?.object ?? '' }));
       data?.onSuccess?.();

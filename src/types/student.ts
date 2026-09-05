@@ -3,19 +3,21 @@ export type TStudentStatus = 'active' | 'inactive';
 export interface IStudentEnrolledCourse {
   id: number;
   title: string;
-  progress: number;
 }
 
 export interface IStudent {
   id: number;
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-  avatarUrl: string;
-  active: boolean;
-  academicYear: string;
-  enrolledCourses: IStudentEnrolledCourse[];
+  firstName: string;
+  lastName: string;
+  username: string;
+  phoneNumber: string | null;
+  isActive: boolean;
+  levelName: string | null;
+  profileImage: string | null;
+}
+
+export interface IStudentDetailResponse extends IStudent {
+  enrolledCourses: { id: number; name: string }[];
 }
 
 export interface ICreateStudentInput {
@@ -27,13 +29,25 @@ export interface ICreateStudentInput {
   imageProfile: File | null;
 }
 
-export interface IUpdateStudentInput extends Partial<ICreateStudentInput> {
+export interface IUpdateStudentInput {
   id: number;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  phoneNumber?: string;
+  isActive?: boolean;
+}
+
+export interface IGetStudentsApiParams {
+  isActive?: boolean;
+  levelId?: number;
+  page?: number;
+  size?: number;
 }
 
 export interface IGetStudentsParams {
   page?: number;
-  limit?: number;
+  size?: number;
   search?: string;
   status?: TStudentStatus | 'all';
   academicYear?: string | 'all';

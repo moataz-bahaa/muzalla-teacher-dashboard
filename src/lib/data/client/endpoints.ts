@@ -26,6 +26,7 @@ export const API_ENDPOINTS = {
 
   students: '/students',
   studentById: (id: number) => `/students/${id}`,
+  studentsImport: '/students/import-excel',
 
   tags: '/tags',
   tagById: (id: number) => `/tags/${id}`,

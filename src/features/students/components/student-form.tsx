@@ -11,29 +11,34 @@ import { useTranslation } from 'react-i18next';
 export interface IStudentFormProps {
   id: string;
   title: string;
+  mode?: 'create' | 'edit';
   initialValues?: Partial<ICreateStudentInput> & { avatarUrl?: string };
   onSubmit: SubmitHandler<ICreateStudentInput>;
 }
 
-const schema = Joi.object<ICreateStudentInput>({
-  firstName: Joi.string().min(2).required().label('students.addModal.firstName'),
-  lastName: Joi.string().min(2).required().label('students.addModal.lastName'),
-  username: Joi.string().min(3).required().label('students.addModal.username'),
-  phoneNumber: Joi.string()
-    .pattern(/^[0-9]\d{8,14}$/)
-    .required()
-    .label('students.addModal.phoneNumber'),
-  password: Joi.string().min(6).required().label('students.addModal.password'),
-  imageProfile: Joi.any().allow(null),
-});
-
 export const StudentForm: React.FC<IStudentFormProps> = ({
   id,
   title,
+  mode = 'create',
   initialValues,
   onSubmit,
 }) => {
   const { t } = useTranslation();
+  const isEdit = mode === 'edit';
+
+  const schema = Joi.object<ICreateStudentInput>({
+    firstName: Joi.string().min(2).required().label('students.addModal.firstName'),
+    lastName: Joi.string().min(2).required().label('students.addModal.lastName'),
+    username: Joi.string().min(3).required().label('students.addModal.username'),
+    phoneNumber: Joi.string()
+      .pattern(/^[0-9]\d{8,14}$/)
+      .required()
+      .label('students.addModal.phoneNumber'),
+    password: isEdit
+      ? Joi.string().allow('').optional().label('students.addModal.password')
+      : Joi.string().min(6).required().label('students.addModal.password'),
+    imageProfile: Joi.any().allow(null),
+  });
 
   const {
     handleSubmit,
@@ -114,13 +119,15 @@ export const StudentForm: React.FC<IStudentFormProps> = ({
           {...register('phoneNumber')}
           error={errors.phoneNumber?.message}
         />
-        <PasswordInput
-          label={t('students.addModal.password')}
-          placeholder={t('students.addModal.password')}
-          className='h-11 rounded-lg'
-          {...register('password')}
-          error={errors.password?.message}
-        />
+        {!isEdit && (
+          <PasswordInput
+            label={t('students.addModal.password')}
+            placeholder={t('students.addModal.password')}
+            className='h-11 rounded-lg'
+            {...register('password')}
+            error={errors.password?.message}
+          />
+        )}
       </div>
     </form>
   );

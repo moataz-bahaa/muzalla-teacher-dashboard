@@ -1,12 +1,12 @@
-import type { ICreatePageBlocksInput } from '@/types/page-block';
+import type { IUpdateCourseInput } from '@/types/course-api';
+import type { ICreatePageBlocksInput, IReorderPageBlockItem } from '@/types/page-block';
 import type { ICreatePageInput, IReorderPageItem, IUpdatePageInput } from '@/types/page';
 import type {
   ICreateSectionInput,
   IReorderSectionItem,
   IUpdateSectionInput,
 } from '@/types/section';
-import type { IReorderPageBlockItem } from '@/types/page-block';
-import type { IUpdateCourseInput } from '@/types/course-api';
+import type { ICreateStudentInput } from '@/types/student';
 import { toPascalCase } from '@/utils/helpers';
 
 function appendFormValue(formData: FormData, key: string, value: unknown) {
@@ -110,4 +110,18 @@ export function buildReorderPageBlocksBody(
   items: IReorderPageBlockItem[],
 ) {
   return { pageId, items };
+}
+
+export function buildCreateStudentFormData(input: ICreateStudentInput): FormData {
+  const formData = new FormData();
+  Object.entries(input).forEach(([key, value]) => {
+    appendFormValue(formData, toPascalCase(key), value);
+  });
+  return formData;
+}
+
+export function buildImportStudentsFormData(file: File): FormData {
+  const formData = new FormData();
+  formData.append('File', file);
+  return formData;
 }

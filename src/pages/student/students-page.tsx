@@ -1,6 +1,7 @@
 import { useDrawerAction } from '@/components/drawer-views/context';
 import SearchInput from '@/components/form/search-input';
 import { useModalAction } from '@/components/modal-views/context';
+import type { IDeleteModalData } from '@/components/modal-views/delete-modal';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,10 +15,10 @@ import Pagination from '@/components/ui/pagination';
 import { Switch } from '@/components/ui/switch';
 import Table from '@/components/ui/table';
 import type { IEditStudentModalData } from '@/features/students/components/edit-student-modal';
-import { StudentPasswordCell } from '@/features/students/components/student-password-cell';
-import { MOCK_STUDENTS } from '@/features/students/data/mock-students';
 import { useColumnConfig } from '@/hooks/use-column-config';
 import { useFilter } from '@/hooks/use-filter';
+import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
+import { useEditStudentMutation, useStudentsQuery } from '@/lib/data/students';
 import { cn } from '@/lib/utils';
 import type { IGetStudentsParams, IStudent } from '@/types/student';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -49,9 +50,12 @@ export const StudentsPage: React.FC = () => {
   const filter = useFilter<IGetStudentsParams>({
     status: 'all',
     academicYear: 'all',
+    page: 1,
+    search: '',
   });
 
-  const [students] = useState<IStudent[]>(MOCK_STUDENTS);
+  const { students, isPending } = useStudentsQuery(filter.filters);
+  const editMutation = useEditStudentMutation();
 
   const openAddModal = () => {
     openModal('ADD_STUDENT');
@@ -63,9 +67,8 @@ export const StudentsPage: React.FC = () => {
     } as IEditStudentModalData);
   };
 
-  const onStatusChange = (_id: number, _active: boolean) => {
-    // TODO handle status change
-    toast.success(t('students.toast.statusUpdated'));
+  const onStatusChange = (id: number, isActive: boolean) => {
+    editMutation.mutate({ id, isActive });
   };
 
   const onDelete = (student: IStudent) => {
@@ -74,10 +77,13 @@ export const StudentsPage: React.FC = () => {
       id: student.id,
       title: t('students.delete.title'),
       description: t('students.delete.description', {
-        name: student.name,
+        name: student.firstName + ' ' + student.lastName,
       }),
       onSuccess() {},
-    });
+      invalidateQueryFilter: {
+        queryKey: [API_ENDPOINTS.students],
+      },
+    } as IDeleteModalData);
   };
 
   const allSelected =
@@ -117,54 +123,52 @@ export const StudentsPage: React.FC = () => {
       },
       {
         id: 'avatar',
-        accessorKey: 'avatarUrl',
+        accessorKey: 'profileImage',
         size: 140,
         enableSorting: false,
         header: t('students.columns.avatar'),
         cell: ({ row }) => (
           <Avatar size='sm' className='mx-auto'>
-            <AvatarImage src={row.original.avatarUrl} alt={row.original.name} />
-            <AvatarFallback>{row.original.name.slice(0, 1)}</AvatarFallback>
+            <AvatarImage
+              src={row.original.profileImage ?? undefined}
+              alt={row.original.firstName + ' ' + row.original.lastName}
+            />
+            <AvatarFallback>
+              {row.original.firstName.slice(0, 1) +
+                row.original.lastName.slice(0, 1)}
+            </AvatarFallback>
           </Avatar>
         ),
       },
       {
-        accessorKey: 'name',
+        accessorKey: 'firstName',
         size: 180,
         header: t('students.columns.name'),
         cell: ({ row }) => (
-          <span className='text-neutral-800'>{row.original.name}</span>
+          <span className='text-neutral-800'>{row.original.firstName}</span>
         ),
       },
       {
-        accessorKey: 'email',
+        accessorKey: 'username',
         size: 200,
-        header: t('students.columns.email'),
+        header: t('students.columns.username'),
       },
       {
-        accessorKey: 'phone',
+        accessorKey: 'phoneNumber',
         size: 140,
         enableSorting: false,
         header: t('students.columns.phone'),
-      },
-      {
-        accessorKey: 'password',
-        size: 160,
-        enableSorting: false,
-        header: t('students.columns.password'),
-        cell: ({ row }) => (
-          <StudentPasswordCell password={row.original.password} />
-        ),
+        cell: ({ row }) => <span dir='ltr'>{row.original.phoneNumber}</span>,
       },
       {
         id: 'status',
-        accessorKey: 'active',
+        accessorKey: 'isActive',
         size: 100,
         enableSorting: false,
         header: t('students.columns.status'),
         cell: ({ row }) => (
           <Switch
-            checked={row.original.active}
+            checked={row.original.isActive}
             onCheckedChange={(checked) =>
               onStatusChange(row.original.id, checked)
             }
@@ -173,16 +177,15 @@ export const StudentsPage: React.FC = () => {
         ),
       },
       {
-        accessorKey: 'academicYear',
+        accessorKey: 'levelName',
         size: 180,
         header: t('students.columns.academicYear'),
         cell: ({ row }) => (
           <span className='text-neutral-700'>
-            {t(`students.academicYears.${row.original.academicYear}`)}
+            {row.original.levelName || '—'}
           </span>
         ),
       },
-
       {
         id: 'actions',
         size: 80,
@@ -255,15 +258,7 @@ export const StudentsPage: React.FC = () => {
               <UserPlus className='size-4' />
               {t('students.actions.addManual')}
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() =>
-                openModal('IMPORT_STUDENTS', {
-                  onImported: (_imported: IStudent[]) => {
-                    // TODO
-                  },
-                })
-              }
-            >
+            <DropdownMenuItem onClick={() => openModal('IMPORT_STUDENTS')}>
               <FileUp className='size-4' />
               {t('students.actions.import')}
             </DropdownMenuItem>
@@ -298,6 +293,7 @@ export const StudentsPage: React.FC = () => {
               onApply: (next: IGetStudentsParams) => {
                 filter.onChange('status', next.status);
                 filter.onChange('academicYear', next.academicYear);
+                filter.onChange('page', 1);
               },
             })
           }
@@ -325,6 +321,7 @@ export const StudentsPage: React.FC = () => {
         <Table
           columns={visibleColumns}
           data={students}
+          isPending={isPending}
           syncOrderingToUrl={false}
           skeletonRowsLength={PAGE_SIZE}
           headerClassName='bg-neutral-100'
@@ -333,8 +330,9 @@ export const StudentsPage: React.FC = () => {
 
         <Pagination
           current={filter.filters.page ?? 1}
-          total={Math.ceil(students.length / PAGE_SIZE)}
-          onChange={(page) => filter.onChange('page', page)}
+          // TODO
+          total={20}
+          onChange={(nextPage) => filter.onChange('page', nextPage)}
           className='border-t border-neutral-200 px-4 py-4'
         />
       </div>

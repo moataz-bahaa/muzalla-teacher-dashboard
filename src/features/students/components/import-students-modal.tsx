@@ -1,45 +1,35 @@
 import { FilesDropzone } from '@/components/files-dropzone';
 import ExcelIcon from '@/components/icons/excel-icon';
-import {
-  useModalAction,
-  useModalState,
-} from '@/components/modal-views/context';
+import { useModalAction } from '@/components/modal-views/context';
 import { Button, CloseButton } from '@/components/ui/button';
-import { MOCK_IMPORT_PREVIEW } from '@/features/students/data/mock-students';
-import type { IStudent } from '@/types/student';
+import { useImportStudentsMutation } from '@/lib/data/students';
 import { FileSpreadsheet } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 const ACCEPTED =
-  '.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 const isSpreadsheetFile = (file: File) =>
-  file.name.endsWith('.csv') ||
-  file.name.endsWith('.xlsx') ||
-  file.name.endsWith('.xls');
-
-export interface IImportStudentsModalData {
-  onImported?: (students: IStudent[]) => void;
-}
+  file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
 
 export const ImportStudentsModal: React.FC = () => {
   const { t } = useTranslation();
-  const { closeModal, openModal } = useModalAction();
-  const { data } = useModalState<IImportStudentsModalData>();
+  const { closeModal } = useModalAction();
   const [file, setFile] = useState<File | null>(null);
+
+  const importMutation = useImportStudentsMutation({
+    onSuccess: () => {
+      closeModal();
+    },
+  });
 
   const upload = () => {
     if (!file) return;
-
-    closeModal();
-    openModal('VERIFY_IMPORT_DATA', {
-      students: MOCK_IMPORT_PREVIEW,
-      onConfirm: data?.onImported,
-    });
+    importMutation.mutate(file);
   };
 
   return (
@@ -88,6 +78,7 @@ export const ImportStudentsModal: React.FC = () => {
           className='h-10 rounded-lg bg-purple-heart-900 px-10 hover:bg-purple-heart-800'
           onClick={upload}
           disabled={!file}
+          isLoading={importMutation.isPending}
         >
           {t('students.importModal.upload')}
         </Button>

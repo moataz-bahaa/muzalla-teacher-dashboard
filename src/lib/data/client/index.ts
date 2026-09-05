@@ -3,31 +3,14 @@ import {
   buildCreatePageBlocksFormData,
   buildCreatePageFormData,
   buildCreateSectionFormData,
+  buildCreateStudentFormData,
+  buildImportStudentsFormData,
   buildUpdateCourseFormData,
   buildUpdatePageFormData,
   buildUpdateSectionFormData,
 } from '@/lib/data/client/form-data';
 import { objectToFormData } from '@/lib/utils';
 import type { IApiResponse } from '@/types/api';
-import type { ICourseResponse, IUpdateCourseInput } from '@/types/course-api';
-import type {
-  ICreatePageBlocksInput,
-  IPageBlock,
-  IReorderPageBlockItem,
-  IUpdatePageBlocksInput,
-} from '@/types/page-block';
-import type {
-  ICreatePageInput,
-  IPage,
-  IReorderPageItem,
-  IUpdatePageInput,
-} from '@/types/page';
-import type {
-  ICreateSectionInput,
-  IReorderSectionItem,
-  ISection,
-  IUpdateSectionInput,
-} from '@/types/section';
 import type {
   IForgetPasswordInput,
   IForgetPasswordResponse,
@@ -46,7 +29,32 @@ import type {
   IVerifyOtpResponse,
   TAuthDevicesResponse,
 } from '@/types/auth';
-import type { ICreateStudentInput, IStudent, IUpdateStudentInput } from '@/types/student';
+import type { ICourseResponse, IUpdateCourseInput } from '@/types/course-api';
+import type {
+  ICreatePageInput,
+  IPage,
+  IReorderPageItem,
+  IUpdatePageInput,
+} from '@/types/page';
+import type {
+  ICreatePageBlocksInput,
+  IPageBlock,
+  IReorderPageBlockItem,
+  IUpdatePageBlocksInput,
+} from '@/types/page-block';
+import type {
+  ICreateSectionInput,
+  IReorderSectionItem,
+  ISection,
+  IUpdateSectionInput,
+} from '@/types/section';
+import type {
+  ICreateStudentInput,
+  IGetStudentsApiParams,
+  IStudent,
+  IStudentDetailResponse,
+  IUpdateStudentInput,
+} from '@/types/student';
 import { HttpClient } from './http-client';
 
 class Client {
@@ -87,7 +95,9 @@ class Client {
 
   courses = {
     getById: (id: number) =>
-      HttpClient.get<IApiResponse<ICourseResponse>>(API_ENDPOINTS.courseById(id)),
+      HttpClient.get<IApiResponse<ICourseResponse>>(
+        API_ENDPOINTS.courseById(id),
+      ),
 
     update: ({ id, ...input }: IUpdateCourseInput) =>
       HttpClient.put<IApiResponse<ICourseResponse>>(
@@ -118,7 +128,9 @@ class Client {
       ),
 
     delete: (id: number) =>
-      HttpClient.delete<IApiResponse<string>>(`${API_ENDPOINTS.sections}?id=${id}`),
+      HttpClient.delete<IApiResponse<string>>(
+        `${API_ENDPOINTS.sections}?id=${id}`,
+      ),
 
     reorder: (courseId: number, items: IReorderSectionItem[]) =>
       HttpClient.put<IApiResponse<string>>(
@@ -146,7 +158,9 @@ class Client {
       ),
 
     delete: (id: number) =>
-      HttpClient.delete<IApiResponse<string>>(`${API_ENDPOINTS.pages}?id=${id}`),
+      HttpClient.delete<IApiResponse<string>>(
+        `${API_ENDPOINTS.pages}?id=${id}`,
+      ),
 
     reorder: (sectionId: number, items: IReorderPageItem[]) =>
       HttpClient.put<IApiResponse<string>>(
@@ -183,11 +197,36 @@ class Client {
   };
 
   students = {
-    create: async (_input: ICreateStudentInput) => ({
-      /* TODO*/
-    } as IStudent),
-    update: async (_input: IUpdateStudentInput) => ({} as IStudent),
-    delete: async (_id: number) => Promise.resolve({}),
+    getAll: (params?: IGetStudentsApiParams) =>
+      HttpClient.get<IApiResponse<IStudent[]>>(API_ENDPOINTS.students, {
+        params,
+      }),
+
+    getById: (id: number) =>
+      HttpClient.get<IApiResponse<IStudentDetailResponse>>(
+        API_ENDPOINTS.studentById(id),
+      ),
+
+    create: (input: ICreateStudentInput) =>
+      HttpClient.post<IApiResponse<unknown>>(
+        API_ENDPOINTS.students,
+        buildCreateStudentFormData(input),
+      ),
+
+    update: ({ id, ...input }: IUpdateStudentInput) =>
+      HttpClient.put<IApiResponse<string>>(
+        API_ENDPOINTS.studentById(id),
+        input,
+      ),
+
+    importExcel: (file: File) =>
+      HttpClient.post<IApiResponse<string>>(
+        API_ENDPOINTS.studentsImport,
+        buildImportStudentsFormData(file),
+      ),
+
+    delete: (id: number) =>
+      HttpClient.delete<IApiResponse<string>>(API_ENDPOINTS.userById(id)),
   };
 }
 
