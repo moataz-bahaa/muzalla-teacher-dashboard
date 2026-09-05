@@ -5,8 +5,8 @@ import {
 import DrawerContent from '@/components/drawer-views/drawer-content';
 import { Button } from '@/components/ui/button';
 import { SelectField } from '@/components/ui/form/select-field';
-import { ACADEMIC_YEARS } from '@/features/students/data/mock-students';
 import type { IGetStudentsParams } from '@/types/student';
+import { ACADEMIC_YEARS } from '@/types/student';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

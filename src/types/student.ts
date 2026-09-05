@@ -52,3 +52,4 @@ export interface IGetStudentsParams {
   status?: TStudentStatus | 'all';
   academicYear?: string | 'all';
 }
+export const ACADEMIC_YEARS = ['year1', 'year2', 'year3', 'year4'] as const;

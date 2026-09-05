@@ -1,5 +1,5 @@
-import { ACADEMIC_YEARS } from '@/features/students/data/mock-students';
 import { cn } from '@/lib/utils';
+import { ACADEMIC_YEARS } from '@/types/student';
 import {
   Controller,
   type Control,
@@ -58,8 +58,9 @@ export const SelectField: React.FC<ISelectFieldProps> = ({
   );
 };
 
-export interface IControlledSelectFieldProps<T extends FieldValues>
-  extends Omit<ISelectFieldProps, 'value' | 'onChange'> {
+export interface IControlledSelectFieldProps<
+  T extends FieldValues,
+> extends Omit<ISelectFieldProps, 'value' | 'onChange'> {
   control: Control<T>;
   name: FieldPath<T>;
 }
