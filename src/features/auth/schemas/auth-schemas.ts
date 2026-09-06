@@ -2,7 +2,7 @@ import type { ILoginInput, IRegisterInput, IResetPasswordInput, IVerifyOtpInput 
 import Joi from 'joi';
 
 export const loginSchema: Joi.ObjectSchema<ILoginInput> = Joi.object({
-  email: Joi.string().trim().required().label('auth.email'),
+  username: Joi.string().trim().required().label('auth.email'),
   password: Joi.string().min(8).required().label('auth.password'),
 });
 
@@ -39,10 +39,6 @@ export const resetPasswordSchema: Joi.ObjectSchema<IResetPasswordInput> = Joi.ob
     .label('auth.resetPassword.confirmPassword'),
 });
 
-export type TLoginFormValues = {
-  email: string;
-  password: string;
-};
 
 export type TForgetPasswordFormValues = {
   email: string;

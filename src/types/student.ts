@@ -1,9 +1,6 @@
-export type TStudentStatus = 'active' | 'inactive';
+import type { IPagnationParams } from './api';
 
-export interface IStudentEnrolledCourse {
-  id: number;
-  title: string;
-}
+export type TStudentStatus = 'active' | 'inactive';
 
 export interface IStudent {
   id: number;
@@ -29,27 +26,15 @@ export interface ICreateStudentInput {
   imageProfile: File | null;
 }
 
-export interface IUpdateStudentInput {
+export interface IUpdateStudentInput extends Partial<ICreateStudentInput> {
   id: number;
-  firstName?: string;
-  lastName?: string;
-  username?: string;
-  phoneNumber?: string;
   isActive?: boolean;
 }
 
-export interface IGetStudentsApiParams {
+export interface IGetStudentsParams extends IPagnationParams {
   isActive?: boolean;
   levelId?: number;
-  page?: number;
-  size?: number;
-}
-
-export interface IGetStudentsParams {
-  page?: number;
-  size?: number;
   search?: string;
   status?: TStudentStatus | 'all';
-  academicYear?: string | 'all';
+  level?: string | 'all';
 }
-export const ACADEMIC_YEARS = ['year1', 'year2', 'year3', 'year4'] as const;

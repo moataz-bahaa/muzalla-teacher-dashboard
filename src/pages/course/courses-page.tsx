@@ -20,7 +20,7 @@ import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import { useCoursesQuery } from '@/lib/data/courses';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
-import type { ICourseResponse, IGetCoursesParams } from '@/types/course';
+import type { ICourse, IGetCoursesParams } from '@/types/course';
 import { type ColumnDef } from '@tanstack/react-table';
 import {
   ArrowRightLeft,
@@ -66,13 +66,13 @@ export const CoursesPage: React.FC = () => {
     page: 1,
   });
 
-  const openViewModal = (course: ICourseResponse) => {
+  const openViewModal = (course: ICourse) => {
     openModal('COURSE_VIEW', {
       course,
     } satisfies ICourseViewModalData);
   };
 
-  const onDelete = (course: ICourseResponse) => {
+  const onDelete = (course: ICourse) => {
     openModal('DELETE_OBJECT', {
       object: 'course',
       id: course.id,
@@ -99,7 +99,7 @@ export const CoursesPage: React.FC = () => {
     );
   };
 
-  const columns = useMemo<ColumnDef<ICourseResponse>[]>(
+  const columns = useMemo<ColumnDef<ICourse>[]>(
     () => [
       {
         id: 'select',
@@ -326,7 +326,7 @@ export const CoursesPage: React.FC = () => {
           </Button>
         </div>
 
-        <Table<ICourseResponse>
+        <Table<ICourse>
           columns={visibleColumns}
           data={courses}
           isPending={isPending}

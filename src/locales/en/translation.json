@@ -363,8 +363,6 @@
     "usernamePlaceholder": "Enter your username",
     "phoneNumber": "Phone number",
     "phoneNumberPlaceholder": "Enter your phone number",
-    "email": "Email",
-    "emailPlaceholder": "Example@email.com",
     "password": "Password",
     "passwordPlaceholder": "At least 8 Characters",
     "confirmPassword": "Confirm password",

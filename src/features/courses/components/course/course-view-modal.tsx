@@ -5,13 +5,13 @@ import {
 import { CloseButton } from '@/components/ui/button';
 import { Tabs } from '@/components/ui/tabs';
 import { routes } from '@/routes/routes';
-import type { ICourseResponse } from '@/types/course';
+import type { ICourse } from '@/types/course';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 export interface ICourseViewModalData {
-  course: ICourseResponse;
+  course: ICourse;
   initialTab?: 'details' | 'curriculum';
 }
 

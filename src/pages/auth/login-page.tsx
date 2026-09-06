@@ -3,13 +3,11 @@ import { Input } from '@/components/ui/form/input';
 import { AuthLayout } from '@/features/auth/components/auth-layout';
 import { GoogleButton } from '@/features/auth/components/google-button';
 import { OrDivider } from '@/features/auth/components/or-divider';
-import {
-  loginSchema,
-  type TLoginFormValues,
-} from '@/features/auth/schemas/auth-schemas';
+import { loginSchema } from '@/features/auth/schemas/auth-schemas';
 import { useAppForm } from '@/hooks/use-app-form';
 import { useLoginMutation } from '@/lib/data/auth';
 import { routes } from '@/routes/routes';
+import type { ILoginInput } from '@/types/auth';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -18,10 +16,10 @@ export const LoginPage: React.FC = () => {
   const loginMutation = useLoginMutation();
   const form = useAppForm({
     schema: loginSchema,
-    defaultValues: { email: '', password: '' },
+    defaultValues: { username: '', password: '' },
   });
 
-  const onSubmit = form.handleSubmit((data: TLoginFormValues) => {
+  const onSubmit = form.handleSubmit((data: ILoginInput) => {
     loginMutation.mutate(data);
   });
 
@@ -43,11 +41,11 @@ export const LoginPage: React.FC = () => {
           noValidate
         >
           <Input
-            label={t('auth.email')}
-            placeholder={t('auth.emailPlaceholder')}
-            autoComplete='email'
-            {...form.register('email')}
-            error={form.formState.errors.email?.message}
+            label={t('auth.username')}
+            placeholder={t('auth.usernamePlaceholder')}
+            autoComplete='username'
+            {...form.register('username')}
+            error={form.formState.errors.username?.message}
           />
 
           <div className='flex w-full flex-col gap-2'>

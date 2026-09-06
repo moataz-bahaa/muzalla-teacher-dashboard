@@ -6,13 +6,12 @@ import DrawerContent from '@/components/drawer-views/drawer-content';
 import { Button } from '@/components/ui/button';
 import { SelectField } from '@/components/ui/form/select-field';
 import type { IGetStudentsParams } from '@/types/student';
-import { ACADEMIC_YEARS } from '@/types/student';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const DEFAULT_FILTERS: IGetStudentsParams = {
   status: 'all',
-  academicYear: 'all',
+  level: 'all',
 };
 
 export const StudentFiltersDrawer: React.FC = () => {
@@ -57,15 +56,16 @@ export const StudentFiltersDrawer: React.FC = () => {
           />
           <SelectField
             label={t('students.filters.academicYear')}
-            options={ACADEMIC_YEARS.map((year) => ({
+            // TODO fetch data from backend
+            options={['1'].map((year) => ({
               label: t(`students.academicYears.${year}`),
               value: year,
             }))}
-            value={filters.academicYear ?? ''}
+            value={filters.level ?? ''}
             onChange={(value) =>
               setFilters((prev) => ({
                 ...prev,
-                academicYear: value as IGetStudentsParams['academicYear'],
+                level: value as IGetStudentsParams['level'],
               }))
             }
           />

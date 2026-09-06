@@ -2,13 +2,13 @@ import { useMutation, type UseMutationProps } from '@/hooks/use-mutation';
 import { client } from '@/lib/data/client';
 import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import type { IApiResponse } from '@/types/api';
-import type { ICreateCourseInput, IGetCoursesApiParams } from '@/types/course';
+import type { ICreateCourseInput, IGetCoursesParams } from '@/types/course';
 import { ECourseStatus } from '@/types/page-block';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-export const useCoursesQuery = (params: IGetCoursesApiParams = {}) => {
+export const useCoursesQuery = (params: IGetCoursesParams = {}) => {
   const { data, isPending, isError, error } = useQuery({
     queryKey: [API_ENDPOINTS.courses, params],
     queryFn: () => client.courses.getAll(params),

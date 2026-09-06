@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
-import type { ICourseResponse, ITagResponse } from '@/types/course';
+import type { ICourse } from '@/types/course';
+import type { ITag } from '@/types/tag';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import type { IDeleteModalData } from '../../../../components/modal-views/delete-modal';
@@ -13,20 +14,20 @@ export interface ICourseCardPreview {
   name: string;
   description: string | null;
   coverUrl: string;
-  tags: Array<ITagResponse | string>;
+  tags: Array<ITag | string>;
   levelName?: string | null;
 }
 
 interface ICourseCardProps {
-  course: ICourseResponse | ICourseCardPreview;
+  course: ICourse | ICourseCardPreview;
   className?: string;
   compact?: boolean;
 }
 
-const tagLabel = (tag: ITagResponse | string) =>
+const tagLabel = (tag: ITag | string) =>
   typeof tag === 'string' ? tag : tag.name;
 
-const tagKey = (tag: ITagResponse | string, index: number) =>
+const tagKey = (tag: ITag | string, index: number) =>
   typeof tag === 'string' ? `${tag}-${index}` : tag.id;
 
 export const CourseCard: React.FC<ICourseCardProps> = ({

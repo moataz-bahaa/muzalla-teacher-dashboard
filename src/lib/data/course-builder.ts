@@ -1,7 +1,7 @@
 import { useMutation, type UseMutationProps } from '@/hooks/use-mutation';
 import { client } from '@/lib/data/client';
 import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
-import type { ICourseResponse, IUpdateCourseInput } from '@/types/course';
+import type { ICourse, IUpdateCourseInput } from '@/types/course';
 import type {
   ICreatePageInput,
   IPage,
@@ -29,7 +29,7 @@ export const useCourseQuery = (courseId: number) =>
     queryKey: [API_ENDPOINTS.courses, courseId],
     queryFn: async () => {
       const res = await client.courses.getById(courseId);
-      return res.data as ICourseResponse;
+      return res.data as ICourse;
     },
     enabled: courseId > 0,
   });
@@ -66,7 +66,7 @@ export const usePageBlocksQuery = (pageId: number | null) =>
 
 export const useUpdateCourseMutation = (
   options?: Omit<
-    UseMutationProps<ICourseResponse, IUpdateCourseInput>,
+    UseMutationProps<ICourse, IUpdateCourseInput>,
     'mutationKey' | 'mutationFn' | 'invalidateQueryFilter'
   >,
 ) => {
@@ -76,7 +76,7 @@ export const useUpdateCourseMutation = (
     mutationKey: [API_ENDPOINTS.courses, 'update'],
     mutationFn: async (input: IUpdateCourseInput) => {
       const res = await client.courses.update(input);
-      return res.data as ICourseResponse;
+      return res.data as ICourse;
     },
     invalidateQueryFilter: { queryKey: [API_ENDPOINTS.courses] },
     ...options,

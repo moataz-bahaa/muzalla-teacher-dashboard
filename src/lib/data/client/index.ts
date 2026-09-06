@@ -1,15 +1,4 @@
 import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
-import {
-  buildCreateCourseFormData,
-  buildCreatePageBlocksFormData,
-  buildCreatePageFormData,
-  buildCreateSectionFormData,
-  buildCreateStudentFormData,
-  buildImportStudentsFormData,
-  buildUpdateCourseFormData,
-  buildUpdatePageFormData,
-  buildUpdateSectionFormData,
-} from '@/lib/data/client/form-data';
 import { objectToFormData } from '@/lib/utils';
 import type { IApiResponse } from '@/types/api';
 import type {
@@ -31,10 +20,9 @@ import type {
   TAuthDevicesResponse,
 } from '@/types/auth';
 import type {
-  ICourseResponse,
+  ICourse,
   ICreateCourseInput,
-  IGetCoursesApiParams,
-  ITagResponse,
+  IGetCoursesParams,
   IUpdateCourseInput,
 } from '@/types/course';
 import type {
@@ -57,11 +45,12 @@ import type {
 } from '@/types/section';
 import type {
   ICreateStudentInput,
-  IGetStudentsApiParams,
+  IGetStudentsParams,
   IStudent,
   IStudentDetailResponse,
   IUpdateStudentInput,
 } from '@/types/student';
+import type { ITag } from '@/types/tag';
 import { HttpClient } from './http-client';
 
 class Client {
@@ -101,26 +90,24 @@ class Client {
   };
 
   courses = {
-    getAll: (params?: IGetCoursesApiParams) =>
-      HttpClient.get<IApiResponse<ICourseResponse[]>>(API_ENDPOINTS.courses, {
+    getAll: (params?: IGetCoursesParams) =>
+      HttpClient.get<IApiResponse<ICourse[]>>(API_ENDPOINTS.courses, {
         params,
       }),
 
     getById: (id: number) =>
-      HttpClient.get<IApiResponse<ICourseResponse>>(
-        API_ENDPOINTS.courseById(id),
-      ),
+      HttpClient.get<IApiResponse<ICourse>>(API_ENDPOINTS.courseById(id)),
 
     create: (input: ICreateCourseInput) =>
       HttpClient.post<IApiResponse<number>>(
         API_ENDPOINTS.courses,
-        buildCreateCourseFormData(input),
+        objectToFormData(input),
       ),
 
     update: ({ id, ...input }: IUpdateCourseInput) =>
-      HttpClient.put<IApiResponse<ICourseResponse>>(
+      HttpClient.put<IApiResponse<ICourse>>(
         `${API_ENDPOINTS.courses}?id=${id}`,
-        buildUpdateCourseFormData(input),
+        objectToFormData(input),
       ),
 
     delete: (id: number) =>
@@ -128,8 +115,7 @@ class Client {
   };
 
   tags = {
-    getAll: () =>
-      HttpClient.get<IApiResponse<ITagResponse[]>>(API_ENDPOINTS.tags),
+    getAll: () => HttpClient.get<IApiResponse<ITag[]>>(API_ENDPOINTS.tags),
   };
 
   sections = {
@@ -141,13 +127,13 @@ class Client {
     create: (input: ICreateSectionInput) =>
       HttpClient.post<IApiResponse<number>>(
         API_ENDPOINTS.sections,
-        buildCreateSectionFormData(input),
+        objectToFormData(input),
       ),
 
     update: ({ id, ...input }: IUpdateSectionInput) =>
       HttpClient.put<IApiResponse<ISection>>(
         `${API_ENDPOINTS.sections}?id=${id}`,
-        buildUpdateSectionFormData(input),
+        objectToFormData(input),
       ),
 
     delete: (id: number) =>
@@ -171,13 +157,13 @@ class Client {
     create: (input: ICreatePageInput) =>
       HttpClient.post<IApiResponse<number>>(
         API_ENDPOINTS.pages,
-        buildCreatePageFormData(input),
+        objectToFormData(input),
       ),
 
     update: ({ id, ...input }: IUpdatePageInput) =>
       HttpClient.put<IApiResponse<IPage>>(
         `${API_ENDPOINTS.pages}?id=${id}`,
-        buildUpdatePageFormData(input),
+        objectToFormData(input),
       ),
 
     delete: (id: number) =>
@@ -201,11 +187,14 @@ class Client {
     create: (input: ICreatePageBlocksInput) =>
       HttpClient.post<IApiResponse<string>>(
         API_ENDPOINTS.pageBlocks,
-        buildCreatePageBlocksFormData(input),
+        objectToFormData(input),
       ),
 
     update: (input: IUpdatePageBlocksInput) =>
-      HttpClient.put<IApiResponse<boolean>>(API_ENDPOINTS.pageBlocks, input),
+      HttpClient.put<IApiResponse<boolean>>(
+        API_ENDPOINTS.pageBlocks,
+        objectToFormData(input),
+      ),
 
     delete: (id: number) =>
       HttpClient.delete<IApiResponse<string>>(
@@ -220,7 +209,7 @@ class Client {
   };
 
   students = {
-    getAll: (params?: IGetStudentsApiParams) =>
+    getAll: (params?: IGetStudentsParams) =>
       HttpClient.get<IApiResponse<IStudent[]>>(API_ENDPOINTS.students, {
         params,
       }),
@@ -233,19 +222,19 @@ class Client {
     create: (input: ICreateStudentInput) =>
       HttpClient.post<IApiResponse<unknown>>(
         API_ENDPOINTS.students,
-        buildCreateStudentFormData(input),
+        objectToFormData(input),
       ),
 
     update: ({ id, ...input }: IUpdateStudentInput) =>
       HttpClient.put<IApiResponse<string>>(
         API_ENDPOINTS.studentById(id),
-        input,
+        objectToFormData(input),
       ),
 
     importExcel: (file: File) =>
       HttpClient.post<IApiResponse<string>>(
         API_ENDPOINTS.studentsImport,
-        buildImportStudentsFormData(file),
+        objectToFormData(file),
       ),
 
     delete: (id: number) =>

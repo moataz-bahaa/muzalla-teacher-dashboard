@@ -1,5 +1,4 @@
 import { getAccessToken } from '@/lib/cookie';
-import { formatData, toCamelCase, toPascalCase } from '@/utils/helpers';
 import axios, { type AxiosRequestConfig } from 'axios';
 
 const Axios = axios.create({
@@ -13,22 +12,6 @@ Axios.interceptors.request.use((config) => {
   const token = getAccessToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-Axios.interceptors.response.use((response) => {
-  response.data = formatData(response.data, toCamelCase);
-  return response;
-});
-
-Axios.interceptors.request.use((config) => {
-  const isFormData =
-    typeof FormData !== 'undefined' && config.data instanceof FormData;
-  if (isFormData) {
-    config.headers['Content-Type'] = 'multipart/form-data';
-  } else {
-    config.data = formatData(config.data, toPascalCase);
   }
   return config;
 });

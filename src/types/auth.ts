@@ -1,7 +1,6 @@
 export interface ILoginInput {
-  email: string;
+  username: string;
   password: string;
-  tenantId?: number;
   deviceId?: string;
   deviceName?: string;
   ip?: string;

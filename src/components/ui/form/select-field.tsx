@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { ACADEMIC_YEARS } from '@/types/student';
 import {
   Controller,
   type Control,
@@ -91,7 +90,7 @@ export type TControlledYearSelectProps<T extends FieldValues> = Omit<
   'options'
 >;
 
-export function ControlledYearSelect<T extends FieldValues>({
+export function ControlledLevelSelect<T extends FieldValues>({
   control,
   name,
   label,
@@ -99,12 +98,13 @@ export function ControlledYearSelect<T extends FieldValues>({
 }: TControlledYearSelectProps<T>) {
   const { t } = useTranslation();
 
+  // TODO fetch data from backend
   return (
     <ControlledSelectField
       control={control}
       name={name}
       label={label ?? t('students.addModal.academicYear')}
-      options={ACADEMIC_YEARS.map((year) => ({
+      options={['1', '2', '3'].map((year) => ({
         label: t(`students.academicYears.${year}`),
         value: year,
       }))}

@@ -1,28 +1,14 @@
+import type { IPagnationParams } from './api';
 import type { ECourseStatus } from './page-block';
+import type { ITag } from './tag';
 
-export type TCourseLessonType = 'video' | 'quiz' | 'article';
-
-export interface IGetCoursesParams {
-  keywords: string;
-  tags: string[];
-  priceFrom: number;
-  priceTo: number;
-  search?: string;
-  page?: number;
-}
-
-export interface ITagResponse {
-  id: number;
-  name: string;
-}
-
-export interface ICourseResponse {
+export interface ICourse {
   id: number;
   name: string;
   description: string | null;
   levelName: string | null;
   durationInMinutes: number;
-  tags: ITagResponse[];
+  tags: ITag[];
   prerequisites: string | null;
   imageUrl: string;
   coverUrl: string;
@@ -30,8 +16,8 @@ export interface ICourseResponse {
   status: ECourseStatus;
 }
 
-export interface IGetCoursesApiParams {
-  name?: string;
+export interface IGetCoursesParams extends IPagnationParams {
+  search?: string;
   minPrice?: number;
   maxPrice?: number;
 }
@@ -43,22 +29,12 @@ export interface ICreateCourseInput {
   durationInMinutes: number;
   tags: number[];
   prerequisites?: string;
-  cover: File;
-  image: File;
+  cover?: File;
+  image?: File;
   hasCertificate: boolean;
   status: ECourseStatus;
 }
 
-export interface IUpdateCourseInput {
+export interface IUpdateCourseInput extends Partial<ICreateCourseInput> {
   id: number;
-  name?: string;
-  description?: string;
-  levelId?: number;
-  durationInMinutes?: number;
-  tags?: number[];
-  prerequisites?: string;
-  cover?: File;
-  image?: File;
-  hasCertificate?: boolean;
-  status?: ECourseStatus;
 }

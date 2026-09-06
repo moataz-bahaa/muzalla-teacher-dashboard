@@ -49,7 +49,7 @@ export const StudentsPage: React.FC = () => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const filter = useFilter<IGetStudentsParams>({
     status: 'all',
-    academicYear: 'all',
+    level: 'all',
     page: 1,
     search: '',
   });
@@ -292,7 +292,7 @@ export const StudentsPage: React.FC = () => {
               filters: filter.filters,
               onApply: (next: IGetStudentsParams) => {
                 filter.onChange('status', next.status);
-                filter.onChange('academicYear', next.academicYear);
+                filter.onChange('academicYear', next.level);
                 filter.onChange('page', 1);
               },
             })

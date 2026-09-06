@@ -1,4 +1,3 @@
-import { toPascalCase } from '@/utils/helpers';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -13,7 +12,7 @@ export function objectToFormData(
 ): FormData {
   if (input === null || input === undefined) return formData;
 
-  parentKey = parentKey ? toPascalCase(parentKey) : undefined;
+  parentKey = parentKey ?? undefined;
 
   if (input instanceof File) {
     if (!parentKey) throw new Error('File must have a key');

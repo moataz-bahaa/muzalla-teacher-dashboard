@@ -4,14 +4,14 @@ import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import type { IApiResponse } from '@/types/api';
 import type {
   ICreateStudentInput,
-  IGetStudentsApiParams,
+  IGetStudentsParams,
   IUpdateStudentInput,
 } from '@/types/student';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-export const useStudentsQuery = (params: IGetStudentsApiParams = {}) => {
+export const useStudentsQuery = (params: IGetStudentsParams = {}) => {
   const { data, isPending, isError, error } = useQuery({
     queryKey: [API_ENDPOINTS.students, params],
     queryFn: () => client.students.getAll(params),
@@ -28,7 +28,7 @@ export const useStudentQuery = (id: number) => {
   });
 
   return { student: data?.data, isPending, isError, error };
-}
+};
 
 export const useAddStudentMutation = (
   options?: Omit<
