@@ -32,6 +32,8 @@ export const API_ENDPOINTS = {
   tags: '/tags',
   tagById: (id: number) => `/tags/${id}`,
 
+  levels: '/constants/levels',
+
   threads: '/threads',
   threadById: (id: number) => `/threads/${id}`,
   addThradParticipants: (id: number) => `/threads/${id}/participants`,

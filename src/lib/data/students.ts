@@ -17,7 +17,13 @@ export const useStudentsQuery = (params: IGetStudentsParams = {}) => {
     queryFn: () => client.students.getAll(params),
   });
 
-  return { students: data?.data ?? [], isPending, isError, error };
+  return {
+    students: data?.data ?? [],
+    pagination: data?.pagination,
+    isPending,
+    isError,
+    error,
+  };
 };
 
 export const useStudentQuery = (id: number) => {

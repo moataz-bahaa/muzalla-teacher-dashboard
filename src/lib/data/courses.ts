@@ -14,7 +14,13 @@ export const useCoursesQuery = (params: IGetCoursesParams = {}) => {
     queryFn: () => client.courses.getAll(params),
   });
 
-  return { courses: data?.data ?? [], isPending, isError, error };
+  return {
+    courses: data?.data ?? [],
+    pagination: data?.pagination,
+    isPending,
+    isError,
+    error,
+  };
 };
 
 export const useAddCourseMutation = (

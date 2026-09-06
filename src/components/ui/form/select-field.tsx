@@ -1,3 +1,4 @@
+import { useLevelsQuery } from '@/lib/data/constants';
 import { cn } from '@/lib/utils';
 import {
   Controller,
@@ -97,18 +98,21 @@ export function ControlledLevelSelect<T extends FieldValues>({
   ...props
 }: TControlledYearSelectProps<T>) {
   const { t } = useTranslation();
+  const { levels, isPending } = useLevelsQuery();
 
-  // TODO fetch data from backend
   return (
     <ControlledSelectField
       control={control}
       name={name}
       label={label ?? t('students.addModal.academicYear')}
-      options={['1', '2', '3'].map((year) => ({
-        label: t(`students.academicYears.${year}`),
-        value: year,
+      options={levels.map((level) => ({
+        label: t(`students.academicYears.${level.code}`, {
+          defaultValue: level.name,
+        }),
+        value: String(level.id),
       }))}
       {...props}
+      disabled={isPending || props.disabled}
     />
   );
 }

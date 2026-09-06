@@ -43,6 +43,7 @@ import type {
   ISection,
   IUpdateSectionInput,
 } from '@/types/section';
+import type { ILevel } from '@/types/level';
 import type {
   ICreateStudentInput,
   IGetStudentsParams,
@@ -116,6 +117,11 @@ class Client {
 
   tags = {
     getAll: () => HttpClient.get<IApiResponse<ITag[]>>(API_ENDPOINTS.tags),
+  };
+
+  constants = {
+    getLevels: () =>
+      HttpClient.get<IApiResponse<ILevel[]>>(API_ENDPOINTS.levels),
   };
 
   sections = {
@@ -234,11 +240,11 @@ class Client {
     importExcel: (file: File) =>
       HttpClient.post<IApiResponse<string>>(
         API_ENDPOINTS.studentsImport,
-        objectToFormData(file),
+        objectToFormData({ file }),
       ),
 
     delete: (id: number) =>
-      HttpClient.delete<IApiResponse<string>>(API_ENDPOINTS.userById(id)),
+      HttpClient.delete<IApiResponse<string>>(API_ENDPOINTS.studentById(id)),
   };
 }
 

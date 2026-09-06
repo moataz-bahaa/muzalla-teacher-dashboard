@@ -7,15 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/form/input';
 import { cn } from '@/lib/utils';
 import type { IGetCoursesParams } from '@/types/course';
-import { Search, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const DEFAULT_FILTERS: IGetCoursesParams = {
-  keywords: '',
-  tags: [],
-  priceFrom: 0,
-  priceTo: 10000,
+  search: '',
+  minPrice: 0,
+  maxPrice: 10000,
 };
 
 export const CourseFiltersDrawer: React.FC = () => {
@@ -26,23 +25,16 @@ export const CourseFiltersDrawer: React.FC = () => {
     onApply?: (filters: IGetCoursesParams) => void;
   }>();
 
-  const [filters, setFilters] = useState<IGetCoursesParams>(
-    data?.filters ?? DEFAULT_FILTERS,
-  );
-
-  const removeTag = (tag: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((item) => item !== tag),
-    }));
-  };
+  const [filters, setFilters] = useState<IGetCoursesParams>({
+    ...DEFAULT_FILTERS,
+    ...data?.filters,
+  });
 
   const clearAll = () => {
     setFilters({
-      keywords: '',
-      tags: [],
-      priceFrom: 0,
-      priceTo: 1000,
+      search: '',
+      minPrice: 0,
+      maxPrice: 1000,
     });
   };
 
@@ -51,6 +43,9 @@ export const CourseFiltersDrawer: React.FC = () => {
     closeDrawer();
   };
 
+  const minPrice = filters.minPrice ?? 0;
+  const maxPrice = filters.maxPrice ?? 1000;
+
   return (
     <DrawerContent className='w-112.5' title={t('courses.filters.title')}>
       <div className='flex flex-col gap-8'>
@@ -58,33 +53,19 @@ export const CourseFiltersDrawer: React.FC = () => {
           <div className='relative'>
             <Search className='pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-neutral-500' />
             <Input
-              value={filters.keywords}
+              value={filters.search ?? ''}
               onChange={(event) =>
                 setFilters((prev) => ({
                   ...prev,
-                  keywords: event.target.value,
+                  search: event.target.value,
                 }))
               }
               placeholder={t('courses.filters.keywordsPlaceholder')}
               className='h-11 rounded-lg ps-10'
             />
           </div>
-          <div className='flex flex-wrap gap-1'>
-            {filters.tags.map((tag) => (
-              <button
-                key={tag}
-                type='button'
-                onClick={() => removeTag(tag)}
-                className='inline-flex items-center gap-1 rounded-full bg-success-100 px-2 py-0.5 text-xs font-medium text-success-800'
-              >
-                <X className='size-3' />
-                {tag}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* TODO use 1 progress with 2 controlls as in UI (low priority) */}
         <div className='flex flex-col gap-4'>
           <div className='flex items-center justify-between gap-3'>
             <p className='text-sm font-medium'>{t('courses.filters.price')}</p>
@@ -92,11 +73,11 @@ export const CourseFiltersDrawer: React.FC = () => {
               <span className='text-sm'>{t('courses.filters.from')}</span>
               <Input
                 type='number'
-                value={filters.priceFrom}
+                value={minPrice}
                 onChange={(event) =>
                   setFilters((prev) => ({
                     ...prev,
-                    priceFrom: Number(event.target.value) || 0,
+                    minPrice: Number(event.target.value) || 0,
                   }))
                 }
                 className='h-7 w-14 rounded-md px-1 text-center text-sm'
@@ -104,11 +85,11 @@ export const CourseFiltersDrawer: React.FC = () => {
               <span className='text-sm'>{t('courses.filters.to')}</span>
               <Input
                 type='number'
-                value={filters.priceTo}
+                value={maxPrice}
                 onChange={(event) =>
                   setFilters((prev) => ({
                     ...prev,
-                    priceTo: Number(event.target.value) || 0,
+                    maxPrice: Number(event.target.value) || 0,
                   }))
                 }
                 className='h-7 w-14 rounded-md px-1 text-center text-sm'
@@ -121,11 +102,14 @@ export const CourseFiltersDrawer: React.FC = () => {
               type='range'
               min={0}
               max={1000}
-              value={filters.priceFrom}
+              value={minPrice}
               onChange={(event) =>
                 setFilters((prev) => ({
                   ...prev,
-                  priceFrom: Math.min(Number(event.target.value), prev.priceTo),
+                  minPrice: Math.min(
+                    Number(event.target.value),
+                    prev.maxPrice ?? 1000,
+                  ),
                 }))
               }
               className='w-full accent-purple-heart-700'
@@ -134,18 +118,21 @@ export const CourseFiltersDrawer: React.FC = () => {
               type='range'
               min={0}
               max={1000}
-              value={filters.priceTo}
+              value={maxPrice}
               onChange={(event) =>
                 setFilters((prev) => ({
                   ...prev,
-                  priceTo: Math.max(Number(event.target.value), prev.priceFrom),
+                  maxPrice: Math.max(
+                    Number(event.target.value),
+                    prev.minPrice ?? 0,
+                  ),
                 }))
               }
               className={cn('mt-2 w-full accent-purple-heart-700')}
             />
             <div className='mt-2 flex justify-between text-sm font-medium text-purple-heart-950'>
-              <span>{filters.priceFrom}</span>
-              <span>{filters.priceTo}</span>
+              <span>{minPrice}</span>
+              <span>{maxPrice}</span>
             </div>
           </div>
         </div>

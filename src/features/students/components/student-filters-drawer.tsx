@@ -5,6 +5,7 @@ import {
 import DrawerContent from '@/components/drawer-views/drawer-content';
 import { Button } from '@/components/ui/button';
 import { SelectField } from '@/components/ui/form/select-field';
+import { useLevelsQuery } from '@/lib/data/constants';
 import type { IGetStudentsParams } from '@/types/student';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,7 @@ export const StudentFiltersDrawer: React.FC = () => {
   const [filters, setFilters] = useState<IGetStudentsParams>(
     data?.filters ?? DEFAULT_FILTERS,
   );
+  const { levels, isPending: isLevelsPending } = useLevelsQuery();
 
   const clearAll = () => setFilters(DEFAULT_FILTERS);
 
@@ -56,11 +58,15 @@ export const StudentFiltersDrawer: React.FC = () => {
           />
           <SelectField
             label={t('students.filters.academicYear')}
-            // TODO fetch data from backend
-            options={['1'].map((year) => ({
-              label: t(`students.academicYears.${year}`),
-              value: year,
-            }))}
+            options={[
+              { label: t('students.status.all'), value: 'all' },
+              ...levels.map((level) => ({
+                label: t(`students.academicYears.${level.code}`, {
+                  defaultValue: level.name,
+                }),
+                value: level.code,
+              })),
+            ]}
             value={filters.level ?? ''}
             onChange={(value) =>
               setFilters((prev) => ({
@@ -68,6 +74,7 @@ export const StudentFiltersDrawer: React.FC = () => {
                 level: value as IGetStudentsParams['level'],
               }))
             }
+            disabled={isLevelsPending}
           />
         </div>
       </div>

@@ -21,6 +21,7 @@ import { useCoursesQuery } from '@/lib/data/courses';
 import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
 import type { ICourse, IGetCoursesParams } from '@/types/course';
+import { ACADEMIC_YEARS } from '@/types/student';
 import { type ColumnDef } from '@tanstack/react-table';
 import {
   ArrowRightLeft,
@@ -50,21 +51,42 @@ const statusLabelKey = (status: string | number) => {
   return 'courses.status.draft';
 };
 
+const formatLevelName = (
+  levelName: string | null,
+  t: (key: string, options?: { defaultValue?: string }) => string,
+) => {
+  if (!levelName) return '—';
+  if ((ACADEMIC_YEARS as readonly string[]).includes(levelName)) {
+    return t(`students.academicYears.${levelName}`, { defaultValue: levelName });
+  }
+  return levelName;
+};
+
 export const CoursesPage: React.FC = () => {
   const { t } = useTranslation();
   const { openDrawer } = useDrawerAction();
   const { openModal } = useModalAction();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-  const { courses, isPending } = useCoursesQuery();
   const filter = useFilter<IGetCoursesParams>({
-    keywords: '',
-    tags: [],
-    priceFrom: 0,
-    priceTo: 10000,
     search: '',
     page: 1,
+    minPrice: undefined,
+    maxPrice: undefined,
   });
+
+  const queryParams = useMemo<IGetCoursesParams>(
+    () => ({
+      search: filter.filters.search || undefined,
+      page: filter.filters.page ?? 1,
+      limit: PAGE_SIZE,
+      minPrice: filter.filters.minPrice,
+      maxPrice: filter.filters.maxPrice,
+    }),
+    [filter.filters],
+  );
+
+  const { courses, pagination, isPending } = useCoursesQuery(queryParams);
 
   const openViewModal = (course: ICourse) => {
     openModal('COURSE_VIEW', {
@@ -170,7 +192,7 @@ export const CoursesPage: React.FC = () => {
         header: t('courses.columns.level'),
         cell: ({ row }) => (
           <span className='text-neutral-700'>
-            {row.original.levelName || '—'}
+            {formatLevelName(row.original.levelName, t)}
           </span>
         ),
       },
@@ -237,10 +259,9 @@ export const CoursesPage: React.FC = () => {
   );
 
   const applyDrawerFilters = (next: IGetCoursesParams) => {
-    filter.onChange('keywords', next.keywords);
-    filter.onChange('tags', next.tags);
-    filter.onChange('priceFrom', next.priceFrom);
-    filter.onChange('priceTo', next.priceTo);
+    filter.onChange('search', next.search);
+    filter.onChange('minPrice', next.minPrice);
+    filter.onChange('maxPrice', next.maxPrice);
     filter.onChange('page', 1);
   };
 
@@ -296,10 +317,9 @@ export const CoursesPage: React.FC = () => {
           onClick={() =>
             openDrawer('COURSE_FILTERS', {
               filters: {
-                keywords: filter.filters.keywords,
-                tags: filter.filters.tags,
-                priceFrom: filter.filters.priceFrom,
-                priceTo: filter.filters.priceTo,
+                search: filter.filters.search,
+                minPrice: filter.filters.minPrice,
+                maxPrice: filter.filters.maxPrice,
               },
               onApply: applyDrawerFilters,
             })
@@ -338,8 +358,7 @@ export const CoursesPage: React.FC = () => {
 
         <Pagination
           current={filter.filters.page ?? 1}
-          // TODO get from backend
-          total={Math.max(1, Math.ceil(courses.length / PAGE_SIZE))}
+          totalPages={pagination?.totalPages}
           onChange={(nextPage) => filter.onChange('page', nextPage)}
           className='border-t border-neutral-200 px-4 py-4'
         />

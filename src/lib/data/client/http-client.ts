@@ -13,6 +13,17 @@ Axios.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  // Let the browser set multipart boundary for FormData bodies
+  if (typeof FormData !== 'undefined' && config.data instanceof FormData) {
+    const headers = config.headers;
+    if (headers && typeof headers.delete === 'function') {
+      headers.delete('Content-Type');
+    } else if (headers) {
+      delete (headers as Record<string, unknown>)['Content-Type'];
+    }
+  }
+
   return config;
 });
 

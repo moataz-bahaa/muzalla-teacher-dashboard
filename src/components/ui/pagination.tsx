@@ -4,20 +4,20 @@ import { useTranslation } from 'react-i18next';
 
 export interface IPaginationProps {
   current: number;
-  total: number;
+  totalPages: number | undefined;
   onChange: (page: number) => void;
   className?: string;
 }
 
 export const Pagination: React.FC<IPaginationProps> = ({
   current,
-  total,
+  totalPages: totalPagesProp,
   onChange,
   className,
 }) => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === 'rtl';
-  const totalPages = Math.max(1, total);
+  const totalPages = Math.max(1, totalPagesProp ?? 1);
   const currentPage = Math.min(Math.max(1, current), totalPages);
 
   const goTo = (page: number) => {
@@ -27,7 +27,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
   return (
     <div
       className={cn(
-        'flex items-center justify-end gap-3 text-sm text-neutral-600 font-medium',
+        'flex items-center justify-end gap-3 text-sm font-medium text-neutral-600',
         className,
       )}
     >

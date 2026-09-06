@@ -2,6 +2,10 @@ import type { IPagnationParams } from './api';
 
 export type TStudentStatus = 'active' | 'inactive';
 
+export const ACADEMIC_YEARS = ['year1', 'year2', 'year3', 'year4'] as const;
+
+export type TAcademicYear = (typeof ACADEMIC_YEARS)[number];
+
 export interface IStudent {
   id: number;
   firstName: string;

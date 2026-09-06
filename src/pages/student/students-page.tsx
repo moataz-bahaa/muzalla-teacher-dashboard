@@ -21,6 +21,7 @@ import { API_ENDPOINTS } from '@/lib/data/client/endpoints';
 import { useEditStudentMutation, useStudentsQuery } from '@/lib/data/students';
 import { cn } from '@/lib/utils';
 import type { IGetStudentsParams, IStudent } from '@/types/student';
+import { ACADEMIC_YEARS } from '@/types/student';
 import { type ColumnDef } from '@tanstack/react-table';
 import {
   ArrowRightLeft,
@@ -42,6 +43,44 @@ import { toast } from 'sonner';
 
 const PAGE_SIZE = 8;
 
+const toStudentsQueryParams = (
+  filters: IGetStudentsParams,
+): IGetStudentsParams => {
+  const params: IGetStudentsParams = {
+    page: filters.page ?? 1,
+    limit: PAGE_SIZE,
+    search: filters.search || undefined,
+  };
+
+  if (filters.status === 'active') params.isActive = true;
+  if (filters.status === 'inactive') params.isActive = false;
+
+  const level = filters.level;
+  if (level && level !== 'all') {
+    const asId = Number(level);
+    if (!Number.isNaN(asId) && String(asId) === level) {
+      params.levelId = asId;
+    } else {
+      params.level = level;
+    }
+  }
+
+  return params;
+};
+
+const formatLevelName = (
+  levelName: string | null,
+  t: (key: string, options?: { defaultValue?: string }) => string,
+) => {
+  if (!levelName) return '—';
+  if ((ACADEMIC_YEARS as readonly string[]).includes(levelName)) {
+    return t(`students.academicYears.${levelName}`, {
+      defaultValue: levelName,
+    });
+  }
+  return levelName;
+};
+
 export const StudentsPage: React.FC = () => {
   const { t } = useTranslation();
   const { openDrawer } = useDrawerAction();
@@ -54,7 +93,11 @@ export const StudentsPage: React.FC = () => {
     search: '',
   });
 
-  const { students, isPending } = useStudentsQuery(filter.filters);
+  const queryParams = useMemo(
+    () => toStudentsQueryParams(filter.filters),
+    [filter.filters],
+  );
+  const { students, pagination, isPending } = useStudentsQuery(queryParams);
   const editMutation = useEditStudentMutation();
 
   const openAddModal = () => {
@@ -182,7 +225,7 @@ export const StudentsPage: React.FC = () => {
         header: t('students.columns.academicYear'),
         cell: ({ row }) => (
           <span className='text-neutral-700'>
-            {row.original.levelName || '—'}
+            {formatLevelName(row.original.levelName, t)}
           </span>
         ),
       },
@@ -292,7 +335,7 @@ export const StudentsPage: React.FC = () => {
               filters: filter.filters,
               onApply: (next: IGetStudentsParams) => {
                 filter.onChange('status', next.status);
-                filter.onChange('academicYear', next.level);
+                filter.onChange('level', next.level);
                 filter.onChange('page', 1);
               },
             })
@@ -309,6 +352,7 @@ export const StudentsPage: React.FC = () => {
             value={filter.filters.search}
             onChange={(event) => {
               filter.onChange('search', event.target.value);
+              filter.onChange('page', 1);
             }}
             placeholder={t('students.searchPlaceholder')}
           />
@@ -330,8 +374,7 @@ export const StudentsPage: React.FC = () => {
 
         <Pagination
           current={filter.filters.page ?? 1}
-          // TODO
-          total={20}
+          totalPages={pagination?.totalPages}
           onChange={(nextPage) => filter.onChange('page', nextPage)}
           className='border-t border-neutral-200 px-4 py-4'
         />
