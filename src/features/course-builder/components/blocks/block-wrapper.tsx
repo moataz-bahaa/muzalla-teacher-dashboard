@@ -1,13 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import {
-  ArrowDown,
-  ArrowUp,
-  Copy,
-  GripVertical,
-  Pencil,
-  Trash2,
-} from 'lucide-react';
+import { Copy, GripVertical, Pencil, Trash2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 interface IBlockWrapperProps {
@@ -36,7 +29,11 @@ export const BlockWrapper: React.FC<IBlockWrapperProps> = ({
   children,
 }) => {
   if (!isTeacherView) {
-    return <div className='rounded-2xl border border-neutral-200 bg-white p-5'>{children}</div>;
+    return (
+      <div className='rounded-2xl border border-neutral-200 bg-white p-5'>
+        {children}
+      </div>
+    );
   }
 
   return (
@@ -44,17 +41,23 @@ export const BlockWrapper: React.FC<IBlockWrapperProps> = ({
       className={cn(
         'group relative rounded-2xl border bg-white p-5 transition-shadow',
         isActive
-          ? 'border-purple-heart-500 shadow-[0_0_0_1px_rgba(109,40,217,0.35)]'
+          ? 'border-purple-heart-500 shadow-[0_0_0_1px_rgba(105,0,238,0.25)]'
           : 'border-neutral-200 hover:border-purple-heart-200',
       )}
       onClick={onSelect}
     >
-      <div className='absolute -start-12 top-1/2 hidden -translate-y-1/2 flex-col gap-1 lg:flex'>
+      {/* Figma: action tools on visual left (inline-end in RTL) */}
+      <div
+        className={cn(
+          'absolute -end-12 top-1/2 z-10 hidden -translate-y-1/2 flex-col gap-1 transition-opacity lg:flex',
+          isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
+        )}
+      >
         <Button
           type='button'
           size='icon'
           variant='outline'
-          className='size-8 rounded-lg border-neutral-200'
+          className='size-8 rounded-lg border-neutral-200 bg-white shadow-sm'
           onClick={(e) => {
             e.stopPropagation();
             onSelect();
@@ -66,7 +69,7 @@ export const BlockWrapper: React.FC<IBlockWrapperProps> = ({
           type='button'
           size='icon'
           variant='outline'
-          className='size-8 rounded-lg border-neutral-200'
+          className='size-8 rounded-lg border-neutral-200 bg-white shadow-sm'
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
@@ -78,7 +81,7 @@ export const BlockWrapper: React.FC<IBlockWrapperProps> = ({
           type='button'
           size='icon'
           variant='outline'
-          className='size-8 rounded-lg border-neutral-200'
+          className='size-8 rounded-lg border-neutral-200 bg-white shadow-sm'
           onClick={(e) => {
             e.stopPropagation();
             onDuplicate();
@@ -90,31 +93,20 @@ export const BlockWrapper: React.FC<IBlockWrapperProps> = ({
           type='button'
           size='icon'
           variant='outline'
-          disabled={!canMoveUp}
-          className='size-8 rounded-lg border-neutral-200'
+          disabled={!canMoveUp && !canMoveDown}
+          className='size-8 cursor-grab rounded-lg border-neutral-200 bg-white shadow-sm'
           onClick={(e) => {
             e.stopPropagation();
-            onMoveUp();
+            if (canMoveUp) onMoveUp();
+            else if (canMoveDown) onMoveDown();
           }}
         >
-          <ArrowUp className='size-4' />
-        </Button>
-        <Button
-          type='button'
-          size='icon'
-          variant='outline'
-          disabled={!canMoveDown}
-          className='size-8 rounded-lg border-neutral-200'
-          onClick={(e) => {
-            e.stopPropagation();
-            onMoveDown();
-          }}
-        >
-          <ArrowDown className='size-4' />
+          <GripVertical className='size-4' />
         </Button>
       </div>
 
-      <div className='absolute -end-3 top-1/2 hidden -translate-y-1/2 text-neutral-300 lg:block'>
+      {/* Figma: drag handle on visual right (inline-start in RTL) */}
+      <div className='absolute -start-3 top-1/2 hidden -translate-y-1/2 text-neutral-300 lg:block'>
         <GripVertical className='size-5' />
       </div>
 

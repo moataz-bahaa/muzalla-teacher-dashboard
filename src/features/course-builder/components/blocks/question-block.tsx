@@ -119,8 +119,8 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
       )}
 
       {!isTeacherView && !isWritten && (
-        <div className='flex justify-end'>
-          <Button className='rounded-lg bg-purple-heart-900 hover:bg-purple-heart-800'>
+        <div className='flex justify-center pt-2'>
+          <Button className='rounded-lg bg-purple-heart-900 px-8 hover:bg-purple-heart-800'>
             {t('courses.builder.blocks.submitAnswer')}
           </Button>
         </div>

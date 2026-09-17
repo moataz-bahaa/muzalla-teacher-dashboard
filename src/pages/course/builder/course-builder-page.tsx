@@ -13,30 +13,47 @@ import {
   useCourseQuery,
   useUpdateCourseMutation,
 } from '@/lib/data/course-builder';
-import { cn } from '@/lib/utils';
 import { routes } from '@/routes/routes';
 import { ECourseStatus } from '@/types/page-block';
 import { ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
-const BuilderProgress: React.FC = () => {
-  const { sections, selectedPageId, getPages } = useBuilder();
-  const totalPages = sections.reduce(
-    (acc, section) => acc + getPages(section.id).length,
-    0,
-  );
-  const progress =
-    sections.length === 0 ? 0 : selectedPageId && totalPages > 0 ? 45 : 25;
-
+const BuilderProgress: React.FC<{ value: number }> = ({ value }) => {
   return (
-    <div className='relative h-2 overflow-hidden rounded-full bg-purple-heart-100'>
+    <div className='relative h-2 w-full overflow-hidden bg-neutral-200/75'>
       <div
-        className='absolute inset-y-0 start-0 rounded-full bg-purple-heart-700 transition-all'
-        style={{ width: `${progress}%` }}
+        className='absolute inset-y-0 start-0 bg-purple-heart-700/75 transition-all'
+        style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
       />
     </div>
+  );
+};
+
+const BuilderHeaderBreadcrumb: React.FC<{
+  courseName?: string;
+}> = ({ courseName }) => {
+  const { t } = useTranslation();
+  const [slot, setSlot] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setSlot(document.getElementById('dashboard-breadcrumb'));
+  }, []);
+
+  if (!slot) return null;
+
+  return createPortal(
+    <PageBreadcrumb
+      items={[
+        { label: t('dashboard.home'), to: routes.home },
+        { label: t('courses.title'), to: routes.courses },
+        { label: courseName ?? t('courses.create.breadcrumb') },
+      ]}
+    />,
+    slot,
   );
 };
 
@@ -54,6 +71,9 @@ const BuilderContent: React.FC = () => {
   const showOnboarding = hasSections && !hasPages && !onboardingDismissed;
   const showCanvas = Boolean(selectedPageId);
 
+  const progress =
+    sections.length === 0 ? 40 : selectedPageId && hasPages ? 70 : 55;
+
   const saveCourse = (status: ECourseStatus) => {
     updateCourse.mutate(
       { id: courseId, status },
@@ -70,63 +90,39 @@ const BuilderContent: React.FC = () => {
   };
 
   return (
-    <div className='flex flex-col gap-6'>
-      <div className='flex flex-col gap-3'>
-        <div className='flex flex-wrap items-center gap-3'>
-          <h1 className='font-heading text-3xl font-bold text-purple-heart-950 sm:text-4xl'>
-            {t('courses.title')}
-          </h1>
-          <div className='grow' />
-          <Button
-            className='h-12 gap-2 rounded-lg bg-purple-heart-900 px-8 hover:bg-purple-heart-800'
-            disabled={!hasSections || updateCourse.isPending}
-            onClick={() => saveCourse(ECourseStatus.Published)}
-          >
-            <ChevronRight className='size-6' />
-            {t('courses.create.saveContinue')}
-          </Button>
-          <Button
-            variant='outline'
-            className='h-12 gap-2 rounded-lg border-neutral-200 bg-white px-8 text-neutral-700'
-            disabled={updateCourse.isPending}
-            onClick={() => saveCourse(ECourseStatus.Draft)}
-          >
-            {t('courses.create.saveDraft')}
-            <DraftIcon className='size-4' />
-          </Button>
-        </div>
+    <div className='-mx-6 -mt-6 flex flex-col gap-6 lg:-mx-10'>
+      <BuilderHeaderBreadcrumb courseName={course?.name} />
+      <BuilderProgress value={progress} />
 
-        <PageBreadcrumb
-          items={[
-            { label: t('dashboard.home'), to: routes.home },
-            { label: t('courses.title') },
-            {
-              label: course?.name ?? t('courses.create.breadcrumb'),
-            },
-          ]}
-        />
-
-        <BuilderProgress />
+      <div className='flex flex-wrap items-center gap-3 px-6 lg:px-10'>
+        <h1 className='font-heading text-3xl font-bold text-purple-heart-950 sm:text-4xl'>
+          {t('courses.title')}
+        </h1>
+        <div className='grow' />
+        <Button
+          className='h-12 min-w-[230px] gap-2 rounded-lg bg-purple-heart-900 px-8 text-base hover:bg-purple-heart-800 disabled:border-neutral-400 disabled:bg-neutral-400 disabled:text-white disabled:opacity-100'
+          disabled={!hasSections || updateCourse.isPending}
+          onClick={() => saveCourse(ECourseStatus.Published)}
+        >
+          {t('courses.create.saveContinue')}
+          <ChevronRight className='size-6 rtl:rotate-180' />
+        </Button>
+        <Button
+          variant='outline'
+          className='h-12 min-w-[230px] gap-2 rounded-lg border-neutral-200 bg-white px-8 text-base text-neutral-800'
+          disabled={updateCourse.isPending}
+          onClick={() => saveCourse(ECourseStatus.Draft)}
+        >
+          <DraftIcon className='size-6' />
+          {t('courses.create.saveDraft')}
+        </Button>
       </div>
 
-      <div className='grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_360px] relative'>
-        <div
-          className={cn(
-            'rounded-2xl border border-neutral-200 bg-white',
-            !hasSections && 'min-h-160',
-          )}
-        >
+      <div className='grid grid-cols-1 gap-6 px-6 pb-6 lg:grid-cols-[minmax(0,1fr)_359px] lg:px-10'>
+        <div className='min-h-[640px]'>
           {!hasSections && <BuilderEmptyState />}
-          {showOnboarding && (
-            <div className='p-5'>
-              <BuilderOnboarding />
-            </div>
-          )}
-          {showCanvas && (
-            <div className='p-5'>
-              <BuilderCanvas />
-            </div>
-          )}
+          {showOnboarding && <BuilderOnboarding />}
+          {showCanvas && <BuilderCanvas />}
           {hasSections && hasPages && !showCanvas && !showOnboarding && (
             <div className='flex min-h-120 items-center justify-center p-8 text-center text-neutral-500'>
               {t('courses.builder.selectPage')}

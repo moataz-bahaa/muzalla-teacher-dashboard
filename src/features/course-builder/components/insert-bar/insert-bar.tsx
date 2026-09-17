@@ -1,12 +1,6 @@
 import { cn } from '@/lib/utils';
 import { EBlockType } from '@/types/page-block';
-import {
-  HelpCircle,
-  ImageIcon,
-  Plus,
-  Type,
-  Video,
-} from 'lucide-react';
+import { HelpCircle, ImageIcon, Plus, Type, Video } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBuilder } from '../../context/builder-context';
@@ -88,7 +82,10 @@ export const InsertBar: React.FC = () => {
   };
 
   return (
-    <div ref={barRef} className='pointer-events-none sticky bottom-6 z-20 flex justify-center'>
+    <div
+      ref={barRef}
+      className='pointer-events-none sticky bottom-6 z-20 flex justify-center'
+    >
       <div className='pointer-events-auto relative'>
         {activeSlot && (
           <InsertPopover
@@ -99,7 +96,7 @@ export const InsertBar: React.FC = () => {
           />
         )}
 
-        <div className='flex items-center gap-1 rounded-full bg-neutral-900 px-3 py-2 shadow-xl'>
+        <div className='flex items-center gap-0.5 rounded-full bg-neutral-800 px-2 py-1.5 shadow-xl'>
           {slots.map((slot) => {
             const isActive = activeSlot === slot.id;
             return (
@@ -108,7 +105,7 @@ export const InsertBar: React.FC = () => {
                 type='button'
                 onClick={() => setActiveSlot(isActive ? null : slot.id)}
                 className={cn(
-                  'flex min-w-[72px] flex-col items-center gap-1 rounded-full px-3 py-2 text-xs text-white transition-colors',
+                  'flex min-w-[72px] flex-col items-center gap-1 rounded-full px-3 py-2 text-[11px] text-white transition-colors',
                   isActive && 'bg-purple-heart-700',
                 )}
               >

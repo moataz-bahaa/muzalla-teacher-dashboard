@@ -5,11 +5,14 @@ export interface ITabItem {
   label: string;
 }
 
+export type TTabsVariant = 'underline' | 'segmented';
+
 export interface ITabsProps {
   currentActive: string;
   items: ITabItem[];
   onChange: (value: string) => void;
   className?: string;
+  variant?: TTabsVariant;
 }
 
 export const Tabs: React.FC<ITabsProps> = ({
@@ -17,7 +20,39 @@ export const Tabs: React.FC<ITabsProps> = ({
   items,
   onChange,
   className,
+  variant = 'underline',
 }) => {
+  if (variant === 'segmented') {
+    return (
+      <div
+        className={cn('flex rounded-xl bg-purple-heart-100 p-1', className)}
+        role='tablist'
+      >
+        {items.map((item) => {
+          const isActive = currentActive === item.value;
+
+          return (
+            <button
+              key={item.value}
+              type='button'
+              role='tab'
+              aria-selected={isActive}
+              onClick={() => onChange(item.value)}
+              className={cn(
+                'flex-1 rounded-lg px-3 py-2 text-xs font-medium transition-colors sm:text-sm',
+                isActive
+                  ? 'bg-white text-purple-heart-900 shadow-sm'
+                  : 'text-purple-heart-900/70 hover:text-purple-heart-900',
+              )}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(
