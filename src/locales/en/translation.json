@@ -30,7 +30,18 @@
   "dashboard": {
     "home": "Home",
     "addItem": "Add item",
-    "viewSite": "View site"
+    "viewSite": "View site",
+    "nav": {
+      "home": "Home",
+      "students": "Students",
+      "courses": "Courses",
+      "awards": "Awards",
+      "payments": "Payments",
+      "createCourse": "Create course",
+      "design": "Design",
+      "settings": "Settings",
+      "profile": "Profile"
+    }
   },
   "tableConfig": {
     "title": "Data filters",

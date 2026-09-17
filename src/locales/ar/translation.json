@@ -30,7 +30,18 @@
   "dashboard": {
     "home": "الصفحة الرئيسية",
     "addItem": "إضافة عنصر",
-    "viewSite": "عرض الموقع"
+    "viewSite": "عرض الموقع",
+    "nav": {
+      "home": "الرئيسية",
+      "students": "الطلاب",
+      "courses": "الدورات",
+      "awards": "الجوائز",
+      "payments": "المدفوعات",
+      "createCourse": "إنشاء دورة",
+      "design": "التصميم",
+      "settings": "الإعدادات",
+      "profile": "الملف الشخصي"
+    }
   },
   "tableConfig": {
     "title": "فلاتر البيانات",
