@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/form/input';
 import { Switch } from '@/components/ui/switch';
 import { Tabs } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
 import { useCourseQuery } from '@/lib/data/course-builder';
+import { cn } from '@/lib/utils';
 import { ECourseStatus, EPageType } from '@/types/page-block';
 import {
   ChevronDown,
@@ -35,9 +35,9 @@ export const CurriculumSidebar: React.FC = () => {
   } = useBuilder();
 
   const { data: course } = useCourseQuery(courseId);
-  const [expandedSections, setExpandedSections] = useState<Record<number, boolean>>(
-    {},
-  );
+  const [expandedSections, setExpandedSections] = useState<
+    Record<number, boolean>
+  >({});
   const [addOpen, setAddOpen] = useState(false);
 
   const tabs: { value: TBuilderTab; label: string }[] = [
@@ -119,7 +119,8 @@ export const CurriculumSidebar: React.FC = () => {
             {sections.map((section) => {
               const pages = getPages(section.id);
               const expanded =
-                expandedSections[section.id] ?? section.id === selectedSectionId;
+                expandedSections[section.id] ??
+                section.id === selectedSectionId;
 
               return (
                 <div

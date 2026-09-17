@@ -310,7 +310,13 @@
         "uploadAction": "تحميل ملفاتي",
         "addLink": "إضافة",
         "changeMedia": "تغيير",
-        "openPdf": "فتح PDF"
+        "openPdf": "فتح PDF",
+        "notesPlaceholder": "اكتب ملاحظة...",
+        "textPlaceholder": "اكتب النص هنا...",
+        "rows": "صفوف",
+        "columns": "أعمدة",
+        "tableSetup": "إعداد الجدول",
+        "insertTable": "إدراج"
       },
       "selectPage": "اختر درساً من المنهج لبدء التحرير",
       "toast": {

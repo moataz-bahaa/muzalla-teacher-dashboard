@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/form/input';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import type { IPageBlock } from '@/types/page-block';
 import { EBlockType } from '@/types/page-block';
@@ -34,23 +35,29 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
   const toggleCorrect = (index: number) => {
     const next = options.map((option, i) => ({
       ...option,
-      isCorrect: isMulti ? (i === index ? !option.isCorrect : option.isCorrect) : i === index,
+      isCorrect: isMulti
+        ? i === index
+          ? !option.isCorrect
+          : option.isCorrect
+        : i === index,
     }));
     onChange({ ...block, questionOptions: next });
   };
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4 animate-in fade-in-0 duration-200'>
       <div className='flex items-center gap-2 text-purple-heart-800'>
         <BrainCircuit className='size-5' />
-        <span className='font-semibold'>{t('courses.builder.blocks.testKnowledge')}</span>
+        <span className='font-semibold'>
+          {t('courses.builder.blocks.testKnowledge')}
+        </span>
       </div>
 
       {isTeacherView ? (
-        <Input
+        <Textarea
           value={block.data}
           onChange={(e) => onChange({ ...block, data: e.target.value })}
-          className='h-11 rounded-lg text-end font-medium'
+          className='min-h-[88px] resize-y rounded-xl border-neutral-200 bg-white text-end font-medium transition-shadow duration-200 focus-visible:border-purple-heart-400'
           placeholder={t('courses.builder.blocks.questionPlaceholder')}
         />
       ) : (
@@ -58,30 +65,27 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
       )}
 
       {isWritten ? (
-        isTeacherView ? (
-          <textarea
-            className='min-h-[120px] w-full rounded-xl border border-neutral-200 p-3'
-            placeholder={t('courses.builder.blocks.writtenPlaceholder')}
-            readOnly
-          />
-        ) : (
-          <textarea
-            className='min-h-[120px] w-full rounded-xl border border-neutral-200 p-3'
-            placeholder={t('courses.builder.blocks.answerPlaceholder')}
-          />
-        )
+        <Textarea
+          className='min-h-[140px] w-full resize-y rounded-xl border-neutral-200 bg-white p-3 text-end transition-shadow duration-200 focus-visible:border-purple-heart-400'
+          placeholder={
+            isTeacherView
+              ? t('courses.builder.blocks.writtenPlaceholder')
+              : t('courses.builder.blocks.answerPlaceholder')
+          }
+          readOnly={isTeacherView}
+        />
       ) : (
         <div className='space-y-3'>
           {options.map((option, index) => (
             <label
               key={index}
               className={cn(
-                'flex cursor-pointer items-center justify-between gap-3 rounded-xl border px-4 py-3',
+                'flex cursor-pointer items-center justify-between gap-3 rounded-xl border px-4 py-3 transition-colors duration-150',
                 option.isCorrect && isTeacherView
                   ? 'border-purple-heart-500 bg-purple-heart-50'
                   : selectedIndex === index && !isTeacherView
                     ? 'border-purple-heart-500'
-                    : 'border-neutral-200',
+                    : 'border-neutral-200 hover:border-purple-heart-200',
               )}
             >
               {isTeacherView ? (
@@ -89,7 +93,7 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
                   type='button'
                   onClick={() => toggleCorrect(index)}
                   className={cn(
-                    'size-5 rounded-full border',
+                    'size-5 rounded-full border transition-colors',
                     option.isCorrect
                       ? 'border-purple-heart-700 bg-purple-heart-700'
                       : 'border-neutral-300',

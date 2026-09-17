@@ -76,8 +76,8 @@ export const InsertBar: React.FC = () => {
     { id: 'more', label: t('courses.builder.insert.more'), icon: <Plus className='size-5' /> },
   ];
 
-  const handleSelectType = (type: EBlockType) => {
-    addBlock(type);
+  const handleSelectType = (type: EBlockType, data?: string) => {
+    addBlock(type, undefined, data);
     setActiveSlot(null);
   };
 
@@ -96,7 +96,7 @@ export const InsertBar: React.FC = () => {
           />
         )}
 
-        <div className='flex items-center gap-0.5 rounded-full bg-neutral-800 px-2 py-1.5 shadow-xl'>
+        <div className='flex items-center gap-0.5 rounded-full bg-neutral-800 px-2 py-1.5 shadow-xl animate-in fade-in-0 slide-in-from-bottom-2 duration-300'>
           {slots.map((slot) => {
             const isActive = activeSlot === slot.id;
             return (
@@ -105,8 +105,10 @@ export const InsertBar: React.FC = () => {
                 type='button'
                 onClick={() => setActiveSlot(isActive ? null : slot.id)}
                 className={cn(
-                  'flex min-w-[72px] flex-col items-center gap-1 rounded-full px-3 py-2 text-[11px] text-white transition-colors',
-                  isActive && 'bg-purple-heart-700',
+                  'flex min-w-[72px] flex-col items-center gap-1 rounded-full px-3 py-2 text-[11px] text-white transition-all duration-200',
+                  isActive
+                    ? 'scale-105 bg-purple-heart-700'
+                    : 'hover:bg-neutral-700',
                 )}
               >
                 {slot.icon}

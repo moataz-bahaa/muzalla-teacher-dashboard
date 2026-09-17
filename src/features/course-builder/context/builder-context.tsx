@@ -1,12 +1,3 @@
-import type { ReactNode } from 'react';
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
 import { client } from '@/lib/data/client';
 import {
   useCreatePageBlocksMutation,
@@ -16,19 +7,29 @@ import {
   useSectionsQuery,
   useUpdatePageBlocksMutation,
 } from '@/lib/data/course-builder';
-import { EBlockType, EPageType, type IPageBlock } from '@/types/page-block';
 import type { IPage } from '@/types/page';
+import { EBlockType, EPageType, type IPageBlock } from '@/types/page-block';
 import type { ISection } from '@/types/section';
+import type { ReactNode } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   addBlockToStore,
   addPageToStore,
   addSectionToStore,
   buildEmptyStore,
+  createLocalBlock,
   loadBuilderStore,
   saveBuilderStore,
+  withNormalizedOrder,
   type IBuilderStore,
 } from '../utils/block-helpers';
-import { createLocalBlock } from '../utils/block-helpers';
 
 export type TBuilderTab = 'curriculum' | 'info';
 
@@ -54,7 +55,11 @@ interface IBuilderContextValue {
   deletePage: (sectionId: number, pageId: number) => void;
   getPages: (sectionId: number) => IPage[];
   getBlocks: (pageId: number) => IPageBlock[];
-  addBlock: (type: EBlockType, afterBlockId?: number | null) => void;
+  addBlock: (
+    type: EBlockType,
+    afterBlockId?: number | null,
+    data?: string,
+  ) => void;
   updateBlock: (block: IPageBlock) => void;
   deleteBlock: (blockId: number) => void;
   duplicateBlock: (blockId: number) => void;
@@ -64,16 +69,19 @@ interface IBuilderContextValue {
 
 const BuilderContext = createContext<IBuilderContextValue | null>(null);
 
-const onboardingKey = (courseId: number) => `muzalla-builder-onboarding-${courseId}`;
+const onboardingKey = (courseId: number) =>
+  `muzalla-builder-onboarding-${courseId}`;
 
-export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }> = ({
-  courseId,
-  children,
-}) => {
-  const [store, setStore] = useState<IBuilderStore>(() =>
-    loadBuilderStore(courseId) ?? buildEmptyStore(),
+export const BuilderProvider: React.FC<{
+  courseId: number;
+  children: ReactNode;
+}> = ({ courseId, children }) => {
+  const [store, setStore] = useState<IBuilderStore>(
+    () => loadBuilderStore(courseId) ?? buildEmptyStore(),
   );
-  const [selectedSectionId, setSelectedSectionId] = useState<number | null>(null);
+  const [selectedSectionId, setSelectedSectionId] = useState<number | null>(
+    null,
+  );
   const [selectedPageId, setSelectedPageId] = useState<number | null>(null);
   const [activeBlockId, setActiveBlockId] = useState<number | null>(null);
   const [isTeacherView, setIsTeacherView] = useState(true);
@@ -146,7 +154,11 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
 
   const addSection = useCallback(
     async (name?: string) => {
-      const { store: next, sectionId } = addSectionToStore(store, courseId, name);
+      const { store: next, sectionId } = addSectionToStore(
+        store,
+        courseId,
+        name,
+      );
       persist(next);
       setSelectedSectionId(sectionId);
       setSidebarTab('curriculum');
@@ -157,7 +169,8 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
           order: next.sections.length - 1,
         });
         if (apiId > 0) {
-          const { [sectionId]: sectionPages, ...restPages } = next.pagesBySection;
+          const { [sectionId]: sectionPages, ...restPages } =
+            next.pagesBySection;
           persist({
             ...next,
             sections: next.sections.map((s) =>
@@ -182,7 +195,12 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
 
   const addPage = useCallback(
     async (sectionId: number, name?: string) => {
-      const { store: next, pageId } = addPageToStore(store, courseId, sectionId, name);
+      const { store: next, pageId } = addPageToStore(
+        store,
+        courseId,
+        sectionId,
+        name,
+      );
       persist(next);
       setSelectedSectionId(sectionId);
       setSelectedPageId(pageId);
@@ -198,12 +216,15 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
         });
         const apiId = res.data as number;
         if (apiId > 0) {
-          const updatedPages = (next.pagesBySection[sectionId] ?? []).map((p) =>
-            p.id === pageId ? { ...p, id: apiId } : p,
+          const updatedPages = (next.pagesBySection[sectionId] ?? []).map(
+            (p) => (p.id === pageId ? { ...p, id: apiId } : p),
           );
           persist({
             ...next,
-            pagesBySection: { ...next.pagesBySection, [sectionId]: updatedPages },
+            pagesBySection: {
+              ...next.pagesBySection,
+              [sectionId]: updatedPages,
+            },
             blocksByPage: {
               ...next.blocksByPage,
               [apiId]: next.blocksByPage[pageId] ?? [],
@@ -238,9 +259,9 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
         ...store,
         pagesBySection: {
           ...store.pagesBySection,
-          [selectedSectionId]: (store.pagesBySection[selectedSectionId] ?? []).map(
-            (p) => (p.id === id ? { ...p, name } : p),
-          ),
+          [selectedSectionId]: (
+            store.pagesBySection[selectedSectionId] ?? []
+          ).map((p) => (p.id === id ? { ...p, name } : p)),
         },
       });
     },
@@ -293,7 +314,7 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
   );
 
   const addBlock = useCallback(
-    (type: EBlockType, afterBlockId?: number | null) => {
+    (type: EBlockType, afterBlockId?: number | null, data?: string) => {
       if (!selectedPageId) return;
       const { store: next, block } = addBlockToStore(
         store,
@@ -301,6 +322,7 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
         selectedPageId,
         type,
         afterBlockId,
+        data,
       );
       persist(next);
       setActiveBlockId(block.id);
@@ -329,11 +351,23 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
       const blocks = (store.blocksByPage[selectedPageId] ?? []).map((b) =>
         b.id === block.id ? block : b,
       );
-      persist({ ...store, blocksByPage: { ...store.blocksByPage, [selectedPageId]: blocks } });
+      persist({
+        ...store,
+        blocksByPage: { ...store.blocksByPage, [selectedPageId]: blocks },
+      });
 
       if (block.id > 0) {
         void updateBlocksMutation
-          .mutateAsync({ blocks: [{ id: block.id, data: block.data, type: block.type, order: block.order }] })
+          .mutateAsync({
+            blocks: [
+              {
+                id: block.id,
+                data: block.data,
+                type: block.type,
+                order: block.order,
+              },
+            ],
+          })
           .catch(() => undefined);
       }
     },
@@ -343,10 +377,15 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
   const deleteBlock = useCallback(
     (blockId: number) => {
       if (!selectedPageId) return;
-      const blocks = (store.blocksByPage[selectedPageId] ?? [])
-        .filter((b) => b.id !== blockId)
-        .map((b, index) => ({ ...b, order: index }));
-      persist({ ...store, blocksByPage: { ...store.blocksByPage, [selectedPageId]: blocks } });
+      const blocks = withNormalizedOrder(
+        (store.blocksByPage[selectedPageId] ?? []).filter(
+          (b) => b.id !== blockId,
+        ),
+      );
+      persist({
+        ...store,
+        blocksByPage: { ...store.blocksByPage, [selectedPageId]: blocks },
+      });
       if (activeBlockId === blockId) setActiveBlockId(null);
     },
     [activeBlockId, persist, selectedPageId, store],
@@ -365,10 +404,11 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
       const blocks = [...(store.blocksByPage[selectedPageId] ?? [])];
       const index = blocks.findIndex((b) => b.id === blockId);
       blocks.splice(index + 1, 0, copy);
-      blocks.forEach((b, i) => {
-        b.order = i;
+      const ordered = withNormalizedOrder(blocks);
+      persist({
+        ...store,
+        blocksByPage: { ...store.blocksByPage, [selectedPageId]: ordered },
       });
-      persist({ ...store, blocksByPage: { ...store.blocksByPage, [selectedPageId]: blocks } });
       setActiveBlockId(copy.id);
     },
     [persist, selectedPageId, store],
@@ -377,13 +417,27 @@ export const BuilderProvider: React.FC<{ courseId: number; children: ReactNode }
   const reorderBlocks = useCallback(
     (blocks: IPageBlock[]) => {
       if (!selectedPageId) return;
-      const ordered = blocks.map((b, index) => ({ ...b, order: index }));
+      const ordered = withNormalizedOrder(blocks);
       persist({
         ...store,
         blocksByPage: { ...store.blocksByPage, [selectedPageId]: ordered },
       });
+
+      const remote = ordered.filter((b) => b.id > 0);
+      if (remote.length > 0) {
+        void updateBlocksMutation
+          .mutateAsync({
+            blocks: remote.map((b) => ({
+              id: b.id,
+              order: b.order,
+              type: b.type,
+              data: b.data,
+            })),
+          })
+          .catch(() => undefined);
+      }
     },
-    [persist, selectedPageId, store],
+    [persist, selectedPageId, store, updateBlocksMutation],
   );
 
   const dismissOnboarding = useCallback(() => {

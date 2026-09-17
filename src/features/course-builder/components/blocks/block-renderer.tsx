@@ -1,5 +1,6 @@
 import type { IPageBlock } from '@/types/page-block';
 import { EBlockType } from '@/types/page-block';
+import type { DragEvent } from 'react';
 import {
   isMediaBlockType,
   isQuestionBlockType,
@@ -17,12 +18,18 @@ interface IBlockRendererProps {
   block: IPageBlock;
   index: number;
   total: number;
+  isDragging?: boolean;
+  onDragStart?: (event: DragEvent<HTMLButtonElement>) => void;
+  onDragEnd?: (event: DragEvent<HTMLButtonElement>) => void;
 }
 
 export const BlockRenderer: React.FC<IBlockRendererProps> = ({
   block,
   index,
   total,
+  isDragging,
+  onDragStart,
+  onDragEnd,
 }) => {
   const {
     activeBlockId,
@@ -37,7 +44,14 @@ export const BlockRenderer: React.FC<IBlockRendererProps> = ({
   } = useBuilder();
 
   const renderContent = () => {
-    if (isTextBlockType(block.type)) {
+    if (
+      isTextBlockType(block.type) ||
+      block.type === EBlockType.Quote ||
+      block.type === EBlockType.Notes ||
+      block.type === EBlockType.Table ||
+      block.type === EBlockType.HorizontalDivider ||
+      block.type === EBlockType.VerticalDivider
+    ) {
       return (
         <TextBlock block={block} isTeacherView={isTeacherView} onChange={updateBlock} />
       );
@@ -49,7 +63,11 @@ export const BlockRenderer: React.FC<IBlockRendererProps> = ({
     }
     if (isQuestionBlockType(block.type)) {
       return (
-        <QuestionBlock block={block} isTeacherView={isTeacherView} onChange={updateBlock} />
+        <QuestionBlock
+          block={block}
+          isTeacherView={isTeacherView}
+          onChange={updateBlock}
+        />
       );
     }
     if (block.type === EBlockType.LinkToPage) {
@@ -67,7 +85,11 @@ export const BlockRenderer: React.FC<IBlockRendererProps> = ({
       block.type === EBlockType.Pdf
     ) {
       return (
-        <ResourcesBlock block={block} isTeacherView={isTeacherView} onChange={updateBlock} />
+        <ResourcesBlock
+          block={block}
+          isTeacherView={isTeacherView}
+          onChange={updateBlock}
+        />
       );
     }
     return (
@@ -77,10 +99,10 @@ export const BlockRenderer: React.FC<IBlockRendererProps> = ({
 
   const move = (direction: -1 | 1) => {
     if (!selectedPageId) return;
-    const blocks = getBlocks(selectedPageId);
+    const currentBlocks = getBlocks(selectedPageId);
     const targetIndex = index + direction;
-    if (targetIndex < 0 || targetIndex >= blocks.length) return;
-    const next = [...blocks];
+    if (targetIndex < 0 || targetIndex >= currentBlocks.length) return;
+    const next = [...currentBlocks];
     const [removed] = next.splice(index, 1);
     next.splice(targetIndex, 0, removed!);
     reorderBlocks(next);
@@ -90,6 +112,7 @@ export const BlockRenderer: React.FC<IBlockRendererProps> = ({
     <BlockWrapper
       isActive={activeBlockId === block.id}
       isTeacherView={isTeacherView}
+      isDragging={isDragging}
       onSelect={() => setActiveBlockId(block.id)}
       onDelete={() => deleteBlock(block.id)}
       onDuplicate={() => duplicateBlock(block.id)}
@@ -97,6 +120,8 @@ export const BlockRenderer: React.FC<IBlockRendererProps> = ({
       onMoveDown={() => move(1)}
       canMoveUp={index > 0}
       canMoveDown={index < total - 1}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
     >
       {renderContent()}
     </BlockWrapper>

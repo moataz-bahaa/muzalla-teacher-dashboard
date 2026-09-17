@@ -310,7 +310,13 @@
         "uploadAction": "Upload files",
         "addLink": "Add",
         "changeMedia": "Change",
-        "openPdf": "Open PDF"
+        "openPdf": "Open PDF",
+        "notesPlaceholder": "Write a note...",
+        "textPlaceholder": "Write your text here...",
+        "rows": "Rows",
+        "columns": "Columns",
+        "tableSetup": "Table setup",
+        "insertTable": "Insert"
       },
       "selectPage": "Select a lesson from the curriculum to start editing",
       "toast": {
