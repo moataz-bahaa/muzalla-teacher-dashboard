@@ -45,14 +45,12 @@ export interface IVerifyOtpInput {
 
 export interface IVerifyOtpResponse {
   message?: string;
-  resetToken?: string;
+  token?: string;
 }
 
 export interface IResetPasswordInput {
-  email: string;
-  code: string;
+  token: string;
   password: string;
-  resetToken?: string;
 }
 
 export interface IResetPasswordResponse {

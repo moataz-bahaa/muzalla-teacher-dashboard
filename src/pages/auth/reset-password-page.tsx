@@ -6,7 +6,6 @@ import type { IForgetPasswordFlowState } from '@/features/auth/types';
 import { useAppForm } from '@/hooks/use-app-form';
 import { useResetPasswordMutation } from '@/lib/data/auth';
 import { routes } from '@/routes/routes';
-import type { IResetPasswordInput } from '@/types/auth';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -17,9 +16,7 @@ export const ResetPasswordPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const flowState = location.state as IForgetPasswordFlowState | null;
-  const email = flowState?.email;
-  const code = flowState?.code;
-  const resetToken = flowState?.resetToken;
+  const token = flowState?.token;
 
   const resetPasswordMutation = useResetPasswordMutation();
   const form = useAppForm({
@@ -27,20 +24,18 @@ export const ResetPasswordPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (!email || !code) {
+    if (!token) {
       void navigate(routes.forgetPassword, { replace: true });
     }
-  }, [code, email, navigate]);
+  }, [token, navigate]);
 
-  const onSubmit = form.handleSubmit((values: IResetPasswordInput) => {
-    if (!email || !code) return;
+  const onSubmit = form.handleSubmit((values) => {
+    if (!token) return;
 
     resetPasswordMutation.mutate(
       {
-        email,
-        code,
+        token,
         password: values.password,
-        resetToken,
       },
       {
         onSuccess: () => {
@@ -78,6 +73,14 @@ export const ResetPasswordPage: React.FC = () => {
             autoComplete='new-password'
             {...form.register('password')}
             error={form.formState.errors.password?.message}
+          />
+          <Input
+            label={t('auth.resetPassword.confirmPassword')}
+            placeholder={t('auth.passwordPlaceholder')}
+            type='password'
+            autoComplete='new-password'
+            {...form.register('confirmPassword')}
+            error={form.formState.errors.confirmPassword?.message}
           />
 
           <Button

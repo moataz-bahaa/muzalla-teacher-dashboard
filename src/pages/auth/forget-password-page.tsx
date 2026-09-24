@@ -9,6 +9,7 @@ import type { IForgetPasswordFlowState } from '@/features/auth/types';
 import { useAppForm } from '@/hooks/use-app-form';
 import { useForgetPasswordMutation } from '@/lib/data/auth';
 import { routes } from '@/routes/routes';
+import { getErrorMessage } from '@/utils/helpers';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -24,14 +25,14 @@ export const ForgetPasswordPage: React.FC = () => {
 
   const onSubmit = form.handleSubmit((values: TForgetPasswordFormValues) => {
     forgetPasswordMutation.mutate(values, {
-      onSuccess: () => {
-        toast.success(t('auth.toast.resetEmailSent'));
+      onSuccess(data) {
+        toast.success(data.message);
         void navigate(routes.verifyOtp, {
           state: { email: values.email } satisfies IForgetPasswordFlowState,
         });
       },
-      onError: () => {
-        toast.error(t('auth.toast.forgetPasswordError'));
+      onError(error: unknown) {
+        toast.error(getErrorMessage(error));
       },
     });
   });

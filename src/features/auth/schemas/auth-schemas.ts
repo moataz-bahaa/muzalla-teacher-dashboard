@@ -1,4 +1,4 @@
-import type { ILoginInput, IRegisterInput, IResetPasswordInput, IVerifyOtpInput } from '@/types/auth';
+import type { ILoginInput, IRegisterInput, IVerifyOtpInput } from '@/types/auth';
 import Joi from 'joi';
 
 export const loginSchema: Joi.ObjectSchema<ILoginInput> = Joi.object({
@@ -28,7 +28,7 @@ export const verifyOtpSchema: Joi.ObjectSchema<IVerifyOtpInput> = Joi.object({
   code: Joi.string().trim().min(4).required().label('auth.verifyOtp.codeLabel'),
 });
 
-export const resetPasswordSchema: Joi.ObjectSchema<IResetPasswordInput> = Joi.object({
+export const resetPasswordSchema: Joi.ObjectSchema<TResetPasswordFormValues> = Joi.object({
   password: Joi.string()
     .min(8)
     .required()

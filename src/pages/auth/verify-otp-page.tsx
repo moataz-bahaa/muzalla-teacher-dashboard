@@ -49,8 +49,7 @@ export const VerifyOtpPage: React.FC = () => {
           void navigate(routes.resetPassword, {
             state: {
               email,
-              code: values.code,
-              resetToken: data.resetToken,
+              token: data.token,
             } satisfies IForgetPasswordFlowState,
           });
         },
