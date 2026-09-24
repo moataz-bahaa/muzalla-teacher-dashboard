@@ -27,7 +27,7 @@ export interface ICreateStudentInput {
   username: string;
   phoneNumber: string;
   password: string;
-  imageProfile: File | null;
+  profileImage: File | null;
 }
 
 export interface IUpdateStudentInput extends Partial<ICreateStudentInput> {

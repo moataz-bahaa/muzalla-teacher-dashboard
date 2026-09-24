@@ -60,7 +60,7 @@ export const EditStudentModal: React.FC = () => {
           username: student.username,
           phoneNumber: student.phoneNumber?.replace(/^\+20/, ''),
           password: '',
-          imageProfile: null,
+          profileImage: null,
           avatarUrl: student.profileImage ?? undefined,
         }}
         onSubmit={onSubmit}

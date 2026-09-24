@@ -37,7 +37,7 @@ export const StudentForm: React.FC<IStudentFormProps> = ({
     password: isEdit
       ? Joi.string().allow('').optional().label('students.addModal.password')
       : Joi.string().min(6).required().label('students.addModal.password'),
-    imageProfile: Joi.any().allow(null),
+    profileImage: Joi.any().allow(null),
   });
 
   const {
@@ -54,11 +54,11 @@ export const StudentForm: React.FC<IStudentFormProps> = ({
       username: initialValues?.username ?? '',
       phoneNumber: initialValues?.phoneNumber ?? '',
       password: initialValues?.password ?? '',
-      imageProfile: initialValues?.imageProfile ?? null,
+      profileImage: initialValues?.profileImage ?? null,
     },
   });
 
-  const imageProfile = useWatch({ control, name: 'imageProfile' });
+  const profileImage = useWatch({ control, name: 'profileImage' });
 
   return (
     <form
@@ -74,12 +74,12 @@ export const StudentForm: React.FC<IStudentFormProps> = ({
         <FilesUpload
           label={t('students.addModal.photo')}
           hint={t('students.addModal.photoHint')}
-          value={imageProfile}
+          value={profileImage}
           previewUrl={initialValues?.avatarUrl}
           onChange={(file) =>
-            setValue('imageProfile', file, { shouldValidate: true })
+            setValue('profileImage', file, { shouldValidate: true })
           }
-          error={errors.imageProfile?.message}
+          error={errors.profileImage?.message}
         />
       </div>
       <div className='mb-10 flex border-b border-neutral-200'>
