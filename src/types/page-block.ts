@@ -34,10 +34,9 @@ export const EPageType = {
 export type EPageType = (typeof EPageType)[keyof typeof EPageType];
 
 export const ECourseStatus = {
-  Published: 1,
-  Draft: 2,
-  Pending: 3,
-  Upcoming: 4,
+  Published: 'Published',
+  Draft: 'Draft',
+  Pending: 'Pending',
 } as const;
 
 export type ECourseStatus = (typeof ECourseStatus)[keyof typeof ECourseStatus];

@@ -145,7 +145,7 @@ export const CoursesPage: React.FC = () => {
       {
         id: 'cover',
         accessorKey: 'coverUrl',
-        size: 100,
+        size: 160,
         enableSorting: false,
         header: t('courses.columns.cover'),
         cell: ({ row }) => (
