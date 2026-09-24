@@ -41,6 +41,7 @@ export const EditStudentModal: React.FC = () => {
       lastName: values.lastName,
       username: values.username,
       phoneNumber: values.phoneNumber,
+      profileImage: values.profileImage,
     });
   };
 

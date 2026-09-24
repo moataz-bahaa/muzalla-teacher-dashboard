@@ -141,13 +141,13 @@
       "username": "Username"
     },
     "toast": {
-      "exported": "Export started (demo)",
-      "saved": "Student saved (demo)",
+      "exported": "Export started",
+      "saved": "Student saved",
       "saveError": "Failed to save student",
-      "imported": "Students imported (demo)",
-      "statusUpdated": "Student status updated (demo)",
-      "deleted": "Student \"{{name}}\" deleted (demo)",
-      "profileUpdated": "Profile updated (demo)"
+      "imported": "Students imported",
+      "statusUpdated": "Student status updated",
+      "deleted": "Student \"{{name}}\" deleted",
+      "profileUpdated": "Profile updated"
     },
     "delete": {
       "title": "Delete student",
@@ -242,7 +242,7 @@
       "saved": "Course saved",
       "draftSaved": "Draft saved",
       "saveError": "Failed to save course",
-      "exported": "Courses exported (demo)"
+      "exported": "Courses exported"
     },
     "builder": {
       "empty": {
@@ -386,16 +386,16 @@
     "googleSignIn": "Continue with Google",
     "logout": "Log out",
     "toast": {
-      "loginSuccess": "Signed in successfully (demo)",
+      "loginSuccess": "Signed in successfully",
       "loginError": "Sign in failed. Please check your credentials.",
-      "registerSuccess": "Account created successfully (demo)",
+      "registerSuccess": "Account created successfully",
       "registerError": "Could not create account. Please try again.",
-      "otpVerified": "Code verified (demo)",
+      "otpVerified": "Code verified",
       "verifyOtpError": "Invalid verification code. Please try again.",
-      "passwordChanged": "Password updated (demo)",
+      "passwordChanged": "Password updated",
       "resetPasswordError": "Could not update password. Please try again.",
       "googleStub": "Google sign-in is not connected yet",
-      "resendCode": "Verification code resent (demo)"
+      "resendCode": "Verification code resent"
     },
     "login": {
       "title": "Welcome back 👋",
