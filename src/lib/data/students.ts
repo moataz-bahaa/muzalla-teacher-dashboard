@@ -7,6 +7,7 @@ import type {
   IGetStudentsParams,
   IUpdateStudentInput,
 } from '@/types/student';
+import { getErrorMessage } from '@/utils/helpers';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -54,7 +55,7 @@ export const useAddStudentMutation = (
       options?.onSuccess?.(data, variables, onMutateResult, context);
     },
     onError(error) {
-      toast.error(error.message || t('students.toast.saveError'));
+      toast.error(getErrorMessage(error) || t('students.toast.saveError'));
     },
   });
 };
@@ -105,7 +106,7 @@ export const useImportStudentsMutation = (
       options?.onSuccess?.(data, variables, onMutateResult, context);
     },
     onError(error) {
-      toast.error(error.message || t('students.toast.importError'));
+      toast.error(getErrorMessage(error) || t('students.toast.importError'));
     },
   });
 };
