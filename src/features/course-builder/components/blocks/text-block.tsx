@@ -51,13 +51,13 @@ export const TextBlock: React.FC<ITextBlockProps> = ({
           <Textarea
             value={block.data}
             onChange={(e) => onChange({ ...block, data: e.target.value })}
-            className='min-h-[120px] resize-y border-0 bg-transparent text-end shadow-none focus-visible:border-transparent focus-visible:ring-0'
+            className='min-h-[120px] resize-y border-0 bg-transparent text-start shadow-none focus-visible:border-transparent focus-visible:ring-0'
             placeholder={t('courses.builder.blocks.notesPlaceholder', {
               defaultValue: 'اكتب ملاحظة...',
             })}
           />
         ) : (
-          <p className='whitespace-pre-wrap text-end'>{block.data}</p>
+          <p className='whitespace-pre-wrap text-start'>{block.data}</p>
         )}
       </div>
     );

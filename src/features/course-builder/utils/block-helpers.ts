@@ -125,6 +125,7 @@ export const getDefaultBlockData = (type: EBlockType): string => {
 export const getDefaultQuestionOptions = (
   type: EBlockType,
 ): IQuestionOption[] | undefined => {
+  if (!isQuestionBlockType(type)) return undefined;
   if (type === EBlockType.QuestionWritten) return undefined;
 
   return [
@@ -151,6 +152,40 @@ export const parseMediaData = (data: string) => {
     return { url: data, name: undefined, size: undefined };
   }
 };
+
+/** Returns a YouTube embed URL, or null if the input is not a YouTube watch/share link. */
+export const getYoutubeEmbedUrl = (rawUrl: string): string | null => {
+  const trimmed = rawUrl.trim();
+  if (!trimmed) return null;
+
+  try {
+    const url = new URL(trimmed);
+    const host = url.hostname.replace(/^www\./, '');
+
+    let videoId: string | null = null;
+
+    if (host === 'youtu.be') {
+      videoId = url.pathname.split('/').filter(Boolean)[0] ?? null;
+    } else if (host === 'youtube.com' || host === 'm.youtube.com') {
+      if (url.pathname === '/watch') {
+        videoId = url.searchParams.get('v');
+      } else if (url.pathname.startsWith('/embed/')) {
+        videoId = url.pathname.split('/')[2] ?? null;
+      } else if (url.pathname.startsWith('/shorts/')) {
+        videoId = url.pathname.split('/')[2] ?? null;
+      } else if (url.pathname.startsWith('/live/')) {
+        videoId = url.pathname.split('/')[2] ?? null;
+      }
+    }
+
+    if (!videoId || !/^[\w-]{6,}$/.test(videoId)) return null;
+    return `https://www.youtube.com/embed/${videoId}`;
+  } catch {
+    return null;
+  }
+};
+
+export const isYoutubeUrl = (url: string) => Boolean(getYoutubeEmbedUrl(url));
 
 export const parseLinkToPageData = (data: string) => {
   try {

@@ -3,40 +3,12 @@ import { EBlockType } from '@/types/page-block';
 import { HelpCircle, ImageIcon, Plus, Type, Video } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import {
+  getInsertTypesForSlot,
+  type TInsertSlot,
+} from '../../blocks/block-registry';
 import { useBuilder } from '../../context/builder-context';
 import { InsertPopover } from './insert-popover';
-
-type TInsertSlot = 'text' | 'image' | 'video' | 'question' | 'more';
-
-const slotToBlockTypes: Record<TInsertSlot, EBlockType[]> = {
-  text: [
-    EBlockType.H1,
-    EBlockType.H2,
-    EBlockType.H3,
-    EBlockType.Body,
-    EBlockType.SmallText,
-  ],
-  image: [EBlockType.Image],
-  video: [EBlockType.Video],
-  question: [
-    EBlockType.QuestionSingleChoice,
-    EBlockType.QuestionMultipleChoice,
-    EBlockType.QuestionWritten,
-  ],
-  more: [
-    EBlockType.Image,
-    EBlockType.Video,
-    EBlockType.Audio,
-    EBlockType.Pdf,
-    EBlockType.Body,
-    EBlockType.ExternalLink,
-    EBlockType.HorizontalDivider,
-    EBlockType.VerticalDivider,
-    EBlockType.Table,
-    EBlockType.Quote,
-    EBlockType.Notes,
-  ],
-};
 
 export const InsertBar: React.FC = () => {
   const { t } = useTranslation();
@@ -57,7 +29,11 @@ export const InsertBar: React.FC = () => {
   if (!selectedPageId) return null;
 
   const slots: { id: TInsertSlot; label: string; icon: React.ReactNode }[] = [
-    { id: 'text', label: t('courses.builder.insert.text'), icon: <Type className='size-5' /> },
+    {
+      id: 'text',
+      label: t('courses.builder.insert.text'),
+      icon: <Type className='size-5' />,
+    },
     {
       id: 'image',
       label: t('courses.builder.insert.image'),
@@ -73,7 +49,11 @@ export const InsertBar: React.FC = () => {
       label: t('courses.builder.insert.question'),
       icon: <HelpCircle className='size-5' />,
     },
-    { id: 'more', label: t('courses.builder.insert.more'), icon: <Plus className='size-5' /> },
+    {
+      id: 'more',
+      label: t('courses.builder.insert.more'),
+      icon: <Plus className='size-5' />,
+    },
   ];
 
   const handleSelectType = (type: EBlockType, data?: string) => {
@@ -82,15 +62,12 @@ export const InsertBar: React.FC = () => {
   };
 
   return (
-    <div
-      ref={barRef}
-      className='pointer-events-none sticky bottom-6 z-20 flex justify-center'
-    >
-      <div className='pointer-events-auto relative'>
+    <div className='pointer-events-none sticky bottom-6 z-20 flex justify-center'>
+      <div className='pointer-events-auto relative' ref={barRef}>
         {activeSlot && (
           <InsertPopover
             slot={activeSlot}
-            options={slotToBlockTypes[activeSlot]}
+            options={getInsertTypesForSlot(activeSlot)}
             onSelect={handleSelectType}
             onClose={() => setActiveSlot(null)}
           />

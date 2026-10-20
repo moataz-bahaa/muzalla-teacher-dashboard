@@ -1,11 +1,6 @@
 import type { IPageBlock } from '@/types/page-block';
-import { EBlockType } from '@/types/page-block';
 import type { DragEvent } from 'react';
-import {
-  isMediaBlockType,
-  isQuestionBlockType,
-  isTextBlockType,
-} from '../../utils/block-helpers';
+import { getBlockRendererKey } from '../../blocks/block-registry';
 import { useBuilder } from '../../context/builder-context';
 import { BlockWrapper } from './block-wrapper';
 import { MediaBlock } from './media-block';
@@ -44,57 +39,49 @@ export const BlockRenderer: React.FC<IBlockRendererProps> = ({
   } = useBuilder();
 
   const renderContent = () => {
-    if (
-      isTextBlockType(block.type) ||
-      block.type === EBlockType.Quote ||
-      block.type === EBlockType.Notes ||
-      block.type === EBlockType.Table ||
-      block.type === EBlockType.HorizontalDivider ||
-      block.type === EBlockType.VerticalDivider
-    ) {
-      return (
-        <TextBlock block={block} isTeacherView={isTeacherView} onChange={updateBlock} />
-      );
+    switch (getBlockRendererKey(block.type)) {
+      case 'media':
+        return (
+          <MediaBlock
+            block={block}
+            isTeacherView={isTeacherView}
+            onChange={updateBlock}
+          />
+        );
+      case 'question':
+        return (
+          <QuestionBlock
+            block={block}
+            isTeacherView={isTeacherView}
+            onChange={updateBlock}
+          />
+        );
+      case 'relatedLessons':
+        return (
+          <RelatedLessonsBlock
+            block={block}
+            isTeacherView={isTeacherView}
+            onChange={updateBlock}
+          />
+        );
+      case 'resources':
+        return (
+          <ResourcesBlock
+            block={block}
+            isTeacherView={isTeacherView}
+            onChange={updateBlock}
+          />
+        );
+      case 'text':
+      default:
+        return (
+          <TextBlock
+            block={block}
+            isTeacherView={isTeacherView}
+            onChange={updateBlock}
+          />
+        );
     }
-    if (isMediaBlockType(block.type)) {
-      return (
-        <MediaBlock block={block} isTeacherView={isTeacherView} onChange={updateBlock} />
-      );
-    }
-    if (isQuestionBlockType(block.type)) {
-      return (
-        <QuestionBlock
-          block={block}
-          isTeacherView={isTeacherView}
-          onChange={updateBlock}
-        />
-      );
-    }
-    if (block.type === EBlockType.LinkToPage) {
-      return (
-        <RelatedLessonsBlock
-          block={block}
-          isTeacherView={isTeacherView}
-          onChange={updateBlock}
-        />
-      );
-    }
-    if (
-      block.type === EBlockType.ExternalLink ||
-      block.type === EBlockType.Attachment ||
-      block.type === EBlockType.Pdf
-    ) {
-      return (
-        <ResourcesBlock
-          block={block}
-          isTeacherView={isTeacherView}
-          onChange={updateBlock}
-        />
-      );
-    }
-    return (
-      <TextBlock block={block} isTeacherView={isTeacherView} onChange={updateBlock} />
-    );
   };
 
   const move = (direction: -1 | 1) => {

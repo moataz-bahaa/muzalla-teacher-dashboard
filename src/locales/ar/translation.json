@@ -327,7 +327,11 @@
         "rows": "صفوف",
         "columns": "أعمدة",
         "tableSetup": "إعداد الجدول",
-        "insertTable": "إدراج"
+        "insertTable": "إدراج",
+        "addOption": "إضافة خيار",
+        "deleteOption": "حذف الخيار",
+        "newOption": "خيار جديد",
+        "markCorrect": "تعيين كإجابة صحيحة"
       },
       "selectPage": "اختر درساً من المنهج لبدء التحرير",
       "toast": {

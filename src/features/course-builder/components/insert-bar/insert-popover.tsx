@@ -1,13 +1,14 @@
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/form/input';
 import { cn } from '@/lib/utils';
 import { EBlockType } from '@/types/page-block';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { TInsertSlot } from '../../blocks/block-registry';
 import { createEmptyTable, serializeTableData } from '../../utils/block-helpers';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/form/input';
 
 interface IInsertPopoverProps {
-  slot: 'text' | 'image' | 'video' | 'question' | 'more';
+  slot: TInsertSlot;
   options: EBlockType[];
   onSelect: (type: EBlockType, data?: string) => void;
   onClose: () => void;

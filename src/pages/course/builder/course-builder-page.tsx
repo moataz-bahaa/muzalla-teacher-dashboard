@@ -59,8 +59,16 @@ const BuilderHeaderBreadcrumb: React.FC<{
 
 const BuilderContent: React.FC = () => {
   const { t } = useTranslation();
-  const { courseId, sections, selectedPageId, onboardingDismissed, getPages } =
-    useBuilder();
+  const {
+    courseId,
+    sections,
+    selectedPageId,
+    onboardingDismissed,
+    getPages,
+    isDirty,
+    isSaving,
+    savePageContent,
+  } = useBuilder();
   const { data: course } = useCourseQuery(courseId);
   const updateCourse = useUpdateCourseMutation();
 
@@ -74,16 +82,43 @@ const BuilderContent: React.FC = () => {
   const progress =
     sections.length === 0 ? 40 : selectedPageId && hasPages ? 70 : 55;
 
-  const saveCourse = (status: ECourseStatus) => {
+  const saveContent = async () => {
+    if (!selectedPageId) {
+      toast.error(
+        t('courses.builder.selectPage', {
+          defaultValue: 'Select a page to save',
+        }),
+      );
+      return;
+    }
+    await savePageContent();
+  };
+
+  const publishCourse = async () => {
+    if (isDirty) {
+      const saved = await savePageContent();
+      if (!saved) return;
+    }
     updateCourse.mutate(
-      { id: courseId, status },
+      { id: courseId, status: ECourseStatus.Published },
       {
         onSuccess: () => {
-          toast.success(
-            status === ECourseStatus.Draft
-              ? t('courses.toast.draftSaved')
-              : t('courses.toast.saved'),
-          );
+          toast.success(t('courses.toast.saved'));
+        },
+      },
+    );
+  };
+
+  const saveDraftStatus = async () => {
+    if (isDirty) {
+      const saved = await savePageContent();
+      if (!saved) return;
+    }
+    updateCourse.mutate(
+      { id: courseId, status: ECourseStatus.Draft },
+      {
+        onSuccess: () => {
+          toast.success(t('courses.toast.draftSaved'));
         },
       },
     );
@@ -100,9 +135,17 @@ const BuilderContent: React.FC = () => {
         </h1>
         <div className='grow' />
         <Button
+          className='h-12 min-w-[180px] gap-2 rounded-lg bg-purple-heart-900 px-8 text-base hover:bg-purple-heart-800 disabled:border-neutral-400 disabled:bg-neutral-400 disabled:text-white disabled:opacity-100'
+          disabled={!selectedPageId || isSaving || updateCourse.isPending}
+          onClick={() => void saveContent()}
+        >
+          {t('courses.builder.savePage', { defaultValue: 'Save page' })}
+          {isDirty ? ' *' : ''}
+        </Button>
+        <Button
           className='h-12 min-w-[230px] gap-2 rounded-lg bg-purple-heart-900 px-8 text-base hover:bg-purple-heart-800 disabled:border-neutral-400 disabled:bg-neutral-400 disabled:text-white disabled:opacity-100'
-          disabled={!hasSections || updateCourse.isPending}
-          onClick={() => saveCourse(ECourseStatus.Published)}
+          disabled={!hasSections || isSaving || updateCourse.isPending}
+          onClick={() => void publishCourse()}
         >
           {t('courses.create.saveContinue')}
           <ChevronRight className='size-6 rtl:rotate-180' />
@@ -110,15 +153,16 @@ const BuilderContent: React.FC = () => {
         <Button
           variant='outline'
           className='h-12 min-w-[230px] gap-2 rounded-lg border-neutral-200 bg-white px-8 text-base text-neutral-800'
-          disabled={updateCourse.isPending}
-          onClick={() => saveCourse(ECourseStatus.Draft)}
+          disabled={isSaving || updateCourse.isPending}
+          onClick={() => void saveDraftStatus()}
         >
           <DraftIcon className='size-6' />
           {t('courses.create.saveDraft')}
         </Button>
       </div>
 
-      <div className='grid grid-cols-1 gap-6 px-6 pb-6 lg:grid-cols-[minmax(0,1fr)_359px] lg:px-10'>
+      <div className='grid grid-cols-1 gap-6 px-6 pb-6 lg:grid-cols-[359px_minmax(0,1fr)] lg:px-10'>
+        <CurriculumSidebar />
         <div className='min-h-[640px]'>
           {!hasSections && <BuilderEmptyState />}
           {showOnboarding && <BuilderOnboarding />}
@@ -129,8 +173,6 @@ const BuilderContent: React.FC = () => {
             </div>
           )}
         </div>
-
-        <CurriculumSidebar />
       </div>
     </div>
   );

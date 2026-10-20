@@ -92,6 +92,7 @@ export interface IUpdatePageBlockItem {
   data?: string;
   type?: EBlockType;
   order?: number;
+  questionOptions?: IQuestionOption[];
 }
 
 export interface IUpdatePageBlocksInput {
@@ -101,4 +102,19 @@ export interface IUpdatePageBlocksInput {
 export interface IReorderPageBlockItem {
   id: number;
   order: number;
+}
+
+export interface IUpsertPageBlockItem {
+  id?: number;
+  type: EBlockType;
+  order: number;
+  data?: string;
+  questionOptions?: IQuestionOption[];
+  clientKey?: string;
+  file?: File;
+}
+
+export interface IUpsertPageContentInput {
+  pageId: number;
+  blocks: IUpsertPageBlockItem[];
 }

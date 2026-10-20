@@ -4,9 +4,13 @@ import { cn } from '@/lib/utils';
 import type { IPageBlock } from '@/types/page-block';
 import { EBlockType } from '@/types/page-block';
 import { CloudUpload, Film, ImagePlus, Link2 } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { parseMediaData } from '../../utils/block-helpers';
+import { useBuilder } from '../../context/builder-context';
+import {
+  getYoutubeEmbedUrl,
+  parseMediaData,
+} from '../../utils/block-helpers';
 
 interface IMediaBlockProps {
   block: IPageBlock;
@@ -14,13 +18,46 @@ interface IMediaBlockProps {
   onChange: (block: IPageBlock) => void;
 }
 
+const YoutubeEmbed: React.FC<{ src: string; title?: string }> = ({
+  src,
+  title,
+}) => (
+  <div className='aspect-video w-full overflow-hidden rounded-xl bg-black'>
+    <iframe
+      src={src}
+      title={title ?? 'YouTube video'}
+      className='size-full border-0'
+      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+      allowFullScreen
+      referrerPolicy='strict-origin-when-cross-origin'
+    />
+  </div>
+);
+
+const VideoPlayer: React.FC<{ url: string; name?: string }> = ({
+  url,
+  name,
+}) => {
+  const embedUrl = getYoutubeEmbedUrl(url);
+  if (embedUrl) {
+    return <YoutubeEmbed src={embedUrl} title={name} />;
+  }
+  return (
+    <video controls className='aspect-video w-full rounded-xl bg-black'>
+      <source src={url} />
+    </video>
+  );
+};
+
 export const MediaBlock: React.FC<IMediaBlockProps> = ({
   block,
   isTeacherView,
   onChange,
 }) => {
   const { t } = useTranslation();
+  const { setBlockPendingFile } = useBuilder();
   const fileRef = useRef<HTMLInputElement>(null);
+  const [urlDraft, setUrlDraft] = useState('');
   const media = parseMediaData(block.data);
   const hasMedia = Boolean(media.url && media.url !== '');
 
@@ -29,6 +66,7 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
   const isPdf = block.type === EBlockType.Pdf;
 
   const setUrl = (url: string, name?: string) => {
+    setBlockPendingFile(block.id, null);
     onChange({
       ...block,
       data: JSON.stringify({ url, name: name ?? url }),
@@ -36,30 +74,43 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
   };
 
   const onFile = (file: File) => {
-    const url = URL.createObjectURL(file);
-    setUrl(url, file.name);
+    const previewUrl = URL.createObjectURL(file);
+    setBlockPendingFile(block.id, file);
+    onChange({
+      ...block,
+      data: JSON.stringify({
+        url: previewUrl,
+        name: file.name,
+        size: String(file.size),
+      }),
+    });
   };
 
   if (hasMedia && !isTeacherView) {
     if (isVideo) {
-      return (
-        <video controls className='aspect-video w-full rounded-xl bg-black'>
-          <source src={media.url} />
-        </video>
-      );
+      return <VideoPlayer url={media.url} name={media.name} />;
     }
     if (isAudio) {
       return <audio controls src={media.url} className='w-full' />;
     }
     if (isPdf) {
       return (
-        <a href={media.url} target='_blank' rel='noreferrer' className='text-purple-heart-700'>
+        <a
+          href={media.url}
+          target='_blank'
+          rel='noreferrer'
+          className='text-purple-heart-700 truncate'
+        >
           {media.name ?? t('courses.builder.blocks.openPdf')}
         </a>
       );
     }
     return (
-      <img src={media.url} alt={media.name ?? ''} className='max-h-[420px] w-full rounded-xl object-cover' />
+      <img
+        src={media.url}
+        alt={media.name ?? ''}
+        className='max-h-[420px] w-full rounded-xl object-cover'
+      />
     );
   }
 
@@ -67,13 +118,24 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
     return (
       <div className='space-y-3'>
         {isVideo ? (
-          <video controls className='aspect-video w-full rounded-xl bg-black'>
-            <source src={media.url} />
-          </video>
+          <VideoPlayer url={media.url} name={media.name} />
         ) : isAudio ? (
           <audio controls src={media.url} className='w-full' />
+        ) : isPdf ? (
+          <a
+            href={media.url}
+            target='_blank'
+            rel='noreferrer'
+            className='text-purple-heart-700'
+          >
+            {media.name ?? t('courses.builder.blocks.openPdf')}
+          </a>
         ) : (
-          <img src={media.url} alt='' className='max-h-[420px] w-full rounded-xl object-cover' />
+          <img
+            src={media.url}
+            alt=''
+            className='max-h-[420px] w-full rounded-xl object-cover'
+          />
         )}
         <div className='flex gap-2'>
           <Button variant='outline' onClick={() => setUrl('')}>
@@ -102,7 +164,9 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
           ref={fileRef}
           type='file'
           className='hidden'
-          accept={isVideo ? 'video/*' : isAudio ? 'audio/*' : isPdf ? '.pdf' : 'image/*'}
+          accept={
+            isVideo ? 'video/*' : isAudio ? 'audio/*' : isPdf ? '.pdf' : 'image/*'
+          }
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) onFile(file);
@@ -119,21 +183,25 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
           <ImagePlus className='size-10 text-purple-heart-300' />
         )}
         <Input
-          placeholder='https://'
+          dir='ltr'
+          placeholder={
+            isVideo
+              ? 'https://youtube.com/watch?v=…'
+              : 'https://'
+          }
+          value={urlDraft}
+          onChange={(e) => setUrlDraft(e.target.value)}
           className='h-11 rounded-lg border-neutral-600 bg-neutral-800 text-white'
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              setUrl((e.target as HTMLInputElement).value);
+            if (e.key === 'Enter' && urlDraft.trim()) {
+              setUrl(urlDraft.trim());
             }
           }}
         />
         <Button
           className='rounded-lg bg-purple-heart-700 hover:bg-purple-heart-600'
           onClick={() => {
-            const input = document.querySelector<HTMLInputElement>(
-              'input[placeholder="https://"]',
-            );
-            if (input?.value) setUrl(input.value);
+            if (urlDraft.trim()) setUrl(urlDraft.trim());
           }}
         >
           {t('courses.builder.blocks.addLink')}

@@ -36,6 +36,7 @@ import type {
   IPageBlock,
   IReorderPageBlockItem,
   IUpdatePageBlocksInput,
+  IUpsertPageContentInput,
 } from '@/types/page-block';
 import type {
   ICreateSectionInput,
@@ -131,15 +132,12 @@ class Client {
       }),
 
     create: (input: ICreateSectionInput) =>
-      HttpClient.post<IApiResponse<number>>(
-        API_ENDPOINTS.sections,
-        objectToFormData(input),
-      ),
+      HttpClient.post<IApiResponse<number>>(API_ENDPOINTS.sections, input),
 
     update: ({ id, ...input }: IUpdateSectionInput) =>
       HttpClient.put<IApiResponse<ISection>>(
         `${API_ENDPOINTS.sections}?id=${id}`,
-        objectToFormData(input),
+        input,
       ),
 
     delete: (id: number) =>
@@ -161,15 +159,12 @@ class Client {
       }),
 
     create: (input: ICreatePageInput) =>
-      HttpClient.post<IApiResponse<number>>(
-        API_ENDPOINTS.pages,
-        objectToFormData(input),
-      ),
+      HttpClient.post<IApiResponse<number>>(API_ENDPOINTS.pages, input),
 
     update: ({ id, ...input }: IUpdatePageInput) =>
       HttpClient.put<IApiResponse<IPage>>(
         `${API_ENDPOINTS.pages}?id=${id}`,
-        objectToFormData(input),
+        input,
       ),
 
     delete: (id: number) =>
@@ -182,6 +177,34 @@ class Client {
         `${API_ENDPOINTS.pageReorder}?sectionId=${sectionId}`,
         items,
       ),
+
+    upsertContent: (input: IUpsertPageContentInput) => {
+      const hasFiles = input.blocks.some((b) => b.file);
+      if (!hasFiles) {
+        return HttpClient.put<IApiResponse<IPageBlock[]>>(
+          API_ENDPOINTS.pageContent(input.pageId),
+          {
+            blocks: input.blocks.map(({ file: _file, ...block }) => block),
+          },
+        );
+      }
+
+      const formData = new FormData();
+      const blocksPayload = input.blocks.map(({ file: _file, ...block }) => ({
+        ...block,
+        clientKey: block.clientKey ?? String(block.id ?? ''),
+      }));
+      formData.append('blocks', JSON.stringify(blocksPayload));
+      input.blocks.forEach((block) => {
+        if (!block.file) return;
+        const key = block.clientKey ?? String(block.id ?? '');
+        formData.append(`file_${key}`, block.file);
+      });
+      return HttpClient.put<IApiResponse<IPageBlock[]>>(
+        API_ENDPOINTS.pageContentUpload(input.pageId),
+        formData,
+      );
+    },
   };
 
   pageBlocks = {

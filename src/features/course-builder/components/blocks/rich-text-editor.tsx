@@ -11,6 +11,7 @@ import {
   Underline as UnderlineIcon,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const FONT_SIZES = [14, 16, 18, 20, 24, 28, 32] as const;
 
@@ -44,8 +45,10 @@ export const RichTextEditor: React.FC<IRichTextEditorProps> = ({
   className,
   contentClassName,
   editable = true,
-  dir = 'rtl',
+  dir: dirProp,
 }) => {
+  const { i18n } = useTranslation();
+  const dir = dirProp ?? (i18n.dir() === 'rtl' ? 'rtl' : 'ltr');
   const editorRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState<number>(18);
   const [showSizeMenu, setShowSizeMenu] = useState(false);
@@ -295,7 +298,7 @@ export const RichTextEditor: React.FC<IRichTextEditorProps> = ({
         )}
       >
         {empty && (
-          <span className='pointer-events-none absolute inset-2.5 text-end text-neutral-400'>
+          <span className='pointer-events-none absolute inset-2.5 text-start text-neutral-400'>
             {placeholder}
           </span>
         )}
@@ -305,7 +308,7 @@ export const RichTextEditor: React.FC<IRichTextEditorProps> = ({
           suppressContentEditableWarning
           dir={dir}
           className={cn(
-            'relative min-h-[88px] w-full text-end text-[18px] leading-[29px] text-neutral-700 outline-none',
+            'relative min-h-[88px] w-full text-start text-[18px] leading-[29px] text-neutral-700 outline-none',
             '[&_ul]:list-none [&_ul]:space-y-4 [&_ul_li]:relative [&_ul_li]:pe-5',
             '[&_ul_li]:before:absolute [&_ul_li]:before:end-0 [&_ul_li]:before:top-2 [&_ul_li]:before:size-2 [&_ul_li]:before:rounded-full [&_ul_li]:before:bg-purple-heart-900 [&_ul_li]:before:content-[""]',
             '[&_ol]:list-decimal [&_ol]:space-y-4 [&_ol]:ps-0 [&_ol]:pe-8 [&_ol_li]:marker:font-bold [&_ol_li]:marker:text-purple-heart-900',

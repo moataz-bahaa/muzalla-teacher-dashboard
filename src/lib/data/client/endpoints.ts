@@ -20,6 +20,8 @@ export const API_ENDPOINTS = {
   pages: '/pages',
   pageById: (id: number) => `/pages/${id}`,
   pageReorder: '/pages/reorder',
+  pageContent: (id: number) => `/pages/${id}/content`,
+  pageContentUpload: (id: number) => `/pages/${id}/content/upload`,
 
   pageBlocks: '/pageBlocks',
   pageBlockById: (id: number) => `/pageBlocks/${id}`,

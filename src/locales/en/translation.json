@@ -327,7 +327,11 @@
         "rows": "Rows",
         "columns": "Columns",
         "tableSetup": "Table setup",
-        "insertTable": "Insert"
+        "insertTable": "Insert",
+        "addOption": "Add option",
+        "deleteOption": "Delete option",
+        "newOption": "New option",
+        "markCorrect": "Mark as correct"
       },
       "selectPage": "Select a lesson from the curriculum to start editing",
       "toast": {
