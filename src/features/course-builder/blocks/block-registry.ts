@@ -79,9 +79,12 @@ export const getInsertTypesForSlot = (slot: TInsertSlot): EBlockType[] =>
     (def) => def.type,
   );
 
-export const createBlockDefaults = (type: EBlockType) => ({
-  data: getDefaultBlockData(type),
-  questionOptions: getDefaultQuestionOptions(type),
+export const createBlockDefaults = (
+  type: EBlockType,
+  copy?: Parameters<typeof getDefaultBlockData>[1],
+) => ({
+  data: getDefaultBlockData(type, copy),
+  questionOptions: getDefaultQuestionOptions(type, copy),
 });
 
 export {

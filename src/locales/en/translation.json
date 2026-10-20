@@ -308,6 +308,18 @@
         "studentView": "Student view",
         "viewHint": "You can preview the page from the student perspective"
       },
+      "defaults": {
+        "h1": "Main title",
+        "h2": "Subtitle",
+        "h3": "Small title",
+        "relatedLesson": "Related lesson",
+        "externalLink": "External link",
+        "option1": "Option 1",
+        "option2": "Option 2",
+        "option3": "Option 3",
+        "sectionName": "Section {{n}}",
+        "lessonName": "Lesson {{n}}"
+      },
       "blocks": {
         "testKnowledge": "Test your knowledge",
         "questionPlaceholder": "Enter your question",
@@ -324,6 +336,13 @@
         "openPdf": "Open PDF",
         "notesPlaceholder": "Write a note...",
         "textPlaceholder": "Write your text here...",
+        "linkTitle": "Link title",
+        "urlPlaceholder": "https://",
+        "youtubeUrlPlaceholder": "https://youtube.com/watch?v=…",
+        "pdfUrlPlaceholder": "https://example.com/file.pdf",
+        "relatedLessons": "Related lesson",
+        "lessonTitle": "Lesson title",
+        "pageId": "Page id",
         "rows": "Rows",
         "columns": "Columns",
         "tableSetup": "Table setup",
@@ -331,7 +350,8 @@
         "addOption": "Add option",
         "deleteOption": "Delete option",
         "newOption": "New option",
-        "markCorrect": "Mark as correct"
+        "markCorrect": "Mark as correct",
+        "linkPrompt": "Enter URL"
       },
       "selectPage": "Select a lesson from the curriculum to start editing",
       "toast": {

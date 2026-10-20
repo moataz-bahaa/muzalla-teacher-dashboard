@@ -160,7 +160,7 @@ export const CurriculumSidebar: React.FC = () => {
                         const Icon =
                           page.type === EPageType.Exam
                             ? ClipboardCheck
-                            : page.name.includes('فيديو')
+                            : /فيديو|video/i.test(page.name)
                               ? PlayCircle
                               : FileText;
 

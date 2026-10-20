@@ -41,14 +41,16 @@ const isEditorEmpty = (html: string) => {
 export const RichTextEditor: React.FC<IRichTextEditorProps> = ({
   value,
   onChange,
-  placeholder = 'اكتب النص هنا...',
+  placeholder,
   className,
   contentClassName,
   editable = true,
   dir: dirProp,
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dir = dirProp ?? (i18n.dir() === 'rtl' ? 'rtl' : 'ltr');
+  const resolvedPlaceholder =
+    placeholder ?? t('courses.builder.blocks.textPlaceholder');
   const editorRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState<number>(18);
   const [showSizeMenu, setShowSizeMenu] = useState(false);
@@ -123,7 +125,10 @@ export const RichTextEditor: React.FC<IRichTextEditorProps> = ({
   const setLink = () => {
     focusEditor();
     const previous = document.queryCommandValue('createLink');
-    const url = window.prompt('الرابط', previous || 'https://');
+    const url = window.prompt(
+      t('courses.builder.blocks.linkPrompt'),
+      previous || t('courses.builder.blocks.urlPlaceholder')
+    );
     if (url === null) return;
     if (!url) {
       runCommand('unlink');
@@ -299,7 +304,7 @@ export const RichTextEditor: React.FC<IRichTextEditorProps> = ({
       >
         {empty && (
           <span className='pointer-events-none absolute inset-2.5 text-start text-neutral-400'>
-            {placeholder}
+            {resolvedPlaceholder}
           </span>
         )}
         <div

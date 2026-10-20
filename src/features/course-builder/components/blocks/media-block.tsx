@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/form/input';
 import { cn } from '@/lib/utils';
 import type { IPageBlock } from '@/types/page-block';
 import { EBlockType } from '@/types/page-block';
-import { CloudUpload, Film, ImagePlus, Link2 } from 'lucide-react';
+import { CloudUpload, ExternalLink, Film, FileText, ImagePlus, Link2 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBuilder } from '../../context/builder-context';
@@ -46,6 +46,36 @@ const VideoPlayer: React.FC<{ url: string; name?: string }> = ({
     <video controls className='aspect-video w-full rounded-xl bg-black'>
       <source src={url} />
     </video>
+  );
+};
+
+const PdfViewer: React.FC<{
+  url: string;
+  name?: string;
+  openLabel: string;
+}> = ({ url, name, openLabel }) => {
+  const displayName = name || url;
+  return (
+    <div className='min-w-0 space-y-3 overflow-hidden'>
+      <div className='min-w-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50'>
+        <iframe
+          src={url}
+          title={displayName}
+          className='block h-[420px] w-full max-w-full border-0'
+        />
+      </div>
+      <a
+        href={url}
+        target='_blank'
+        rel='noreferrer'
+        className='flex min-w-0 items-center gap-2 text-sm text-purple-heart-700'
+      >
+        <ExternalLink className='size-4 shrink-0' />
+        <span className='min-w-0 truncate' title={displayName}>
+          {displayName || openLabel}
+        </span>
+      </a>
+    </div>
   );
 };
 
@@ -95,14 +125,11 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
     }
     if (isPdf) {
       return (
-        <a
-          href={media.url}
-          target='_blank'
-          rel='noreferrer'
-          className='text-purple-heart-700 truncate'
-        >
-          {media.name ?? t('courses.builder.blocks.openPdf')}
-        </a>
+        <PdfViewer
+          url={media.url}
+          name={media.name}
+          openLabel={t('courses.builder.blocks.openPdf')}
+        />
       );
     }
     return (
@@ -116,20 +143,17 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
 
   if (hasMedia && isTeacherView) {
     return (
-      <div className='space-y-3'>
+      <div className='min-w-0 space-y-3 overflow-hidden'>
         {isVideo ? (
           <VideoPlayer url={media.url} name={media.name} />
         ) : isAudio ? (
           <audio controls src={media.url} className='w-full' />
         ) : isPdf ? (
-          <a
-            href={media.url}
-            target='_blank'
-            rel='noreferrer'
-            className='text-purple-heart-700'
-          >
-            {media.name ?? t('courses.builder.blocks.openPdf')}
-          </a>
+          <PdfViewer
+            url={media.url}
+            name={media.name}
+            openLabel={t('courses.builder.blocks.openPdf')}
+          />
         ) : (
           <img
             src={media.url}
@@ -155,8 +179,14 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
           'flex min-h-[220px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-neutral-700 bg-neutral-900 p-6 text-white',
         )}
       >
-        <CloudUpload className='size-10 text-purple-heart-300' />
-        <p className='text-sm'>{t('courses.builder.blocks.uploadFromDevice')}</p>
+        {isPdf ? (
+          <FileText className='size-10 text-purple-heart-300' />
+        ) : (
+          <CloudUpload className='size-10 text-purple-heart-300' />
+        )}
+        <p className='text-center text-sm'>
+          {t('courses.builder.blocks.uploadFromDevice')}
+        </p>
         <span className='rounded-lg bg-purple-heart-700 px-4 py-2 text-sm'>
           {t('courses.builder.blocks.uploadAction')}
         </span>
@@ -165,7 +195,7 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
           type='file'
           className='hidden'
           accept={
-            isVideo ? 'video/*' : isAudio ? 'audio/*' : isPdf ? '.pdf' : 'image/*'
+            isVideo ? 'video/*' : isAudio ? 'audio/*' : isPdf ? '.pdf,application/pdf' : 'image/*'
           }
           onChange={(e) => {
             const file = e.target.files?.[0];
@@ -186,12 +216,14 @@ export const MediaBlock: React.FC<IMediaBlockProps> = ({
           dir='ltr'
           placeholder={
             isVideo
-              ? 'https://youtube.com/watch?v=…'
-              : 'https://'
+              ? t('courses.builder.blocks.youtubeUrlPlaceholder')
+              : isPdf
+                ? t('courses.builder.blocks.pdfUrlPlaceholder')
+                : t('courses.builder.blocks.urlPlaceholder')
           }
           value={urlDraft}
           onChange={(e) => setUrlDraft(e.target.value)}
-          className='h-11 rounded-lg border-neutral-600 bg-neutral-800 text-white'
+          className='h-11 w-full min-w-0 rounded-lg border-neutral-600 bg-neutral-800 text-white'
           onKeyDown={(e) => {
             if (e.key === 'Enter' && urlDraft.trim()) {
               setUrl(urlDraft.trim());

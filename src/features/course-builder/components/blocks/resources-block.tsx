@@ -19,9 +19,9 @@ export const ResourcesBlock: React.FC<IResourcesBlockProps> = ({
   const link = parseExternalLinkData(block.data);
 
   return (
-    <div className='flex items-center justify-between gap-3 rounded-xl border border-neutral-200 p-4'>
+    <div className='flex min-w-0 items-center gap-3 overflow-hidden rounded-xl border border-neutral-200 p-4'>
       <ExternalLink className='size-4 shrink-0 text-neutral-500' />
-      <div className='min-w-0 flex-1 text-end'>
+      <div className='min-w-0 flex-1 overflow-hidden'>
         {isTeacherView ? (
           <>
             <Input
@@ -32,10 +32,8 @@ export const ResourcesBlock: React.FC<IResourcesBlockProps> = ({
                   data: JSON.stringify({ ...link, title: e.target.value }),
                 })
               }
-              placeholder={t('courses.builder.blocks.linkTitle', {
-                defaultValue: 'Title',
-              })}
-              className='mb-1 h-8 border-0 bg-transparent px-0 text-start shadow-none focus-visible:ring-0'
+              placeholder={t('courses.builder.blocks.linkTitle')}
+              className='mb-1 h-8 min-w-0 truncate border-0 bg-transparent px-0 text-start shadow-none focus-visible:ring-0'
             />
             <Input
               dir='ltr'
@@ -46,8 +44,8 @@ export const ResourcesBlock: React.FC<IResourcesBlockProps> = ({
                   data: JSON.stringify({ ...link, href: e.target.value }),
                 })
               }
-              placeholder='https://'
-              className='h-8 border-0 bg-transparent px-0 text-start text-xs text-neutral-500 shadow-none focus-visible:ring-0'
+              placeholder={t('courses.builder.blocks.urlPlaceholder')}
+              className='h-8 min-w-0 truncate border-0 bg-transparent px-0 text-start text-xs text-neutral-500 shadow-none focus-visible:ring-0'
             />
           </>
         ) : (
@@ -55,10 +53,16 @@ export const ResourcesBlock: React.FC<IResourcesBlockProps> = ({
             href={link.href}
             target='_blank'
             rel='noreferrer'
-            className='block'
+            className='block min-w-0'
           >
-            <p className='font-medium'>{link.title || link.href}</p>
-            <p className='text-xs text-neutral-500'>
+            <p className='truncate font-medium' title={link.title || link.href}>
+              {link.title || link.href}
+            </p>
+            <p
+              className='truncate text-xs text-neutral-500'
+              title={link.source || link.href}
+              dir='ltr'
+            >
               {link.source || link.href}
             </p>
           </a>

@@ -89,14 +89,43 @@ export const parseTableData = (data: string): ITableBlockData => {
 export const serializeTableData = (table: ITableBlockData): string =>
   JSON.stringify(table);
 
-export const getDefaultBlockData = (type: EBlockType): string => {
+export interface IBuilderCopy {
+  h1: string;
+  h2: string;
+  h3: string;
+  relatedLesson: string;
+  externalLink: string;
+  option1: string;
+  option2: string;
+  option3: string;
+  sectionName: (n: number) => string;
+  lessonName: (n: number) => string;
+}
+
+export const ENGLISH_BUILDER_COPY: IBuilderCopy = {
+  h1: 'Main title',
+  h2: 'Subtitle',
+  h3: 'Small title',
+  relatedLesson: 'Related lesson',
+  externalLink: 'External link',
+  option1: 'Option 1',
+  option2: 'Option 2',
+  option3: 'Option 3',
+  sectionName: (n) => `Section ${n}`,
+  lessonName: (n) => `Lesson ${n}`,
+};
+
+export const getDefaultBlockData = (
+  type: EBlockType,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
+): string => {
   switch (type) {
     case EBlockType.H1:
-      return '<p>عنوان رئيسي</p>';
+      return `<p>${copy.h1}</p>`;
     case EBlockType.H2:
-      return '<p>عنوان فرعي</p>';
+      return `<p>${copy.h2}</p>`;
     case EBlockType.H3:
-      return '<p>عنوان صغير</p>';
+      return `<p>${copy.h3}</p>`;
     case EBlockType.Body:
     case EBlockType.SmallText:
       return '';
@@ -107,11 +136,11 @@ export const getDefaultBlockData = (type: EBlockType): string => {
     case EBlockType.Table:
       return serializeTableData(createEmptyTable(2, 2));
     case EBlockType.LinkToPage:
-      return JSON.stringify({ pageId: 0, title: 'درس متعلق' });
+      return JSON.stringify({ pageId: 0, title: copy.relatedLesson });
     case EBlockType.ExternalLink:
       return JSON.stringify({
         href: 'https://',
-        title: 'رابط خارجي',
+        title: copy.externalLink,
         source: '',
       });
     case EBlockType.HorizontalDivider:
@@ -124,25 +153,27 @@ export const getDefaultBlockData = (type: EBlockType): string => {
 
 export const getDefaultQuestionOptions = (
   type: EBlockType,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): IQuestionOption[] | undefined => {
   if (!isQuestionBlockType(type)) return undefined;
   if (type === EBlockType.QuestionWritten) return undefined;
 
   return [
-    { text: 'الخيار الأول', isCorrect: true, order: 0 },
-    { text: 'الخيار الثاني', isCorrect: false, order: 1 },
-    { text: 'الخيار الثالث', isCorrect: false, order: 2 },
+    { text: copy.option1, isCorrect: true, order: 0 },
+    { text: copy.option2, isCorrect: false, order: 1 },
+    { text: copy.option3, isCorrect: false, order: 2 },
   ];
 };
 
 export const createBlockItem = (
   type: EBlockType,
   order: number,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): ICreatePageBlockItem => ({
   type,
   order,
-  data: getDefaultBlockData(type),
-  questionOptions: getDefaultQuestionOptions(type),
+  data: getDefaultBlockData(type, copy),
+  questionOptions: getDefaultQuestionOptions(type, copy),
 });
 
 export const parseMediaData = (data: string) => {
@@ -262,9 +293,10 @@ export const saveBuilderStore = (courseId: number, store: IBuilderStore) => {
 export const createDefaultSection = (
   order: number,
   name?: string,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): ISection => ({
   id: nextLocalId(),
-  name: name ?? `قسم ${order + 1}`,
+  name: name ?? copy.sectionName(order + 1),
   order,
 });
 
@@ -272,11 +304,12 @@ export const createDefaultPage = (
   sectionId: number,
   order: number,
   name?: string,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): IPage => ({
   id: nextLocalId(),
   order,
   type: EPageType.Mixed,
-  name: name ?? `درس ${order + 1}`,
+  name: name ?? copy.lessonName(order + 1),
   sectionId,
 });
 
@@ -284,12 +317,13 @@ export const createLocalBlock = (
   type: EBlockType,
   order: number,
   data?: string,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): IPageBlock => ({
   id: nextLocalId(),
   type,
   order,
-  data: data ?? getDefaultBlockData(type),
-  questionOptions: getDefaultQuestionOptions(type),
+  data: data ?? getDefaultBlockData(type, copy),
+  questionOptions: getDefaultQuestionOptions(type, copy),
 });
 
 export const getTextBlockClassName = (type: EBlockType) => {
@@ -320,8 +354,9 @@ export const addSectionToStore = (
   store: IBuilderStore,
   courseId: number,
   name?: string,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): { store: IBuilderStore; sectionId: number } => {
-  const section = createDefaultSection(store.sections.length, name);
+  const section = createDefaultSection(store.sections.length, name, copy);
   const nextStore = {
     ...store,
     sections: [...store.sections, section].sort((a, b) => a.order - b.order),
@@ -336,9 +371,10 @@ export const addPageToStore = (
   courseId: number,
   sectionId: number,
   name?: string,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): { store: IBuilderStore; pageId: number } => {
   const pages = store.pagesBySection[sectionId] ?? [];
-  const page = createDefaultPage(sectionId, pages.length, name);
+  const page = createDefaultPage(sectionId, pages.length, name, copy);
   const nextStore = {
     ...store,
     pagesBySection: {
@@ -358,9 +394,10 @@ export const addBlockToStore = (
   type: EBlockType,
   afterBlockId?: number | null,
   data?: string,
+  copy: IBuilderCopy = ENGLISH_BUILDER_COPY,
 ): { store: IBuilderStore; block: IPageBlock } => {
   const blocks = [...(store.blocksByPage[pageId] ?? [])];
-  const block = createLocalBlock(type, blocks.length, data);
+  const block = createLocalBlock(type, blocks.length, data, copy);
 
   if (afterBlockId) {
     const index = blocks.findIndex((b) => b.id === afterBlockId);

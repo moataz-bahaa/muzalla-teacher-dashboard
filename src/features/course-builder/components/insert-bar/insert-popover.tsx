@@ -77,13 +77,11 @@ export const InsertPopover: React.FC<IInsertPopoverProps> = ({
     return (
       <div className='absolute bottom-[calc(100%+12px)] left-1/2 z-30 w-[260px] -translate-x-1/2 rounded-2xl border border-neutral-700 bg-neutral-900 p-4 text-white shadow-2xl animate-in fade-in-0 zoom-in-95'>
         <p className='mb-3 text-end text-sm font-medium'>
-          {t('courses.builder.blocks.tableSetup', {
-            defaultValue: 'إعداد الجدول',
-          })}
+          {t('courses.builder.blocks.tableSetup')}
         </p>
         <div className='mb-3 flex gap-3'>
           <label className='flex flex-1 flex-col gap-1 text-xs text-neutral-300'>
-            {t('courses.builder.blocks.rows', { defaultValue: 'صفوف' })}
+            {t('courses.builder.blocks.rows')}
             <Input
               type='number'
               min={1}
@@ -94,7 +92,7 @@ export const InsertPopover: React.FC<IInsertPopoverProps> = ({
             />
           </label>
           <label className='flex flex-1 flex-col gap-1 text-xs text-neutral-300'>
-            {t('courses.builder.blocks.columns', { defaultValue: 'أعمدة' })}
+            {t('courses.builder.blocks.columns')}
             <Input
               type='number'
               min={1}
@@ -124,9 +122,7 @@ export const InsertPopover: React.FC<IInsertPopoverProps> = ({
               )
             }
           >
-            {t('courses.builder.blocks.insertTable', {
-              defaultValue: 'إدراج',
-            })}
+            {t('courses.builder.blocks.insertTable')}
           </Button>
         </div>
       </div>

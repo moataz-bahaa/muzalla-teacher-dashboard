@@ -34,6 +34,7 @@ import {
   loadBuilderStore,
   saveBuilderStore,
   withNormalizedOrder,
+  type IBuilderCopy,
   type IBuilderStore,
 } from '../utils/block-helpers';
 
@@ -89,7 +90,22 @@ export const BuilderProvider: React.FC<{
   courseId: number;
   children: ReactNode;
 }> = ({ courseId, children }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const builderCopy = useMemo<IBuilderCopy>(
+    () => ({
+      h1: t('courses.builder.defaults.h1'),
+      h2: t('courses.builder.defaults.h2'),
+      h3: t('courses.builder.defaults.h3'),
+      relatedLesson: t('courses.builder.defaults.relatedLesson'),
+      externalLink: t('courses.builder.defaults.externalLink'),
+      option1: t('courses.builder.defaults.option1'),
+      option2: t('courses.builder.defaults.option2'),
+      option3: t('courses.builder.defaults.option3'),
+      sectionName: (n) => t('courses.builder.defaults.sectionName', { n }),
+      lessonName: (n) => t('courses.builder.defaults.lessonName', { n }),
+    }),
+    [i18n.language, t],
+  );
   const [store, setStore] = useState<IBuilderStore>(
     () => loadBuilderStore(courseId) ?? buildEmptyStore(),
   );
@@ -253,14 +269,17 @@ export const BuilderProvider: React.FC<{
         store,
         courseId,
         name,
+        builderCopy,
       );
       persist(next);
       setSelectedSectionId(sectionId);
       setSidebarTab('curriculum');
 
       try {
+        const sectionName =
+          name ?? builderCopy.sectionName(next.sections.length);
         const apiId = await createSectionMutation.mutateAsync({
-          name: name ?? `قسم ${next.sections.length}`,
+          name: sectionName,
           order: next.sections.length - 1,
         });
         if (apiId > 0) {
@@ -285,7 +304,7 @@ export const BuilderProvider: React.FC<{
 
       return sectionId;
     },
-    [courseId, createSectionMutation, persist, store, t],
+    [builderCopy, courseId, createSectionMutation, persist, store, t],
   );
 
   const addPage = useCallback(
@@ -301,6 +320,7 @@ export const BuilderProvider: React.FC<{
         courseId,
         sectionId,
         name,
+        builderCopy,
       );
       persist(next);
       setSelectedSectionId(sectionId);
@@ -310,8 +330,9 @@ export const BuilderProvider: React.FC<{
       const pages = next.pagesBySection[sectionId] ?? [];
 
       try {
+        const pageName = name ?? builderCopy.lessonName(pages.length);
         const apiId = await createPageMutation.mutateAsync({
-          name: name ?? `درس ${pages.length}`,
+          name: pageName,
           order: pages.length - 1,
           type: EPageType.Mixed,
           sectionId,
@@ -343,6 +364,7 @@ export const BuilderProvider: React.FC<{
     },
     [
       courseId,
+      builderCopy,
       createPageMutation,
       guardDirtyNavigation,
       persist,
@@ -458,12 +480,13 @@ export const BuilderProvider: React.FC<{
         type,
         afterBlockId,
         data,
+        builderCopy,
       );
       persist(next);
       setActiveBlockId(block.id);
       markDirty();
     },
-    [courseId, markDirty, persist, selectedPageId, store],
+    [builderCopy, courseId, markDirty, persist, selectedPageId, store],
   );
 
   const updateBlock = useCallback(
@@ -510,8 +533,12 @@ export const BuilderProvider: React.FC<{
         (b) => b.id === blockId,
       );
       if (!source) return;
-      const copy = createLocalBlock(source.type, source.order + 1);
-      copy.data = source.data;
+      const copy = createLocalBlock(
+        source.type,
+        source.order + 1,
+        source.data,
+        builderCopy,
+      );
       copy.questionOptions = source.questionOptions?.map((o) => ({ ...o }));
       const blocks = [...(store.blocksByPage[selectedPageId] ?? [])];
       const index = blocks.findIndex((b) => b.id === blockId);
@@ -524,7 +551,7 @@ export const BuilderProvider: React.FC<{
       setActiveBlockId(copy.id);
       markDirty();
     },
-    [markDirty, persist, selectedPageId, store],
+    [builderCopy, markDirty, persist, selectedPageId, store],
   );
 
   const reorderBlocks = useCallback(

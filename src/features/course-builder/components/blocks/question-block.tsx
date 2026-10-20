@@ -23,8 +23,12 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
 }) => {
   const { t } = useTranslation();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const isMulti = block.type === EBlockType.QuestionMultipleChoice;
-  const isWritten = block.type === EBlockType.QuestionWritten;
+  const [selectedIndexes, setSelectedIndexes] = useState<Set<number>>(
+    () => new Set(),
+  );
+  const blockType = Number(block.type) as EBlockType;
+  const isMulti = blockType === EBlockType.QuestionMultipleChoice;
+  const isWritten = blockType === EBlockType.QuestionWritten;
   const options = block.questionOptions ?? [];
 
   const updateOption = (index: number, text: string) => {
@@ -46,13 +50,27 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
     onChange({ ...block, questionOptions: next });
   };
 
+  const toggleStudentChoice = (index: number) => {
+    if (isMulti) {
+      setSelectedIndexes((prev) => {
+        const next = new Set(prev);
+        if (next.has(index)) next.delete(index);
+        else next.add(index);
+        return next;
+      });
+      return;
+    }
+    setSelectedIndex(index);
+  };
+
+  const isStudentSelected = (index: number) =>
+    isMulti ? selectedIndexes.has(index) : selectedIndex === index;
+
   const addOption = () => {
     const next: IQuestionOption[] = [
       ...options,
       {
-        text: t('courses.builder.blocks.newOption', {
-          defaultValue: 'New option',
-        }),
+        text: t('courses.builder.blocks.newOption'),
         isCorrect: false,
         order: options.length,
       },
@@ -104,72 +122,99 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
           readOnly={isTeacherView}
         />
       ) : (
-        <div className='space-y-3'>
-          {options.map((option, index) => (
-            <label
-              key={index}
-              className={cn(
-                'flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors duration-150',
-                option.isCorrect && isTeacherView
-                  ? 'border-purple-heart-500 bg-purple-heart-50'
-                  : selectedIndex === index && !isTeacherView
-                    ? 'border-purple-heart-500'
-                    : 'border-neutral-200 hover:border-purple-heart-200',
-              )}
-            >
-              {isTeacherView ? (
-                <button
-                  type='button'
-                  onClick={(e) => {
+        <div className='space-y-3' role={isMulti ? 'group' : 'radiogroup'}>
+          {options.map((option, index) => {
+            const selected = isStudentSelected(index);
+            return (
+              <div
+                key={index}
+                role={isMulti ? 'checkbox' : 'radio'}
+                aria-checked={!isTeacherView ? selected : undefined}
+                tabIndex={isTeacherView ? undefined : 0}
+                onClick={() => {
+                  if (!isTeacherView) toggleStudentChoice(index);
+                }}
+                onKeyDown={(e) => {
+                  if (isTeacherView) return;
+                  if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    toggleCorrect(index);
-                  }}
-                  className={cn(
-                    'size-5 shrink-0 rounded-full border transition-colors',
-                    option.isCorrect
-                      ? 'border-purple-heart-700 bg-purple-heart-700'
-                      : 'border-neutral-300',
-                  )}
-                  aria-label={t('courses.builder.blocks.markCorrect', {
-                    defaultValue: 'Mark as correct',
-                  })}
-                />
-              ) : (
-                <input
-                  type={isMulti ? 'checkbox' : 'radio'}
-                  name={`question-${block.id}`}
-                  checked={selectedIndex === index}
-                  onChange={() => setSelectedIndex(index)}
-                  className='size-4 shrink-0 accent-purple-heart-700'
-                />
-              )}
-              {isTeacherView ? (
-                <Input
-                  value={option.text}
-                  onChange={(e) => updateOption(index, e.target.value)}
-                  className='h-9 flex-1 border-0 bg-transparent px-0 text-start shadow-none focus-visible:ring-0'
-                />
-              ) : (
-                <span className='flex-1 text-start'>{option.text}</span>
-              )}
-              {isTeacherView && (
-                <button
-                  type='button'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    removeOption(index);
-                  }}
-                  disabled={options.length <= MIN_OPTIONS}
-                  className='shrink-0 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-danger-50 hover:text-danger-600 disabled:pointer-events-none disabled:opacity-40'
-                  aria-label={t('courses.builder.blocks.deleteOption', {
-                    defaultValue: 'Delete option',
-                  })}
-                >
-                  <Trash2 className='size-4' />
-                </button>
-              )}
-            </label>
-          ))}
+                    toggleStudentChoice(index);
+                  }
+                }}
+                className={cn(
+                  'flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors duration-150',
+                  isTeacherView ? 'cursor-default' : 'cursor-pointer',
+                  option.isCorrect && isTeacherView
+                    ? 'border-purple-heart-500 bg-purple-heart-50'
+                    : selected && !isTeacherView
+                      ? 'border-purple-heart-500 bg-purple-heart-50'
+                      : 'border-neutral-200 hover:border-purple-heart-200',
+                )}
+              >
+                {isTeacherView ? (
+                  <button
+                    type='button'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleCorrect(index);
+                    }}
+                    className={cn(
+                      'size-5 shrink-0 border transition-colors',
+                      isMulti ? 'rounded-md' : 'rounded-full',
+                      option.isCorrect
+                        ? 'border-purple-heart-700 bg-purple-heart-700'
+                        : 'border-neutral-300',
+                    )}
+                    aria-label={t('courses.builder.blocks.markCorrect')}
+                  />
+                ) : (
+                  <span
+                    className={cn(
+                      'flex size-5 shrink-0 items-center justify-center border transition-colors',
+                      isMulti ? 'rounded-md' : 'rounded-full',
+                      selected
+                        ? 'border-purple-heart-700 bg-purple-heart-700'
+                        : 'border-neutral-300 bg-white',
+                    )}
+                    aria-hidden
+                  >
+                    {selected && isMulti && (
+                      <span className='size-2 rounded-sm bg-white' />
+                    )}
+                    {selected && !isMulti && (
+                      <span className='size-2 rounded-full bg-white' />
+                    )}
+                  </span>
+                )}
+                {isTeacherView ? (
+                  <Input
+                    value={option.text}
+                    onChange={(e) => updateOption(index, e.target.value)}
+                    className='h-9 min-w-0 flex-1 border-0 bg-transparent px-0 text-start shadow-none focus-visible:ring-0'
+                  />
+                ) : (
+                  <span className='min-w-0 flex-1 truncate text-start'>
+                    {option.text}
+                  </span>
+                )}
+                {isTeacherView && (
+                  <button
+                    type='button'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      removeOption(index);
+                    }}
+                    disabled={options.length <= MIN_OPTIONS}
+                    className='shrink-0 rounded-lg p-1.5 text-neutral-400 transition-colors hover:bg-danger-50 hover:text-danger-600 disabled:pointer-events-none disabled:opacity-40'
+                    aria-label={t('courses.builder.blocks.deleteOption')}
+                  >
+                    <Trash2 className='size-4' />
+                  </button>
+                )}
+              </div>
+            );
+          })}
 
           {isTeacherView && (
             <Button
@@ -179,9 +224,7 @@ export const QuestionBlock: React.FC<IQuestionBlockProps> = ({
               onClick={addOption}
             >
               <Plus className='size-4' />
-              {t('courses.builder.blocks.addOption', {
-                defaultValue: 'Add option',
-              })}
+              {t('courses.builder.blocks.addOption')}
             </Button>
           )}
         </div>

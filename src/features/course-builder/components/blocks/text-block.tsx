@@ -52,9 +52,7 @@ export const TextBlock: React.FC<ITextBlockProps> = ({
             value={block.data}
             onChange={(e) => onChange({ ...block, data: e.target.value })}
             className='min-h-[120px] resize-y border-0 bg-transparent text-start shadow-none focus-visible:border-transparent focus-visible:ring-0'
-            placeholder={t('courses.builder.blocks.notesPlaceholder', {
-              defaultValue: 'اكتب ملاحظة...',
-            })}
+            placeholder={t('courses.builder.blocks.notesPlaceholder')}
           />
         ) : (
           <p className='whitespace-pre-wrap text-start'>{block.data}</p>
@@ -109,9 +107,7 @@ export const TextBlock: React.FC<ITextBlockProps> = ({
       value={block.data}
       onChange={(html) => onChange({ ...block, data: html })}
       contentClassName={getTextBlockClassName(block.type)}
-      placeholder={t('courses.builder.blocks.textPlaceholder', {
-        defaultValue: 'اكتب النص هنا...',
-      })}
+      placeholder={t('courses.builder.blocks.textPlaceholder')}
     />
   );
 };
@@ -156,7 +152,7 @@ const TableBlockEditor: React.FC<ITableBlockEditorProps> = ({
         <div className='flex flex-wrap items-center justify-end gap-3'>
           <div className='flex items-center gap-2 rounded-lg border border-neutral-200 px-2 py-1'>
             <span className='text-xs text-neutral-500'>
-              {t('courses.builder.blocks.rows', { defaultValue: 'صفوف' })}
+              {t('courses.builder.blocks.rows')}
             </span>
             <Button
               type='button'
@@ -182,7 +178,7 @@ const TableBlockEditor: React.FC<ITableBlockEditorProps> = ({
           </div>
           <div className='flex items-center gap-2 rounded-lg border border-neutral-200 px-2 py-1'>
             <span className='text-xs text-neutral-500'>
-              {t('courses.builder.blocks.columns', { defaultValue: 'أعمدة' })}
+              {t('courses.builder.blocks.columns')}
             </span>
             <Button
               type='button'

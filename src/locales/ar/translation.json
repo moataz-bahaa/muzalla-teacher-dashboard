@@ -308,6 +308,18 @@
         "studentView": "منظور الطالب",
         "viewHint": "يمكنك رؤية الصفحة من منظور الطالب"
       },
+      "defaults": {
+        "h1": "عنوان رئيسي",
+        "h2": "عنوان فرعي",
+        "h3": "عنوان صغير",
+        "relatedLesson": "درس متعلق",
+        "externalLink": "رابط خارجي",
+        "option1": "الخيار الأول",
+        "option2": "الخيار الثاني",
+        "option3": "الخيار الثالث",
+        "sectionName": "قسم {{n}}",
+        "lessonName": "درس {{n}}"
+      },
       "blocks": {
         "testKnowledge": "اختبر معلوماتك",
         "questionPlaceholder": "اكتب السؤال",
@@ -324,6 +336,13 @@
         "openPdf": "فتح PDF",
         "notesPlaceholder": "اكتب ملاحظة...",
         "textPlaceholder": "اكتب النص هنا...",
+        "linkTitle": "عنوان الرابط",
+        "urlPlaceholder": "https://",
+        "youtubeUrlPlaceholder": "https://youtube.com/watch?v=…",
+        "pdfUrlPlaceholder": "https://example.com/file.pdf",
+        "relatedLessons": "درس متعلق",
+        "lessonTitle": "عنوان الدرس",
+        "pageId": "معرّف الصفحة",
         "rows": "صفوف",
         "columns": "أعمدة",
         "tableSetup": "إعداد الجدول",
@@ -331,7 +350,8 @@
         "addOption": "إضافة خيار",
         "deleteOption": "حذف الخيار",
         "newOption": "خيار جديد",
-        "markCorrect": "تعيين كإجابة صحيحة"
+        "markCorrect": "تعيين كإجابة صحيحة",
+        "linkPrompt": "أدخل الرابط"
       },
       "selectPage": "اختر درساً من المنهج لبدء التحرير",
       "toast": {

@@ -23,7 +23,7 @@ import {
   CreditCard,
   ExternalLink,
   LogOut,
-  MessageSquare,
+  MessageSquareIcon,
   Paintbrush,
   PlayCircle,
   Plus,
@@ -43,7 +43,12 @@ interface INavItem {
 }
 
 const navItems: INavItem[] = [
-  { to: routes.home, labelKey: 'dashboard.nav.home', icon: HomeIcon, end: true },
+  {
+    to: routes.home,
+    labelKey: 'dashboard.nav.home',
+    icon: HomeIcon,
+    end: true,
+  },
   { to: routes.students, labelKey: 'dashboard.nav.students', icon: Users },
   { to: routes.courses, labelKey: 'dashboard.nav.courses', icon: PlayCircle },
   { to: '#awards', labelKey: 'dashboard.nav.awards', icon: Award },
@@ -202,7 +207,9 @@ const AppSidebar: React.FC = () => {
                 className='size-5 shrink-0 rounded-full object-cover'
               />
               <span>
-                {currentLang === 'ar' ? t('common.english') : t('common.arabic')}
+                {currentLang === 'ar'
+                  ? t('common.english')
+                  : t('common.arabic')}
               </span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -255,7 +262,11 @@ const DashboardHeader: React.FC = () => {
   const { isMobile } = useSidebar();
 
   return (
-    <header className='sticky top-0 z-20 flex h-20 items-center justify-between gap-3 border-b border-neutral-200 bg-white px-4 sm:px-6 lg:px-10'>
+    <header className='sticky top-0 z-20 flex h-20 items-center gap-3 border-b border-neutral-200 bg-white px-4 sm:px-6 lg:px-10'>
+      <div
+        id='dashboard-breadcrumb'
+        className='hidden min-w-0 flex-1 text-sm text-neutral-500 md:block'
+      />
       <div className='flex min-w-0 items-center gap-2 sm:gap-3'>
         {isMobile && <SidebarTrigger className='static shadow-sm' />}
         <Button className='h-9 gap-2 rounded-lg bg-purple-heart-900 px-3 text-sm hover:bg-purple-heart-800 sm:px-4'>
@@ -274,11 +285,10 @@ const DashboardHeader: React.FC = () => {
           type='button'
           className='relative flex size-9 items-center justify-center rounded-lg text-neutral-600 hover:bg-neutral-100'
         >
-          <MessageSquare className='size-5' />
+          <MessageSquareIcon className='size-5' />
           <span className='absolute end-1 top-1 size-2.5 rounded-full bg-danger-500' />
         </button>
       </div>
-      <div id='dashboard-breadcrumb' className='hidden min-w-0 flex-1 text-sm text-neutral-500 md:block' />
     </header>
   );
 };
@@ -288,7 +298,10 @@ export const DashboardLayout: React.FC = () => {
   const isRtl = i18n.dir() === 'rtl';
 
   return (
-    <SidebarProvider defaultOpen={false} className='bg-neutral-50 text-neutral-900'>
+    <SidebarProvider
+      defaultOpen={false}
+      className='bg-neutral-50 text-neutral-900'
+    >
       <AppSidebar />
       <SidebarInset className='min-w-0 bg-neutral-50'>
         <DashboardHeader />

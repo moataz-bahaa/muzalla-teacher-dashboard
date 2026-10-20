@@ -43,7 +43,7 @@ export const BlockWrapper: React.FC<IBlockWrapperProps> = ({
 }) => {
   if (!isTeacherView) {
     return (
-      <div className='rounded-2xl border border-neutral-200 bg-white p-5 transition-all duration-200'>
+      <div className='min-w-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 transition-all duration-200'>
         {children}
       </div>
     );
@@ -52,7 +52,7 @@ export const BlockWrapper: React.FC<IBlockWrapperProps> = ({
   return (
     <div
       className={cn(
-        'group relative rounded-2xl border bg-white p-5 transition-all duration-200',
+        'group relative min-w-0 overflow-hidden rounded-2xl border bg-white p-5 transition-all duration-200',
         isDragging && 'scale-[1.01] opacity-70 shadow-lg',
         isActive
           ? 'border-purple-heart-500 shadow-[0_0_0_1px_rgba(105,0,238,0.25)]'

@@ -21,15 +21,13 @@ export const RelatedLessonsBlock: React.FC<IRelatedLessonsBlockProps> = ({
   return (
     <div className='space-y-4'>
       <h3 className='text-lg font-bold text-neutral-900'>
-        {t('courses.builder.blocks.relatedLessons', {
-          defaultValue: 'Related lesson',
-        })}
+        {t('courses.builder.blocks.relatedLessons')}
       </h3>
-      <div className='flex items-center gap-3 rounded-xl border border-neutral-200 p-4'>
+      <div className='flex min-w-0 items-center gap-3 overflow-hidden rounded-xl border border-neutral-200 p-4'>
         <div className='flex size-10 shrink-0 items-center justify-center rounded-lg bg-purple-heart-100 text-purple-heart-700'>
           <BookOpen className='size-5' />
         </div>
-        <div className='min-w-0 flex-1 space-y-2'>
+        <div className='min-w-0 flex-1 space-y-2 overflow-hidden'>
           {isTeacherView ? (
             <>
               <Input
@@ -40,10 +38,8 @@ export const RelatedLessonsBlock: React.FC<IRelatedLessonsBlockProps> = ({
                     data: JSON.stringify({ ...data, title: e.target.value }),
                   })
                 }
-                placeholder={t('courses.builder.blocks.lessonTitle', {
-                  defaultValue: 'Lesson title',
-                })}
-                className='h-9'
+                placeholder={t('courses.builder.blocks.lessonTitle')}
+                className='h-9 min-w-0'
               />
               <Input
                 type='number'
@@ -57,14 +53,14 @@ export const RelatedLessonsBlock: React.FC<IRelatedLessonsBlockProps> = ({
                     }),
                   })
                 }
-                placeholder={t('courses.builder.blocks.pageId', {
-                  defaultValue: 'Page id',
-                })}
-                className='h-9'
+                placeholder={t('courses.builder.blocks.pageId')}
+                className='h-9 min-w-0'
               />
             </>
           ) : (
-            <p className='font-medium'>{data.title}</p>
+            <p className='truncate font-medium' title={data.title}>
+              {data.title}
+            </p>
           )}
         </div>
       </div>

@@ -65,7 +65,7 @@ export const BuilderCanvas: React.FC = () => {
         {page.name}
       </h1>
 
-      <div className='space-y-6 pe-0 lg:pe-10'>
+      <div className='min-w-0 space-y-6 pe-0 lg:pe-10'>
         {blocks.map((block, index) => (
           <div
             key={block.id}
@@ -83,8 +83,8 @@ export const BuilderCanvas: React.FC = () => {
             }}
             className={
               overId === block.id && draggingId !== block.id
-                ? 'translate-y-1 rounded-2xl ring-2 ring-purple-heart-200 ring-offset-2 transition-all duration-200'
-                : 'transition-all duration-200 animate-in fade-in-0 slide-in-from-bottom-2 duration-300'
+                ? 'min-w-0 translate-y-1 rounded-2xl ring-2 ring-purple-heart-200 ring-offset-2 transition-all duration-200'
+                : 'min-w-0 transition-all duration-200 animate-in fade-in-0 slide-in-from-bottom-2 duration-300'
             }
           >
             <BlockRenderer
