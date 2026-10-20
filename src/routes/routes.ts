@@ -5,6 +5,8 @@ export const routes = {
   forgetPassword: '/forget-password',
   verifyOtp: '/verify-otp',
   resetPassword: '/reset-password',
+  onboarding: '/onboarding',
+  onboardingStep: (stepId: string) => `/onboarding/${stepId}`,
   students: '/students',
   courses: '/courses',
   courseNew: '/courses/new',

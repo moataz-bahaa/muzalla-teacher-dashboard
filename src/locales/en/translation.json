@@ -435,5 +435,157 @@
       "confirmPassword": "Confirm new password",
       "submit": "Change password"
     }
+  },
+  "onboarding": {
+    "breadcrumb": "Personal site designer",
+    "actions": {
+      "next": "Next",
+      "back": "Back",
+      "skip": "Skip"
+    },
+    "profile": {
+      "title": "Welcome to the personal site designer",
+      "subtitle": "Your educational site is ready in minutes",
+      "benefits": {
+        "noCode": "No coding complexity",
+        "noFees": "No extra fees",
+        "noWait": "No long waiting"
+      },
+      "fields": {
+        "fullName": "Full name",
+        "websiteName": "Website name",
+        "email": "Email",
+        "phone": "Phone number",
+        "country": "Country",
+        "language": "Language"
+      },
+      "domainLabel": "Website Domain",
+      "countries": {
+        "eg": "Egypt",
+        "sa": "Saudi Arabia",
+        "ae": "United Arab Emirates",
+        "kw": "Kuwait",
+        "qa": "Qatar"
+      },
+      "languages": {
+        "en": "English",
+        "ar": "Arabic"
+      },
+      "legal": {
+        "prefix": "By clicking on Start Now, you accept our",
+        "agreement": "Subscription Agreement",
+        "and": "and",
+        "privacy": "Privacy Policy"
+      }
+    },
+    "intro": {
+      "title": "Ready to build the ideal website for your content and your students",
+      "subtitle": "We will set up and launch the site in 5 steps to fit your needs",
+      "cta": "Let's start setup"
+    },
+    "courseDisplay": {
+      "title": "How do you prefer to display your courses on the site?",
+      "options": {
+        "level": {
+          "title": "By level",
+          "description": "For example: beginner, intermediate, advanced, all levels"
+        },
+        "academicYear": {
+          "title": "By academic year",
+          "description": "For example: first, second, third secondary year"
+        }
+      }
+    },
+    "advantage": {
+      "title": "Your most unique advantage that sets you apart from other educational content providers",
+      "options": {
+        "exclusiveContent": {
+          "title": "Exclusive and renewed content",
+          "description": "You provide distinctive, exclusive, and renewed content — content is your point of differentiation"
+        },
+        "teachingMethod": {
+          "title": "Your teaching method and expertise",
+          "description": "You offer students the essence of your expertise in a distinctive way with simplified explanation"
+        },
+        "studentSupport": {
+          "title": "High support for students",
+          "description": "You provide ongoing support during subscriptions and communicate closely with students"
+        }
+      }
+    },
+    "branding": {
+      "title": "Upload the official website logo",
+      "description": "We will extract your brand colors from the logo and its colors",
+      "or": "Or",
+      "chooseColors": "You can choose the site colors yourself",
+      "uploadTitle": "Drag and drop or browse",
+      "uploadHint": "Upload the image here by drag and drop or browse",
+      "maxSize": "Maximum file size 50 MB"
+    },
+    "sections": {
+      "title": "Choose the sections and features that best suit you and your content",
+      "options": {
+        "hero": {
+          "title": "Main section",
+          "description": "The first part of the site with priority for displaying anything"
+        },
+        "about": {
+          "title": "About the content provider",
+          "description": "Showcase the teacher's key experience and strengths"
+        },
+        "services": {
+          "title": "Site services",
+          "description": "Display site services such as courses, one-to-one sessions, and more"
+        },
+        "latestCourses": {
+          "title": "Latest courses",
+          "description": "Show the latest courses offered on the site"
+        },
+        "fullCatalog": {
+          "title": "Full course catalog",
+          "description": "Showcase the teacher's key experience and strengths"
+        },
+        "topCourses": {
+          "title": "Most requested courses",
+          "description": "Showcase the teacher's key experience and strengths"
+        },
+        "studentReviews": {
+          "title": "Student reviews",
+          "description": "Show the latest courses offered on the site"
+        },
+        "pricing": {
+          "title": "Pricing plan",
+          "description": "Display site services such as courses, one-to-one sessions, and more"
+        },
+        "social": {
+          "title": "Social media",
+          "description": "Showcase the teacher's key experience and strengths"
+        },
+        "studentResults": {
+          "title": "Student results record",
+          "description": "Showcase the teacher's key experience and strengths"
+        },
+        "footer": {
+          "title": "Site footer",
+          "description": "Display site services such as courses, one-to-one sessions, and more"
+        }
+      }
+    },
+    "template": {
+      "title": "Choose the look closest to your new site"
+    },
+    "generating": {
+      "tasks": {
+        "colors": "Applying colors and designs",
+        "images": "Searching for suitable images",
+        "sections": "Formatting site sections",
+        "content": "Generating suitable content",
+        "finalize": "Finalizing the look"
+      }
+    },
+    "complete": {
+      "title": "Congratulations, you have finished building your website",
+      "cta": "View site"
+    }
   }
 }

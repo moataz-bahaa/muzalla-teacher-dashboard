@@ -58,7 +58,7 @@ export const useRegisterMutation = () => {
       }
       authorize(data.data?.token, data.data?.refreshToken);
       toast.success(data.message ?? t('auth.toast.registerSuccess'));
-      void navigate(routes.home);
+      void navigate(routes.onboardingStep('profile'));
     },
     onError(error) {
       toast.error(error.message || t('auth.toast.registerError'));

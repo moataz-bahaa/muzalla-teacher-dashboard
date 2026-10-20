@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { routes } from '@/routes/routes'
 import { DashboardLayout } from '@/layouts/dashboard-layout'
 import { HomePage } from '@/pages/home-page'
@@ -10,9 +10,10 @@ import { ResetPasswordPage } from '@/pages/auth/reset-password-page'
 import { CoursesPage } from '@/pages/course/courses-page'
 import { CourseCreatePage } from '@/pages/course/course-create-page'
 import { StudentsPage } from '@/pages/student/students-page'
+import { OnboardingPage } from '@/pages/onboarding/onboarding-page'
 import { GuestRoute } from '@/features/auth/components/guest-route'
 import { PrivateRoute } from '@/features/auth/components/private-route'
-import CourseBuilderPage from '@/pages/course/builder/course-builder-page';
+import CourseBuilderPage from '@/pages/course/builder/course-builder-page'
 
 export const AppRouter: React.FC = () => {
   return (
@@ -66,6 +67,11 @@ export const AppRouter: React.FC = () => {
         }
       >
         <Route path={routes.home} element={<HomePage />} />
+        <Route
+          path={routes.onboarding}
+          element={<Navigate to={routes.onboardingStep('profile')} replace />}
+        />
+        <Route path='/onboarding/:stepId' element={<OnboardingPage />} />
         <Route path={routes.students} element={<StudentsPage />} />
         <Route path={routes.courses} element={<CoursesPage />} />
         <Route path={routes.courseNew} element={<CourseCreatePage />} />
